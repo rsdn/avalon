@@ -110,32 +110,60 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 		int rate_minus    = 0;
 		int rate_smile    = 0;
 
+		QString rate_details[7];
 		for (int i = 0; i < rating_list->count(); i++)
 		{
 			AMessageRating info = rating_list->at(i);
-
-			int rate = info.Rate;
-
-			if (rate == 1)
+			int detailIdx=-1;
+			switch(info.Rate)
+			{
+			case 1:
 				rate_one++;
-			else if (rate == 2)
+				detailIdx=0;
+				break;
+			case 2:
 				rate_two++;
-			else if (rate == 3)
+				detailIdx=1;
+				break;
+			case 3:
 				rate_three++;
-			else if (rate == 0)
+				detailIdx=2;
+				break;
+			case 0:
 				rate_minus++;
-			else if (rate == -2)
+				detailIdx=3;
+				break;
+			case -2:
 				rate_smile++;
-			else if (rate == -3)
+				detailIdx=4;
+				break;
+			case -3:
 				rate_plus_one++;
-			else if (rate == -4)
+				detailIdx=5;
+				break;
+			case -4:
 				rate_plus++;
+				detailIdx=6;
+				break;
+			}
+			static const QString rateText[] = {"[1]", "[2]", "[3]", "[-]", ":)", "[+1]", "[+]"};
+			if(detailIdx >= 0)
+				rate_details[detailIdx] += rateText[detailIdx] + (info.Nick.isEmpty() ? info.Name : info.Nick) + " ";
 		}
+		QString all_rate_details =
+				rate_details[5]
+				+ rate_details[0]
+				+ rate_details[1]
+				+ rate_details[2]
+				+ rate_details[3]
+				+ rate_details[6]
+				+ rate_details[4]
+				;
 
 		// может оказаться, что есть всего одна оценка и она не входит в диапазон допустимых - получится пустое пространство
 		if (rate_plus_one > 0 || rate_one > 0 || rate_two > 0 || rate_three > 0 || rate_plus > 0 || rate_minus > 0 || rate_smile > 0)
 		{
-			result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;<a style='color: black; text-decoration: none;' href='http://www.rsdn.ru/forum/RateList.aspx?mid=" + QString::number(message.ID) + QString::fromUtf8("'>Оценки</a>:") + "&nbsp;&nbsp;</b>";
+			result += "<tr style='background-color: #FFFFF6'><td colspan='2'><a title='"+all_rate_details+"' style='color: black; text-decoration: none;' href='http://www.rsdn.ru/forum/RateList.aspx?mid=" + QString::number(message.ID) + QString::fromUtf8("'><b>&nbsp;Оценки:") + "&nbsp;&nbsp;</b>";
 
 			if (rate_smile > 0)
 				result += QString::fromUtf8("<img src='qrc:/icons/rate_smile.png' align='top' title='смешно' alt='смешно'>&nbsp;") + QString::number(rate_smile) + "&nbsp;&nbsp;";
@@ -152,7 +180,7 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 			if (rate_three > 0)
 				result += QString::fromUtf8("<img src='qrc:/icons/rate_3.png' align='top' title='супер' alt='супер'>&nbsp;") + QString::number(rate_three) + "&nbsp;&nbsp;";
 
-			result += "</td></tr>";
+			result += "</a></td></tr>";
 		}
 	}
 
