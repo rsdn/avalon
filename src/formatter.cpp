@@ -179,7 +179,7 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 		result += "</a></td></tr>";
 	}
 
-	result += "<tr><td colspan='2'><table width='99%' align='center'><tr><td><br />";
+	result += "</table>";
 
 	// формирование тела сообщения
 	for (int i = 0; i < list.count(); i++)
@@ -187,9 +187,9 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 
 	// хвост html
 	result += "</td></tr></table></td></tr>";
-	result += "<tr style='background-color: #E6F2E6'><td colspan='2'><b>&nbsp;</b></td></tr>";
 
 	result += "</table>";
+	result += "<div style='background-color: #E6F2E6; width=100%'>&nbsp;</div>";
 	result += "</body>";
 	result += "</html>";
 
@@ -211,8 +211,9 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 
 	if (block.Type == pbtText)
 	{
+		result += "<p style='padding:0 .25em'>";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "<br />";
+		result += "</p>";
 	}
 
 	else if (block.Type == pbtQuote)
