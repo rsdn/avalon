@@ -1,0 +1,18 @@
+# выходной бинарник
+avalon
+
+# временные файлы сборки
+debug/*
+release/*
+
+# файлы, генерируемые qmake (см. dev/build.*)
+avalon.pro
+Makefile
+Makefile.Debug
+Makefile.Release
+
+# подсветка синтаксиса (см. http://softwaremaniacs.org/soft/highlight/)
+highlight
+
+# документация, генерируемая doxygen
+dev/doxygen/html/*
