@@ -675,8 +675,8 @@ void AFormMain::menu_q_rsdn_url_triggered ()
 void AFormMain::menu_q_about_triggered ()
 {
 	QString text = QString::fromUtf8(
-		"<b>avalon</b> - клиент для чтения форумов <a href='http://rsdn.ru'>rsdn</a> для linux аналогичный проекту <a href='http://rsdn.ru/projects/janus/article/article.xml'>janus</a> команды rsdn под windows.<br/><br/>"
-		"<b>домашняя страница</b>: <a href='http://opensvn.ru/project/avalon'>http://opensvn.ru/project/avalon</a><br/><br/>"
+		"<b>avalon</b> - кросс-платформенный клиент для чтения форумов <a href='http://rsdn.ru'>rsdn</a> аналогичный проекту <a href='http://rsdn.ru/projects/janus/article/article.xml'>janus</a> команды rsdn под windows.<br/><br/>"
+		"<b>домашняя страница</b>: <a href='https://github.com/rsdn/avalon'>https://github.com/rsdn/avalon</a><br/><br/>"
 		"<b>разработчики</b>:"
 		"<ul>"
 		"<li><a href='http://opensvn.ru/user/antonbatenev.ya.ru'>Anton Batenev</a></li>"
