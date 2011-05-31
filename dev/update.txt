@@ -1,0 +1,3 @@
+os=linux;arch=i386;rev=419;url=http://narod.yandex.ru/disk/10806693001/avalon_i386_r419.gz.html;
+os=linux;arch=x64;rev=419;url=http://narod.yandex.ru/disk/10756994001/avalon_x64_r419.gz.htm;
+os=windows;arch=i386;rev=419;base_rev=1;base_url=http://narod.yandex.ru/disk/24099309000/avalon_win32_base.zip.html;url=http://narod.yandex.ru/disk/10921618001/avalon_win32_r419.zip.html;
