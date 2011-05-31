@@ -1,8 +1,7 @@
-//----------------------------------------------------------------------------------------------
-// $Date: 2011-04-07 11:11:49 +0400 (Чтв, 07 Апр 2011) $
-// $Author: antonbatenev.ya.ru $
-// $Revision: 406 $
-// $URL: svn://opensvn.ru/avalon/trunk/form_request.cpp $
+/*!
+ * \file
+ * \brief Форма для отображения прогресса работы и для HTTP запросов
+ */
 //----------------------------------------------------------------------------------------------
 #include "form_request.h"
 //----------------------------------------------------------------------------------------------
@@ -18,7 +17,7 @@ FormRequest::~FormRequest ()
 }
 //----------------------------------------------------------------------------------------------
 
-FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data) : FormRequestUI (parent), IProgress ()
+FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data, bool https) : FormRequestUI (parent), IProgress ()
 {
 	m_hack = 0;
 
@@ -31,12 +30,21 @@ FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, co
 	else if (proxy_type == QNetworkProxy::Socks5Proxy || proxy_type == QNetworkProxy::HttpProxy)
 	{
 		// transparent proxy, QHttp bug workaround
-		QTcpSocket* socket = new QTcpSocket(this);
-		socket->setProxy(proxy);
-		m_http.setSocket(socket);
+		if (https == false)
+		{
+			QTcpSocket* socket = new QTcpSocket(this);
+			socket->setProxy(proxy);
+			m_http.setSocket(socket);
+		}
+		else
+		{
+			QSslSocket* socket = new QSslSocket(this);
+			socket->setProxy(proxy);
+			m_http.setSocket(socket);
+		}
 	}
 
-	m_http.setHost(host, port);
+	m_http.setHost(host, (https == false ? QHttp::ConnectionModeHttp : QHttp::ConnectionModeHttps), port);
 
 	QHttpRequestHeader request_header(header);
 	QByteArray         request_data   = data.toUtf8();
@@ -263,7 +271,7 @@ void FormRequest::process_request_finished (int /*id*/, bool error)
 
 				accept();
 			}
-			else if (status_code < 511 /* при соединении с SOCKS прокси могу появляться артефакты с кодом состояния якобоы более 5xx */)
+			else if (status_code > 100 && status_code < 511 /* при соединении с SOCKS прокси могу появляться артефакты с кодом состояния якобоы более 5xx */)
 				new QListWidgetItem(QString::fromUtf8("Ошибка запроса - ") + QString::number(m_http.lastResponse().statusCode()) + " - " + m_http.lastResponse().reasonPhrase(), m_list_progress);
 		}
 	}

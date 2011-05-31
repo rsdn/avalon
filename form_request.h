@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Форма для отображения прогресса работы и для HTTP запросов
- *
- * $Date: 2011-04-07 11:11:49 +0400 (Чтв, 07 Апр 2011) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 406 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_request.h $
  */
 
 #ifndef _avalon_form_request_h_
@@ -38,8 +33,9 @@ class FormRequest :
 		 * \param port Номер порта
 		 * \param header Заголовок HTTP
 		 * \param data POST данные для HTTP
+		 * \param https Флаг необходимости установки HTTPS соединения
 		 */
-		FormRequest  (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data);
+		FormRequest  (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data, bool https = false);
 
 		~FormRequest ();
 

@@ -16,10 +16,12 @@ PROJECT_NAME="avalon"
 # переход в директорию проекта
 cd ../
 
-# обновление даты билда
-cp -f version.h version.tpl
-sed "s/AVALON_DATE \".*\"/AVALON_DATE \"$(date)\"/" version.tpl > version.h
-rm -f version.tpl
+# обновление даты и номера билда
+AVALON_DATE=$(date "+%Y-%m-%dT%H:%M:%S%z")
+AVALON_BUILD=$(awk '/AVALON_BUILD/ { print $3+1; }' version.h)
+cp -f version.h version.tmp
+cat version.tmp | sed "s/AVALON_BUILD .*/AVALON_BUILD ${AVALON_BUILD}/" | sed "s/AVALON_DATE \".*\"/AVALON_DATE \"${AVALON_DATE}\"/" > version.h
+rm -f version.tmp
 
 # очистка
 make clean

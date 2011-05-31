@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Файл для включения всех системных и библиотечных заголовочных файлов.
- *
- * $Date: 2011-04-06 14:21:47 +0400 (Срд, 06 Апр 2011) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 404 $
- * $URL: svn://opensvn.ru/avalon/trunk/sysheaders.h $
  */
 
 #ifndef _avalon_sysheaders_h_
@@ -47,6 +42,7 @@
 #include <QValidator>
 #include <QTextCodec>
 #include <QTcpSocket>
+#include <QSslSocket>
 #include <QTranslator>
 #include <QStringList>
 #include <QTreeWidget>
@@ -105,10 +101,10 @@
 #endif
 
 /*!
- * \brief Получение номера ревизии (см. version.cpp)
- * \return Номер ревизии svn, на котором основана текущая сборка
+ * \brief Получение номера билда (см. version.cpp)
+ * \return Номер билда, на котором основана текущая сборка
  */
-int getRevision ();
+int getBuildNumber ();
 
 /*!
  * \brief Получение строки версии (см. version.cpp)

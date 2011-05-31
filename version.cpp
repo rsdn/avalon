@@ -1,30 +1,21 @@
-//----------------------------------------------------------------------------------------------
-// $Date: 2010-11-03 23:45:09 +0300 (Срд, 03 Ноя 2010) $
-// $Author: antonbatenev.ya.ru $
-// $Revision: 366 $
-// $URL: svn://opensvn.ru/avalon/trunk/version.cpp $
+/*!
+ * \file
+ * \brief Обрпаботка шаблона файла версии, который меняется при каждом билде
+ */
 //----------------------------------------------------------------------------------------------
 #include "version.h"
 #include "sysheaders.h"
 //----------------------------------------------------------------------------------------------
 
-int getRevision ()
+int getBuildNumber ()
 {
-	QString revision_str = AVALON_REVISION;
-
-	revision_str.replace("$Revision: ", "");
-	revision_str.replace(" $", "");
-
-	bool ok = false;
-	int revision = revision_str.toInt(&ok);
-
-	return revision;
+	return AVALON_BUILD;
 }
 //----------------------------------------------------------------------------------------------
 
 QString getVersionString ()
 {
-	QString result = QString("avalon 1.0rc3 rev ") + QString::number(getRevision());
+	QString result = QString("avalon 1.0rc3 build ") + QString::number(getBuildNumber());
 
 #ifdef AVALON_USE_ZLIB
 	result += ", zlib " + QString(zlibVersion());

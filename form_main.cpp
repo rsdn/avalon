@@ -1,8 +1,7 @@
-//----------------------------------------------------------------------------------------------
-// $Date: 2011-04-07 12:00:34 +0400 (Чтв, 07 Апр 2011) $
-// $Author: antonbatenev.ya.ru $
-// $Revision: 416 $
-// $URL: svn://opensvn.ru/avalon/trunk/form_main.cpp $
+/*!
+ * \file
+ * \brief Главная форма приложения
+ */
 //----------------------------------------------------------------------------------------------
 #include "form_main.h"
 //----------------------------------------------------------------------------------------------
@@ -931,8 +930,8 @@ void AFormMain::checkUpdate ()
 	//
 
 	QString header = "";
-	header += "GET /avalon/raw-attachment/wiki/download/update.txt HTTP/1.1\r\n";
-	header += "Host: trac.opensvn.ru\r\n";
+	header += "GET /rsdn/avalon/raw/master/dev/update.txt HTTP/1.1\r\n";
+	header += "Host: github.com\r\n";
 	header += "Connection: close\r\n";
 	header += "User-Agent: " + getVersionString() + "\r\n";
 
@@ -940,7 +939,7 @@ void AFormMain::checkUpdate ()
 	header += "Accept-Encoding: gzip\r\n";
 	#endif
 
-	std::auto_ptr<FormRequest> form(new FormRequest(this, "trac.opensvn.ru", 80, header, ""));
+	std::auto_ptr<FormRequest> form(new FormRequest(this, "github.com", 443, header, "", true));
 
 	if (form->exec() != QDialog::Accepted)
 		return;
@@ -1001,32 +1000,31 @@ void AFormMain::checkUpdate ()
 
 		// проверка версии
 		bool ok = false;
-		int manifest_version = values["rev"].toUInt(&ok);
+		int current_build  = getBuildNumber();
+		int manifest_build = values["build"].toUInt(&ok);
 
 		if (ok == false)
 		{
-			QMessageBox::warning(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Манифест имеет неверную информацию о версии!"));
+			QMessageBox::warning(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Манифест имеет неверную информацию о номере билда!"));
 			return;
 		}
 
-		int curent_revision = getRevision();
-
-		if (curent_revision == manifest_version)
+		if (current_build == manifest_build)
 		{
-			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Вы имеете самую последнюю версию программы!"));
+			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Вы имеете самый последний билд программы!"));
 			return;
 		}
-		else if (curent_revision > manifest_version)
+		else if (current_build > manifest_build)
 		{
-			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Ваша версия программы более новая! Пожалуйста, обновите бинарный файл на <a href='http://trac.opensvn.ru/avalon/wiki/download'>странице загрузки</a>."));
+			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Ваш билд программы более новый! Пожалуйста, обновите бинарный файл на <a href='https://github.com/rsdn/avalon/wiki/Скачать'>странице загрузки</a>."));
 			return;
 		}
 
 		QString msg = "";
-		msg += QString::fromUtf8("Обнаружена новая версия программы!\n");
-		msg += QString::fromUtf8("Ваша версия: r") + QString::number(curent_revision) + "\n";
-		msg += QString::fromUtf8("Новая версия: r") + QString::number(manifest_version) + "\n";
-		msg += QString::fromUtf8("Перейти на страницу загрузки новой версии?");
+		msg += QString::fromUtf8("Обнаружен новый билд программы!\n");
+		msg += QString::fromUtf8("Ваш билд: ") + QString::number(current_build) + "\n";
+		msg += QString::fromUtf8("Новый билд: ") + QString::number(manifest_build) + "\n";
+		msg += QString::fromUtf8("Перейти на страницу загрузки нового билда?");
 
 		if (QMessageBox::question(this, QString::fromUtf8("Внимание!"), msg, QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 			QDesktopServices::openUrl(values["url"]);
