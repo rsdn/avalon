@@ -107,7 +107,7 @@ class FormRequest :
 		void process_response_header_received (const QHttpResponseHeader& resp); /*!< \brief Получен заголовок ответа     */
 		void process_request_started          (int id);                          /*!< \brief Начало выполнения запроса    */
 		void process_request_finished         (int id, bool error);              /*!< \brief Окончание выполнения запроса */
-
+		void process_ssl_errors               (const QList<QSslError> &errors);  /*!< \brief Ошибка SSL                   */
 };
 
 #endif   // _avalon_form_request_h_
