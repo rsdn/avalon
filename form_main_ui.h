@@ -59,6 +59,7 @@ class AFormMainUI : public QMainWindow
 		QAction*        m_menu_goto_next_unread_article;       /*!< \brief Перейти / Следующая непрочитаная статья */
 		QAction*        m_menu_goto_next_unread_thread;        /*!< \brief Перейти / Следующая непрочитаная ветка  */
 		QAction*        m_menu_goto_next_unread_forum;         /*!< \brief Перейти / Следующий непрочитаный форум  */
+		QAction*        m_menu_goto_by_id;                     /*!< \brief Перейти / К сообщению по ID/ссылке      */
 		QMenu*       m_menu_service;                           /*!< \brief Сервис / ... */
 		QAction*        m_menu_service_synchronize;            /*!< \brief Сервис / Синхронизировать          */
 		QAction*        m_menu_service_download;               /*!< \brief Сервис / Загрузить сообщение/ветку */

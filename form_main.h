@@ -71,6 +71,7 @@ class AFormMain :
 		void menu_goto_next_unread_article_triggered (); /*!< \brief К следующему непрочитанному сообщению */
 		void menu_goto_next_unread_thread_triggered  (); /*!< \brief К следующей непрочитанной ветке       */
 		void menu_goto_next_unread_forum_triggered   (); /*!< \brief К следующему непрочитанному форуму    */
+		void menu_goto_by_id_triggered               (); /*!< \brief К сообщению по ID/ссылке              */
 
 		//
 		// Меню "Сервис"

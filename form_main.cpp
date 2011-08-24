@@ -42,6 +42,7 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 	connect(m_menu_goto_next_unread_article, SIGNAL(triggered()), this, SLOT(menu_goto_next_unread_article_triggered()));
 	connect(m_menu_goto_next_unread_thread,  SIGNAL(triggered()), this, SLOT(menu_goto_next_unread_thread_triggered()));
 	connect(m_menu_goto_next_unread_forum,   SIGNAL(triggered()), this, SLOT(menu_goto_next_unread_forum_triggered()));
+	connect(m_menu_goto_by_id,               SIGNAL(triggered()), this, SLOT(menu_goto_by_id_triggered()));
 
 	//
 	// меню "Сервис"
@@ -708,6 +709,86 @@ void AFormMain::menu_goto_next_unread_forum_triggered ()
 {
 	if (m_menu_goto_next_unread_forum->isEnabled() == true)
 		m_forum_tree->gotoNextUnreadForum();
+}
+//----------------------------------------------------------------------------------------------
+
+void AFormMain::menu_goto_by_id_triggered ()
+{
+	std::auto_ptr<FormInput> form(new FormInput(this, QString::fromUtf8("Перейти к сообщению"), QString::fromUtf8("Введите URL или номер сообщения / ветки"), ""));
+
+	QIcon icon;
+	icon.addFile(":/icons/download16.png",  QSize(16, 16));
+	icon.addFile(":/icons/download22.png",  QSize(22, 22));
+	icon.addFile(":/icons/download24.png",  QSize(24, 24));
+	icon.addFile(":/icons/download32.png",  QSize(32, 32));
+	icon.addFile(":/icons/download48.png",  QSize(48, 48));
+	icon.addFile(":/icons/download64.png",  QSize(64, 64));
+	icon.addFile(":/icons/download128.png", QSize(128, 128));
+	form->setWindowIcon(icon);
+
+	if (form->exec() == QDialog::Accepted)
+	{
+		QString text = form->text().trimmed();
+
+		bool is_int     = false;
+		int  id_message = text.toInt(&is_int);
+		int  id_forum   = 0;
+
+		if (is_int == false)
+		{
+			QRegExp reg_id_message("rsdn\\.ru.+(\\d+).+");
+
+			if (reg_id_message.indexIn(text) == -1)
+			{
+				QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Текст ") + text + QString::fromUtf8(" не является ни ссылкой ни числом требуемого формата."));
+				return;
+			}
+
+			QString str_id_message = reg_id_message.cap(1);
+
+			id_message = str_id_message.toInt(&is_int);
+		}
+
+		if (is_int == false || id_message < 1)
+		{
+			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Текст ") + text + QString::fromUtf8(" не содержит корректного числа."));
+			return;
+		}
+
+		std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
+
+		if (storage.get() == NULL)
+		{
+			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Не выбрано хранилище данных"));
+			return;
+		}
+
+		QList<int> path;
+
+		if (storage->getMessagePath(id_message, id_forum, path) == false)
+		{
+			storage->showError(this);
+			return;
+		}
+
+		if (id_forum == 0 || path.count() == 0)
+		{
+			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Сообщение не найдено! Можете попробовать загрузить его дополнительно."));
+			return;
+		}
+
+		if (m_forum_tree->selectForum(id_forum) == false)
+		{
+			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Вы не подписаны на форум в котором находится запрашиваемое сообщение."));
+			return;
+		}
+
+		if (m_message_tree->selectByPath(&path) == false)
+		{
+			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Сообщение не может быть выбрано (скорее всего, это ошибка программы)."));
+			return;
+		}
+	}
 }
 //----------------------------------------------------------------------------------------------
 

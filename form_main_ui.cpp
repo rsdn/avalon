@@ -56,6 +56,11 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 	m_menu_goto_next_unread_forum->setShortcut(QString("F"));
 	m_menu_goto_next_unread_forum->setEnabled(false);
 
+	m_menu_service->addSeparator();
+
+	m_menu_goto_by_id = m_menu_goto->addAction(QString::fromUtf8("Перейти к сообщению"));
+	m_menu_goto_by_id->setIcon(QIcon(":/icons/download16.png"));
+
 	// меню "Сервис"
 	m_menu_service_synchronize = m_menu_service->addAction(QString::fromUtf8("Синхронизировать"));
 	m_menu_service_synchronize->setIcon(QIcon(":/icons/synchronize16.png"));
