@@ -58,6 +58,9 @@ FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, co
 	connect(&m_http, SIGNAL(requestStarted(int)),        this, SLOT(process_request_started(int)));
 	connect(&m_http, SIGNAL(requestFinished(int, bool)), this, SLOT(process_request_finished(int, bool)));
 
+	if (https == true)
+		connect(&m_http, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(process_ssl_errors(const QList<QSslError>&)));
+
 	m_http.request(request_header, request_data);
 
 	connect(m_button_cancel, SIGNAL(clicked()), this, SLOT(reject()));
@@ -360,5 +363,12 @@ void FormRequest::onProgress (int percent, const QString& status)
 	m_progress_bar->setValue(percent);
 
 	QCoreApplication::processEvents();
+}
+//----------------------------------------------------------------------------------------------
+
+void FormRequest::process_ssl_errors (const QList<QSslError> &errors)
+{
+	for (int i = 0; i < errors.count(); i++)
+		new QListWidgetItem(QString::fromUtf8("Ошибка запроса - ") + errors[i].errorString(), m_list_progress);
 }
 //----------------------------------------------------------------------------------------------
