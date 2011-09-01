@@ -122,7 +122,8 @@ CREATE TABLE `rating`
 	`user_rating` INTEGER NOT NULL,
 	`rate`        INTEGER NOT NULL,
 	`rate_date`   INTEGER NOT NULL,
-	PRIMARY KEY (`id_message`, `id_user`)
+	`rate_type`   INTEGER NOT NULL,
+	PRIMARY KEY (`id_message`, `id_user`, `rate_type`)
 );
 
 CREATE TABLE `rating2send`

@@ -74,4 +74,19 @@ typedef struct AMessageRating
  */
 typedef QList<AMessageRating> AMessageRatingList;
 
+/*!
+ * \brief Константа для типа оценки "Смайл"
+ */
+const int SPECIAL_RATE_TYPE_SMILE = 0;
+
+/*!
+ * \brief Константа для типа оценки "Согласен" / "Не согласен"
+ */
+const int SPECIAL_RATE_TYPE_PLUS_MINUS = 1;
+
+/*!
+ * \brief Константа для числового типа оценки
+ */
+const int SPECIAL_RATE_TYPE_NUMBER = 2;
+
 #endif

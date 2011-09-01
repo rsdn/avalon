@@ -1487,7 +1487,8 @@ bool ASQLiteStorage::setMessageList (const ADataList& list, const ARowVersion& r
 	sql += "	`id_user`,\n";
 	sql += "	`user_rating`,\n";
 	sql += "	`rate`,\n";
-	sql += "	`rate_date`\n";
+	sql += "	`rate_date`,\n";
+	sql += "	`rate_type`\n";
 	sql += ")\n";
 	sql += "VALUES\n";
 	sql += "(\n";
@@ -1496,7 +1497,8 @@ bool ASQLiteStorage::setMessageList (const ADataList& list, const ARowVersion& r
 	sql += "	:id_user,\n";
 	sql += "	:user_rating,\n";
 	sql += "	:rate,\n";
-	sql += "	:rate_date\n";
+	sql += "	:rate_date,\n";
+	sql += "	:rate_type\n";
 	sql += ")";
 
 	std::auto_ptr<AQuery> query_insert_rating(createQuery(sql));
@@ -1520,6 +1522,14 @@ bool ASQLiteStorage::setMessageList (const ADataList& list, const ARowVersion& r
 		query_insert_rating->bindValue(":user_rating",   info.UserRating);
 		query_insert_rating->bindValue(":rate",          info.Rate);
 		query_insert_rating->bindValue(":rate_date",     info.RateDate.toTime_t());
+
+		// "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2
+		if (info.Rate == -2)
+			query_insert_rating->bindValue(":rate_type", SPECIAL_RATE_TYPE_SMILE);
+		else if (info.Rate == -4 || info.Rate == 0)
+			query_insert_rating->bindValue(":rate_type", SPECIAL_RATE_TYPE_PLUS_MINUS);
+		else
+			query_insert_rating->bindValue(":rate_type", SPECIAL_RATE_TYPE_NUMBER);
 
 		if (query_insert_rating->exec() == false)
 		{
