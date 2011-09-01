@@ -1558,7 +1558,8 @@ bool AMySQLStorage::setMessageList (const ADataList& list, const ARowVersion& ro
 	sql += "	`id_user`,\n";
 	sql += "	`user_rating`,\n";
 	sql += "	`rate`,\n";
-	sql += "	`rate_date`\n";
+	sql += "	`rate_date`,\n";
+	sql += "	`rate_type`\n";
 	sql += ")\n";
 	sql += "VALUES\n";
 	sql += "(\n";
@@ -1567,13 +1568,14 @@ bool AMySQLStorage::setMessageList (const ADataList& list, const ARowVersion& ro
 	sql += "	:id_user,\n";
 	sql += "	:user_rating,\n";
 	sql += "	:rate,\n";
-	sql += "	:rate_date\n";
+	sql += "	:rate_date,\n";
+	sql += "	:rate_type\n";
 	sql += ")\n";
 	sql += "ON DUPLICATE KEY UPDATE\n";
 	sql += "	`id_topic`    = :u_id_topic,\n";
 	sql += "	`user_rating` = :u_user_rating,\n";
 	sql += "	`rate`        = :u_rate,\n";
-	sql += "	`rate_date`   = :u_rate_date\n";
+	sql += "	`rate_date`   = :u_rate_date";
 
 	std::auto_ptr<AQuery> query_insert_rating(createQuery(sql));
 
@@ -1601,6 +1603,14 @@ bool AMySQLStorage::setMessageList (const ADataList& list, const ARowVersion& ro
 		query_insert_rating->bindValue(":u_user_rating", info.UserRating);
 		query_insert_rating->bindValue(":u_rate",        info.Rate);
 		query_insert_rating->bindValue(":u_rate_date",   info.RateDate);
+
+		// "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2
+		if (info.Rate == -2)
+			query_insert_rating->bindValue(":rate_type", SPECIAL_RATE_TYPE_SMILE);
+		else if (info.Rate == -4 || info.Rate == 0)
+			query_insert_rating->bindValue(":rate_type", SPECIAL_RATE_TYPE_PLUS_MINUS);
+		else
+			query_insert_rating->bindValue(":rate_type", SPECIAL_RATE_TYPE_NUMBER);
 
 		if (query_insert_rating->exec() == false)
 		{
