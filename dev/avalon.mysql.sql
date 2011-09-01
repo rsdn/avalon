@@ -138,14 +138,14 @@ CREATE TABLE `moderate2send`
 
 CREATE TABLE `rating`
 (
-	`id_message`  INT      NOT NULL COMMENT 'id сообщения',
-	`id_topic`    INT      NOT NULL COMMENT 'id топика',
-	`id_user`     INT      NOT NULL COMMENT 'id пользователя',
-	`user_rating` INT      NOT NULL COMMENT 'рейтинг пользователя',
-	`rate`        INT      NOT NULL COMMENT 'оценка',
-	`rate_date`   DATETIME NOT NULL COMMENT 'дата',
-
-	PRIMARY KEY (`id_message`,`id_user`)
+	`id_message`  INT        NOT NULL COMMENT 'id сообщения',
+	`id_topic`    INT        NOT NULL COMMENT 'id топика',
+	`id_user`     INT        NOT NULL COMMENT 'id пользователя',
+	`user_rating` INT        NOT NULL COMMENT 'рейтинг пользователя',
+	`rate`        INT        NOT NULL COMMENT 'оценка',
+	`rate_date`   DATETIME   NOT NULL COMMENT 'дата',
+	`rate_type`   TINYINT(1) NOT NULL COMMENT 'тип оценки (0 - смайл, 1 - +/-, 2 - балл)',
+	PRIMARY KEY (`id_message`,`id_user`, `rate_type`)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='таблица рейтинга';
 
