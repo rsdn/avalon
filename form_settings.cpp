@@ -64,6 +64,7 @@ void FormSettings::check_use_proxy_state_changed (int state)
 	m_text_proxy_port->setEnabled(e);
 	m_text_proxy_login->setEnabled(e);
 	m_text_proxy_password->setEnabled(e);
+	m_check_use_proxy_webkit->setEnabled(e);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -97,12 +98,13 @@ void FormSettings::save ()
 	settings.setValue("rsdn/login",    m_text_rsdn_login->text());
 	settings.setValue("rsdn/password", m_text_rsdn_password->text());
 
-	settings.setValue("proxy/enabled",  (m_check_use_proxy->checkState() == Qt::Checked ? 1 : 0));
-	settings.setValue("proxy/type",     m_combo_proxy_type->currentText());
-	settings.setValue("proxy/host",     m_text_proxy_host->text());
-	settings.setValue("proxy/port",     m_text_proxy_port->text());
-	settings.setValue("proxy/login",    m_text_proxy_login->text());
-	settings.setValue("proxy/password", m_text_proxy_password->text());
+	settings.setValue("proxy/enabled",        (m_check_use_proxy->checkState() == Qt::Checked ? 1 : 0));
+	settings.setValue("proxy/type",           m_combo_proxy_type->currentText());
+	settings.setValue("proxy/host",           m_text_proxy_host->text());
+	settings.setValue("proxy/port",           m_text_proxy_port->text());
+	settings.setValue("proxy/login",          m_text_proxy_login->text());
+	settings.setValue("proxy/password",       m_text_proxy_password->text());
+	settings.setValue("proxy/enabled_webkit", (m_check_use_proxy_webkit->checkState() == Qt::Checked ? 1 : 0));
 
 	//
 	// хранилище
@@ -173,6 +175,13 @@ void FormSettings::restore ()
 	m_text_proxy_port->setText     (settings.value("proxy/port",     "").toString());
 	m_text_proxy_login->setText    (settings.value("proxy/login",    "").toString());
 	m_text_proxy_password->setText (settings.value("proxy/password", "").toString());
+
+	bool use_proxy_webkit = settings.value("proxy/enabled_webkit", use_proxy).toInt();
+
+	if (use_proxy_webkit == true)
+		m_check_use_proxy_webkit->setCheckState(Qt::Checked);
+	else
+		m_check_use_proxy_webkit->setCheckState(Qt::Unchecked);
 
 	//
 	// хранилище

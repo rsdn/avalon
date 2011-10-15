@@ -101,7 +101,7 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 	m_forum_tree->reload();
 
 	// установка прокси для отображения сообщений
-	m_message_view->View->page()->networkAccessManager()->setProxy(FormRequest::defaultProxy());
+	m_message_view->View->page()->networkAccessManager()->setProxy(FormRequest::defaultProxy(true));
 
 	// таймер периодической синхронизации
 	connect(&m_timer, SIGNAL(timeout()), this, SLOT(timer_on_timer()));
@@ -628,7 +628,7 @@ void AFormMain::menu_service_settings_triggered ()
 		m_forum_tree->reload();
 
 		// переустановка прокси для отображения сообщений
-		m_message_view->View->page()->networkAccessManager()->setProxy(FormRequest::defaultProxy());
+		m_message_view->View->page()->networkAccessManager()->setProxy(FormRequest::defaultProxy(true));
 
 		// таймер синхронизации
 		QSettings settings;

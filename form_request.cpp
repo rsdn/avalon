@@ -67,7 +67,7 @@ FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, co
 }
 //----------------------------------------------------------------------------------------------
 
-QNetworkProxy FormRequest::defaultProxy ()
+QNetworkProxy FormRequest::defaultProxy (bool webkit)
 {
 	QSettings settings;
 
@@ -75,6 +75,9 @@ QNetworkProxy FormRequest::defaultProxy ()
 
 	if (settings.value("proxy/enabled", false).toInt() != false)
 	{
+		if (webkit == true && settings.value("proxy/enabled_webkit", true).toInt() == false)
+			return proxy;
+
 		QString proxy_type = settings.value("proxy/type", "HTTP").toString();
 
 		if (proxy_type == "HTTP")

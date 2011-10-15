@@ -54,9 +54,10 @@ class FormRequest :
 
 		/*!
 		 * \brief Возвращает прокси-сервер по умолчанию
+		 * \param webkit Флаг запроса прокси для области отображения сообщений
 		 * \return Описатель прокси-сервера
 		 */
-		static QNetworkProxy defaultProxy ();
+		static QNetworkProxy defaultProxy (bool webkit = false);
 
 	private:
 

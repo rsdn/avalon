@@ -107,6 +107,10 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_label_proxy_password->setText(QString::fromUtf8("пароль"));
 	m_layout_label_network->addWidget(m_label_proxy_password);
 
+	m_label_use_proxy_webkit = new QLabel(this);
+	m_label_use_proxy_webkit->setText(QString::fromUtf8(""));
+	m_layout_label_network->addWidget(m_label_use_proxy_webkit);
+
 	//
 	// поля (сеть)
 	//
@@ -150,6 +154,10 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_text_proxy_password = new QLineEdit(this);
 	m_text_proxy_password->setEchoMode(QLineEdit::Password);
 	m_layout_text_network->addWidget(m_text_proxy_password);
+
+	m_check_use_proxy_webkit = new QCheckBox(this);
+	m_check_use_proxy_webkit->setText(QString::fromUtf8("использовать прокси при просмотре сообщений"));
+	m_layout_text_network->addWidget(m_check_use_proxy_webkit);
 
 	//
 	// кнопки (сеть)
