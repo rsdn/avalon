@@ -43,7 +43,7 @@ class FormSettingsUI : public QDialog
 		                  QLabel* m_label_proxy_port;             /*!< \brief Порт прокси-сервера                  */
 		                  QLabel* m_label_proxy_login;            /*!< \brief Пользователь прокси-сервера          */
 		                  QLabel* m_label_proxy_password;         /*!< \brief Пароль прокси-сервера                */
-				  QLabel* m_label_use_proxy_webkit;       /*!< \brief Флаг использования прокси для webkit */
+		                  QLabel* m_label_use_proxy_webkit;       /*!< \brief Флаг использования прокси для webkit */
 		               QVBoxLayout* m_layout_text_network;        /*!< \brief Layout для текстовых полей           */
 		                  QLineEdit* m_text_rsdn_host;            /*!< \brief Хост RSDN                            */
 		                  QLineEdit* m_text_rsdn_port;            /*!< \brief Порт RSDN                            */
@@ -55,7 +55,7 @@ class FormSettingsUI : public QDialog
 		                  QLineEdit* m_text_proxy_port;           /*!< \brief Порт прокси-сервера                  */
 		                  QLineEdit* m_text_proxy_login;          /*!< \brief Пользователь прокси-сервера          */
 		                  QLineEdit* m_text_proxy_password;       /*!< \brief Пароль прокси-сервера                */
-				  QCheckBox* m_check_use_proxy_webkit;    /*!< \brief Флаг использования прокси для webkit */
+		                  QCheckBox* m_check_use_proxy_webkit;    /*!< \brief Флаг использования прокси для webkit */
 		               QVBoxLayout* m_layout_button_network;      /*!< \brief Layout для кнопок                    */
 		                  QPushButton* m_button_ok_network;       /*!< \brief OK                                   */
 		                  QPushButton* m_button_cancel_network;   /*!< \brief Отмена                               */
