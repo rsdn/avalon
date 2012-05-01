@@ -679,11 +679,12 @@ void AFormMain::menu_q_about_triggered ()
 		"<b>домашняя страница</b>: <a href='https://github.com/rsdn/avalon'>https://github.com/rsdn/avalon</a><br/><br/>"
 		"<b>разработчики</b>:"
 		"<ul>"
-		"<li><a href='http://opensvn.ru/user/antonbatenev.ya.ru'>Anton Batenev</a></li>"
-		"<li><a href='http://opensvn.ru/user/dmitriid.livejournal.com'>Dmitrii 'Mamut' Dimandt</a></li>"
-		"<li><a href='http://opensvn.ru/user/j-sheridan.livejournal.com'>Горлов Максим</a></li>"
-		"<li><a href='http://opensvn.ru/user/stddenis.ya.ru'>std.denis</a></li>"
-		"<li><a href='http://opensvn.ru/user/ua-coder.blogspot.com'>Anatoliy</a></li>"
+		"<li><a href='https://github.com/abbat'>Anton Batenev</a></li>"
+		"<li><a href='https://github.com/dmitriid'>Dmitrii 'Mamut' Dimandt</a></li>"
+		"<li><a href='https://github.com/Sheridan'>Горлов Максим</a></li>"
+		"<li><a href='http://stanishevskiy.moikrug.ru/'>std.denis</a></li>"
+		"<li><a href='http://ua-coder.blogspot.com/'>Anatoliy</a></li>"
+		"<li><a href='https://github.com/astavonin'>Alexander Stavonin</a></li>"
 		"</ul>"
 	);
 
