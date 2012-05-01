@@ -28,7 +28,6 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	setWindowIcon(icon);
 
 	resize(549, 366);
-	setFixedSize(width(), height());
 
 	//
 	// таб
