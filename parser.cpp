@@ -479,7 +479,7 @@ QString AParser::formatMessage (const AMessageInfo& message, bool special, bool 
 		// игнорируем простые тэги
 		AStrongTag* found_tag = NULL;
 
-		for (size_t i = 0; i < sizeof(g_strong_tags) / sizeof(QString); i++)
+        for (size_t i = 0; i < sizeof(g_strong_tags) / sizeof(AStrongTag); i++)
 			if (tag == g_strong_tags[i].OpenTag)
 			{
 				found_tag = &g_strong_tags[i];
