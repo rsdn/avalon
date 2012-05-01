@@ -7,9 +7,6 @@
 # $URL: svn://opensvn.ru/avalon/trunk/dev/build.sh $
 ###
 
-# путь до Qt4.4 без слеша в конце
-QT_PATH="/usr/lib/qt4"
-
 # имя проекта
 PROJECT_NAME="avalon"
 
@@ -27,10 +24,10 @@ rm -f version.tmp
 make clean
 
 # создание pro-файла
-${QT_PATH}/bin/qmake -project -recursive -Wall -o ${PROJECT_NAME}.pro "CONFIG += debug_and_release" "QT += network sql webkit" "LIBS += -laspell"
+qmake -project -recursive -Wall -o ${PROJECT_NAME}.pro "CONFIG += debug_and_release" "QT += network sql webkit" "LIBS += -laspell -lz"
 
 # создание make-файлов
-${QT_PATH}/bin/qmake ${PROJECT_NAME}.pro
+qmake ${PROJECT_NAME}.pro
 
 # создание бинарника
 make $1
