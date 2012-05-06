@@ -26,6 +26,9 @@ FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent)
 
 	connect(m_button_database_file, SIGNAL(clicked()), this, SLOT(button_database_file_clicked()));
 
+    connect(m_button_database_create, SIGNAL(clicked()), this, SLOT(button_database_create_clicked()));
+
+    connect(m_text_database_file, SIGNAL(textChanged(const QString&)), this, SLOT(text_changed_slot(const QString&)));
 	restore();
 }
 //----------------------------------------------------------------------------------------------
@@ -49,6 +52,19 @@ void FormSettings::button_database_file_clicked ()
 
 	if (dialog.exec() == QDialog::Accepted)
 		m_text_database_file->setText(dialog.selectedFiles()[0]);
+}
+//----------------------------------------------------------------------------------------------
+
+void FormSettings::button_database_create_clicked ()
+{
+    QProcess p;
+    QString pathToSql = QDir::currentPath();
+    pathToSql.append("../Resourse/avalon.sqlite.sql");
+    QString pathToDb = m_text_database_file->text();
+    QString cmd = "sqlite3 -init " + pathToSql + " " + pathToDb + " .quit";
+    qDebug() << cmd;
+    p.start(cmd);
+    p.waitForFinished(-1);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -82,6 +98,14 @@ void FormSettings::combo_database_type_current_index_changed (const QString& tex
 	m_text_database_password->setEnabled(e);
 	m_text_database_file->setEnabled(!e);
 	m_button_database_file->setEnabled(!e);
+    bool canCreateDB = !e;
+    if(canCreateDB)
+    {
+        QFileInfo fi(m_text_database_file->text());
+        if(fi.exists())
+            canCreateDB = false;
+    }
+    m_button_database_create->setEnabled(canCreateDB);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -139,6 +163,13 @@ void FormSettings::save ()
 #endif
 }
 //----------------------------------------------------------------------------------------------
+
+void FormSettings::text_changed_slot(const QString &path)
+{
+    QFileInfo fi(m_text_database_file->text());
+    qDebug() << fi.exists();
+    m_button_database_create->setEnabled(!fi.exists());
+}
 
 void FormSettings::restore ()
 {

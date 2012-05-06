@@ -264,8 +264,12 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_button_database_file->setIcon(QIcon(":/icons/open16.png"));
 	m_button_database_file->setMaximumSize(m_text_database_file->height(), m_text_database_file->height());
 	m_layout_database_file->addWidget(m_button_database_file);
-
 	m_layout_text_storage->addLayout(m_layout_database_file);
+
+    m_button_database_create = new QPushButton(this);
+    m_button_database_create->setText(QString::fromUtf8("Создать"));
+    m_layout_database_file->addWidget(m_button_database_create);
+//	m_layout_text_storage->addLayout(m_layout_database_file);
 
 	//
 	// кнопки (хранилище)
