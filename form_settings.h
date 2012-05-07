@@ -36,6 +36,9 @@ class FormSettings : public FormSettingsUI
 		 * \brief Восстановление настроек
 		 */
 		void restore ();
+        bool can_create_sqlitedb( const QString &path);
+    private:
+        bool m_sqlite3Exists;
 
 	private slots:
 

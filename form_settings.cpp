@@ -9,9 +9,12 @@
 #include "colorer.h"
 //----------------------------------------------------------------------------------------------
 
-FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent)
+FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent), m_sqlite3Exists(false)
 {
-	connect(m_button_cancel_network, SIGNAL(clicked()), this, SLOT(reject()));
+    QProcess p;
+    m_sqlite3Exists = p.execute("sqlite3 --version") != -2;
+
+    connect(m_button_cancel_network, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(m_button_ok_network,     SIGNAL(clicked()), this, SLOT(button_ok_clicked()));
 
 	connect(m_button_cancel_storage, SIGNAL(clicked()), this, SLOT(reject()));
@@ -57,14 +60,20 @@ void FormSettings::button_database_file_clicked ()
 
 void FormSettings::button_database_create_clicked ()
 {
+    m_button_database_create->setEnabled(false);
     QProcess p;
     QString pathToSql = QDir::currentPath();
-    pathToSql.append("../Resourse/avalon.sqlite.sql");
+#ifdef __APPLE__
+    pathToSql.append("/..");
+#endif
+    pathToSql.append("/dev/avalon.sqlite.sql");
     QString pathToDb = m_text_database_file->text();
     QString cmd = "sqlite3 -init " + pathToSql + " " + pathToDb + " .quit";
     qDebug() << cmd;
     p.start(cmd);
     p.waitForFinished(-1);
+
+    m_button_database_create->setEnabled(can_create_sqlitedb(m_text_database_file->text()));
 }
 //----------------------------------------------------------------------------------------------
 
@@ -84,6 +93,12 @@ void FormSettings::check_use_proxy_state_changed (int state)
 }
 //----------------------------------------------------------------------------------------------
 
+bool FormSettings::can_create_sqlitedb( const QString &path)
+{
+    QFileInfo fi(path);
+    return !fi.exists() && m_sqlite3Exists;
+}
+
 void FormSettings::combo_database_type_current_index_changed (const QString& text)
 {
 	bool e = false;
@@ -100,11 +115,7 @@ void FormSettings::combo_database_type_current_index_changed (const QString& tex
 	m_button_database_file->setEnabled(!e);
     bool canCreateDB = !e;
     if(canCreateDB)
-    {
-        QFileInfo fi(m_text_database_file->text());
-        if(fi.exists())
-            canCreateDB = false;
-    }
+        canCreateDB = can_create_sqlitedb(m_text_database_file->text());
     m_button_database_create->setEnabled(canCreateDB);
 }
 //----------------------------------------------------------------------------------------------
@@ -166,9 +177,7 @@ void FormSettings::save ()
 
 void FormSettings::text_changed_slot(const QString &path)
 {
-    QFileInfo fi(m_text_database_file->text());
-    qDebug() << fi.exists();
-    m_button_database_create->setEnabled(!fi.exists());
+    m_button_database_create->setEnabled(can_create_sqlitedb(m_text_database_file->text()));
 }
 
 void FormSettings::restore ()
