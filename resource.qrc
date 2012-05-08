@@ -129,7 +129,4 @@
         <file>translations/qt_ru_RU.qm</file>
         <file>icons/Main-Logo.icns</file>
     </qresource>
-    <qresource prefix="/Resources">
-        <file>dev/avalon.sqlite.sql</file>
-    </qresource>
 </RCC>

@@ -61,15 +61,20 @@ void FormSettings::button_database_file_clicked ()
 void FormSettings::button_database_create_clicked ()
 {
     m_button_database_create->setEnabled(false);
+
+    QString pathToDb = m_text_database_file->text();
+    QFileInfo path(pathToDb);
+    QDir dbDir = path.dir();
+    qDebug() << dbDir.absolutePath();
+    dbDir.mkpath(dbDir.absolutePath());
+
     QProcess p;
     QString pathToSql = QDir::currentPath();
 #ifdef __APPLE__
     pathToSql.append("/..");
 #endif
     pathToSql.append("/dev/avalon.sqlite.sql");
-    QString pathToDb = m_text_database_file->text();
     QString cmd = "sqlite3 -init " + pathToSql + " " + pathToDb + " .quit";
-    qDebug() << cmd;
     p.start(cmd);
     p.waitForFinished(-1);
 
