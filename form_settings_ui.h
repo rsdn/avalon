@@ -79,10 +79,11 @@ class FormSettingsUI : public QDialog
 		                  QLineEdit* m_text_database_name;        /*!< \brief Имя базы                             */
 		                  QLineEdit* m_text_database_login;       /*!< \brief Логин БД                             */
 		                  QLineEdit* m_text_database_password;    /*!< \brief Пароль БД                            */
-	                          QHBoxLayout* m_layout_database_file;    /*!< \brief Layout для поля выбора файла         */
+                             QHBoxLayout* m_layout_database_file;    /*!< \brief Layout для поля выбора файла         */
 		                     QLineEdit*   m_text_database_file;   /*!< \brief Файл базы (для файловых БД)          */
 		                     QPushButton* m_button_database_file; /*!< \brief Кнопка выбора файла базы             */
-		               QVBoxLayout* m_layout_button_storage;      /*!< \brief Layout для кнопок                    */
+                             QPushButton* m_button_database_create; /*!< \brief Кнопка создания файла базы             */
+                       QVBoxLayout* m_layout_button_storage;      /*!< \brief Layout для кнопок                    */
 		                  QPushButton* m_button_ok_storage;       /*!< \brief OK                                   */
 		                  QPushButton* m_button_cancel_storage;   /*!< \brief Отмена                               */
 		                  QSpacerItem* m_spacer_button_storage;   /*!< \brief Выравнивание кнопок вверх            */
