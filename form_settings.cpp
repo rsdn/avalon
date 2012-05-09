@@ -75,8 +75,11 @@ void FormSettings::button_database_create_clicked ()
 #endif
     pathToSql.append("/dev/avalon.sqlite.sql");
     QString cmd = "sqlite3 -init " + pathToSql + " " + pathToDb + " .quit";
+    qDebug() << "Creating database with command" << cmd;
     p.start(cmd);
     p.waitForFinished(-1);
+    qDebug() << "sqlite3 exit code" << p.exitCode() << "stdout" << p.readAllStandardOutput()
+             << "stderr" << p.readAllStandardError();
 
     m_button_database_create->setEnabled(can_create_sqlitedb(m_text_database_file->text()));
 }
