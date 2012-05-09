@@ -24,6 +24,11 @@ int main (int argc, char* argv[])
 
 	QApplication app(argc, argv);
 
+#ifndef Q_WS_MAC
+	// отображать иконки в меню для всех, кроме MacOS
+	app.setAttribute(Qt::AA_DontShowIconsInMenus, false);
+#endif
+
 	// установка разделов для хранения конфигурации приложения
 	QCoreApplication::setOrganizationName("www.rsdn.ru");
 	QCoreApplication::setApplicationName("avalon");
