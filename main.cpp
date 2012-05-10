@@ -10,31 +10,10 @@
 
 #include "form_main.h"
 #include "global.h"
+#include "logger.h"
+#include <memory>
 
-void customMessageHandler(QtMsgType type, const char *msg)
-{
-    QString txt;
-    switch (type) {
-    case QtDebugMsg:
-        txt = QString("Debug: %1").arg(msg);
-        break;
-
-    case QtWarningMsg:
-        txt = QString("Warning: %1").arg(msg);
-    break;
-    case QtCriticalMsg:
-        txt = QString("Critical: %1").arg(msg);
-    break;
-    case QtFatalMsg:
-        txt = QString("Fatal: %1").arg(msg);
-        abort();
-    }
-
-    QFile outFile("debuglog.txt");
-    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream ts(&outFile);
-    ts << txt << endl;
-}
+static Logger g_logger;
 
 /*!
  * (no comments)
@@ -49,7 +28,10 @@ int main (int argc, char* argv[])
 
 	QApplication app(argc, argv);
 
-    qInstallMsgHandler(customMessageHandler);
+    qInstallMsgHandler([&](QtMsgType type, const char *msg) {
+            g_logger.logMessage(type, msg);
+        });
+//    qInstallMsgHandler(customMessageHandler);
 
 #ifndef Q_WS_MAC
 	// отображать иконки в меню для всех, кроме MacOS
