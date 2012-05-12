@@ -15,6 +15,11 @@
 
 static Logger g_logger;
 
+static void log_helper(QtMsgType type, const char *msg)
+{
+    g_logger.logMessage(type, msg);
+}
+
 /*!
  * (no comments)
  * \param argc (no comments)
@@ -28,10 +33,7 @@ int main (int argc, char* argv[])
 
 	QApplication app(argc, argv);
 
-    qInstallMsgHandler([&](QtMsgType type, const char *msg) {
-            g_logger.logMessage(type, msg);
-        });
-//    qInstallMsgHandler(customMessageHandler);
+    qInstallMsgHandler(log_helper);
 
 #ifndef Q_WS_MAC
 	// отображать иконки в меню для всех, кроме MacOS
