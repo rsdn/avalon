@@ -10,7 +10,9 @@
   TARGET = avalon
   DEPENDPATH += . model storage
   INCLUDEPATH += . model storage
+macx {
   QMAKE_CXX = clang
+}
 
   # Input
   HEADERS += colorer.h \
