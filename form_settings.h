@@ -64,6 +64,7 @@ class FormSettings : public FormSettingsUI
 		 * \brief Смена типа БД
 		 */
 		void combo_database_type_current_index_changed (const QString& text);
+        void combo_logging_level_current_index_changed(const QString& text);
 };
 
 #endif   // _avalon_form_settings_h_
