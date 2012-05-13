@@ -1,15 +1,23 @@
 #include "logger.h"
+#include <QDebug>
 
-Logger::Logger() : m_debugLevel(QtWarningMsg)
+Logger::Logger() : m_debugLevel(QtCriticalMsg)
 {
-    m_logfileName = QDir::tempPath() + "/avalon_" +
+#ifndef __APPLE__
+    m_logfileName = QDir::tempPath();
+#else
+    m_logfileName = QDir::homePath () + "/Library/Logs/Avalon";
+    QDir logDir(m_logfileName);
+    qDebug() << logDir.absolutePath();
+    logDir.mkpath(logDir.absolutePath());
+#endif
+    m_logfileName += "/avalon_" +
             QDateTime::currentDateTime().toString(Qt::ISODate) + ".log";
 }
 
 void Logger::setDebugLevel(QtMsgType level)
 {
     m_debugLevel = level;
-    logMessage(QtSystemMsg, QString("Setting up new logging level: %1").arg(level).toStdString().c_str());
 }
 
 void Logger::logMessage(QtMsgType type, const char *msg)
@@ -35,7 +43,7 @@ void Logger::logMessage(QtMsgType type, const char *msg)
     }
 
     QFile outFile(m_logfileName);
-    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    bool res = outFile.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream ts(&outFile);
     ts << txt << endl;
 }

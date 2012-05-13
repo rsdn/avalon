@@ -13,11 +13,18 @@
 #include "logger.h"
 #include <memory>
 
-static Logger g_logger;
+Logger g_logger;
 
 static void log_helper(QtMsgType type, const char *msg)
 {
     g_logger.logMessage(type, msg);
+}
+
+void init_logging()
+{
+    QSettings settings;
+    int loggingLevel = settings.value("other/logging_level", 2).toInt();
+    g_logger.setDebugLevel((QtMsgType)loggingLevel);
 }
 
 /*!
@@ -68,5 +75,7 @@ int main (int argc, char* argv[])
 
 	app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
 
-	return app.exec();
+    init_logging();
+
+    return app.exec();
 }
