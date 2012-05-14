@@ -67,6 +67,7 @@
 #include <QTemporaryFile>
 #include <QCalendarWidget>
 #include <QDesktopServices>
+#include <QThread>
 
 //
 // системные заголовочные файлы

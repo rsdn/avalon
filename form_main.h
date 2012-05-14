@@ -8,6 +8,7 @@
 
 #include "form_main_ui.h"
 #include "interfaces.h"
+#include "communication_manager.h"
 
 /*!
  * \brief Класс главной формы приложения
@@ -77,8 +78,9 @@ class AFormMain :
 		// Меню "Сервис"
 		//
 
-		void menu_service_synchronize_triggered            (); /*!< \brief Сервис / Синхронизировать */
-		void menu_service_download_triggered               (); /*!< \brief Сервис / Загрузить сообщение / ветку */
+        void menu_service_synchronize_triggered            (); /*!< \brief Сервис / Синхронизировать */
+        void menu_service_synchronize_triggered_old        (); /*!< \brief Сервис / Синхронизировать */
+        void menu_service_download_triggered               (); /*!< \brief Сервис / Загрузить сообщение / ветку */
 		void menu_service_new_message_triggered            (); /*!< \brief Сервис / Новое сообщение */
 		void menu_service_reply_triggered                  (); /*!< \brief Сервис / Ответить */
 		void menu_service_mark_all_as_read_triggered       (); /*!< \brief Сервис / Пометить все как прочитанные */
@@ -116,12 +118,19 @@ class AFormMain :
 		 */
 		void timer_on_timer ();
 
+        void on_sync_done(int withState);
+
 	// IFormMain
 	private:
 
 		void showStatus (const QString& value);
 
 		void setEnabledAction (AvalonActions actions, bool enabled);
+
+        CommunicationManager m_commManager;
+
+        QList<int> m_restorePath;
+
 };
 
 #endif   // _avalon_form_main_h_

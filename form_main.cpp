@@ -13,6 +13,7 @@
 #include "form_settings.h"
 #include "form_subscribe.h"
 #include "storage/storage_factory.h"
+
 //----------------------------------------------------------------------------------------------
 
 AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
@@ -115,11 +116,16 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 
 	// текст статуса по умолчанию
 	setDefaultStatus();
+
+    connect(&m_commManager, SIGNAL(syncDone(int)), this, SLOT(on_sync_done(int)));
+    m_commManager.start();
+
 }
 //----------------------------------------------------------------------------------------------
 
 AFormMain::~AFormMain ()
 {
+    m_commManager.stop();
 }
 //----------------------------------------------------------------------------------------------
 
@@ -135,7 +141,15 @@ void AFormMain::menu_view_source_triggered ()
 }
 //----------------------------------------------------------------------------------------------
 
-void AFormMain::menu_service_synchronize_triggered ()
+void AFormMain::menu_service_synchronize_triggered()
+{
+    // сохранение текущего выделения в дереве сообщений
+    m_message_tree->getSelectedPath(m_restorePath);
+
+    m_commManager.startSync();
+}
+
+void AFormMain::menu_service_synchronize_triggered_old ()
 {
 	// сохранение текущего выделения в дереве сообщений
 	QList<int> restore_path;
@@ -1117,3 +1131,8 @@ void AFormMain::checkUpdate ()
 	QMessageBox::warning(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("В манифесте обновлений отсутствует информация для вашей конфигурации!"));
 }
 //----------------------------------------------------------------------------------------------
+
+void AFormMain::on_sync_done(int withState)
+{
+    m_message_tree->selectByPath(&m_restorePath);
+}

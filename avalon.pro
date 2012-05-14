@@ -10,10 +10,7 @@
   TARGET = avalon
   DEPENDPATH += . model storage
   INCLUDEPATH += . model storage
-macx {
-  QMAKE_CXX = clang
-}
-
+  
   # Input
   HEADERS += colorer.h \
   form_date.h \
@@ -72,7 +69,7 @@ macx {
   storage/sqlite_database.h \
   storage/sqlite_storage.h \
   storage/storage_factory.h \
-    logger.h
+    communication_manager.h
   SOURCES += form_date.cpp \
   form_date_ui.cpp \
   form_input.cpp \
@@ -112,5 +109,5 @@ macx {
   storage/sqlite_database.cpp \
   storage/sqlite_storage.cpp \
   storage/storage_factory.cpp \
-    logger.cpp
+    communication_manager.cpp
   RESOURCES += resource.qrc
