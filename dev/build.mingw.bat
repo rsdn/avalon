@@ -15,7 +15,7 @@ SET PROJECT_NAME=avalon
 REM **************************
 REM * исполняемый файл qmake *
 REM **************************
-SET QT_QMAKE=C:\Qt\2010.04\qt\bin\qmake.exe
+SET QT_QMAKE=C:\Qt\Desktop\Qt\4.8.1\mingw\bin\qmake.exe
 
 REM **************************************************
 REM * путь к подключаемым файлам и библиотеке aspell *
