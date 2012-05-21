@@ -7,11 +7,15 @@
 #include "form_settings.h"
 //----------------------------------------------------------------------------------------------
 #include "colorer.h"
+#include "global.h"
 //----------------------------------------------------------------------------------------------
 
-FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent)
+FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent), m_sqlite3Exists(false)
 {
-	connect(m_button_cancel_network, SIGNAL(clicked()), this, SLOT(reject()));
+    QProcess p;
+    m_sqlite3Exists = p.execute("sqlite3 --version") != -2;
+
+    connect(m_button_cancel_network, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(m_button_ok_network,     SIGNAL(clicked()), this, SLOT(button_ok_clicked()));
 
 	connect(m_button_cancel_storage, SIGNAL(clicked()), this, SLOT(reject()));
@@ -20,13 +24,23 @@ FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent)
 	connect(m_button_cancel_ui, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(m_button_ok_ui,     SIGNAL(clicked()), this, SLOT(button_ok_clicked()));
 
+    connect(m_button_cancel_other, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(m_button_ok_other,     SIGNAL(clicked()), this, SLOT(button_ok_clicked()));
+
 	connect(m_check_use_proxy, SIGNAL(stateChanged(int)), this, SLOT(check_use_proxy_state_changed(int)));
 
 	connect(m_combo_database_type, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(combo_database_type_current_index_changed(const QString&)));
 
 	connect(m_button_database_file, SIGNAL(clicked()), this, SLOT(button_database_file_clicked()));
 
-	restore();
+    connect(m_button_database_create, SIGNAL(clicked()), this, SLOT(button_database_create_clicked()));
+
+    connect(m_text_database_file, SIGNAL(textChanged(const QString&)), this, SLOT(text_changed_slot(const QString&)));
+
+    connect(m_combo_logging_level, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(combo_logging_level_current_index_changed(const QString&)));
+
+
+   restore();
 }
 //----------------------------------------------------------------------------------------------
 
@@ -52,6 +66,40 @@ void FormSettings::button_database_file_clicked ()
 }
 //----------------------------------------------------------------------------------------------
 
+void FormSettings::button_database_create_clicked ()
+{
+    m_button_database_create->setEnabled(false);
+
+    QString pathToDb = m_text_database_file->text();
+    QFileInfo path(pathToDb);
+    QDir dbDir = path.dir();
+    qDebug() << dbDir.absolutePath();
+    dbDir.mkpath(dbDir.absolutePath());
+
+    QProcess p;
+    QString pathToSql = QDir::currentPath();
+#ifdef __APPLE__
+    pathToSql.append("/avalon.app/Contents");
+#endif
+    pathToSql.append("/dev/avalon.sqlite.sql");
+    QFileInfo sqlFileInfo(pathToSql);
+    if(!sqlFileInfo.isFile())
+    {
+        qWarning() << "Can not find script for creating database,"
+                   << pathToSql;
+        return;
+    }
+    QString cmd = "sqlite3 -init " + pathToSql + " " + pathToDb + " .quit";
+    qDebug() << "Creating database with command" << cmd;
+    p.start(cmd);
+    p.waitForFinished(-1);
+    qDebug() << "sqlite3 exit code" << p.exitCode() << "stdout" << p.readAllStandardOutput()
+             << "stderr" << p.readAllStandardError();
+
+    m_button_database_create->setEnabled(can_create_sqlitedb(m_text_database_file->text()));
+}
+//----------------------------------------------------------------------------------------------
+
 void FormSettings::check_use_proxy_state_changed (int state)
 {
 	bool e = false;
@@ -68,6 +116,12 @@ void FormSettings::check_use_proxy_state_changed (int state)
 }
 //----------------------------------------------------------------------------------------------
 
+bool FormSettings::can_create_sqlitedb( const QString &path)
+{
+    QFileInfo fi(path);
+    return !fi.exists() && m_sqlite3Exists;
+}
+
 void FormSettings::combo_database_type_current_index_changed (const QString& text)
 {
 	bool e = false;
@@ -82,6 +136,10 @@ void FormSettings::combo_database_type_current_index_changed (const QString& tex
 	m_text_database_password->setEnabled(e);
 	m_text_database_file->setEnabled(!e);
 	m_button_database_file->setEnabled(!e);
+    bool canCreateDB = !e;
+    if(canCreateDB)
+        canCreateDB = can_create_sqlitedb(m_text_database_file->text());
+    m_button_database_create->setEnabled(canCreateDB);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -137,8 +195,17 @@ void FormSettings::save ()
 #ifdef AVALON_USE_ASPELL
 	settings.setValue("ui/spellchecker", (m_check_spellchecker->checkState() == Qt::Checked ? 1 : 0));
 #endif
+
+    QtMsgType logLevel = (QtMsgType)m_combo_logging_level->currentIndex();
+    settings.setValue("other/logging_level", logLevel);
+    g_logger.setDebugLevel(logLevel);
 }
 //----------------------------------------------------------------------------------------------
+
+void FormSettings::text_changed_slot(const QString &path)
+{
+    m_button_database_create->setEnabled(can_create_sqlitedb(m_text_database_file->text()));
+}
 
 void FormSettings::restore ()
 {
@@ -248,6 +315,13 @@ void FormSettings::restore ()
 		m_check_spellchecker->setCheckState(Qt::Unchecked);
 #endif
 
+    int loggingLevel = settings.value("other/logging_level", 1).toInt();
+    m_combo_logging_level->setCurrentIndex(loggingLevel);
+
 	m_text_rsdn_host->setFocus();
 }
 //----------------------------------------------------------------------------------------------
+
+void FormSettings::combo_logging_level_current_index_changed(const QString& text)
+{
+}

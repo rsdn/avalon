@@ -79,10 +79,11 @@ class FormSettingsUI : public QDialog
 		                  QLineEdit* m_text_database_name;        /*!< \brief Имя базы                             */
 		                  QLineEdit* m_text_database_login;       /*!< \brief Логин БД                             */
 		                  QLineEdit* m_text_database_password;    /*!< \brief Пароль БД                            */
-	                          QHBoxLayout* m_layout_database_file;    /*!< \brief Layout для поля выбора файла         */
+                             QHBoxLayout* m_layout_database_file;    /*!< \brief Layout для поля выбора файла         */
 		                     QLineEdit*   m_text_database_file;   /*!< \brief Файл базы (для файловых БД)          */
 		                     QPushButton* m_button_database_file; /*!< \brief Кнопка выбора файла базы             */
-		               QVBoxLayout* m_layout_button_storage;      /*!< \brief Layout для кнопок                    */
+                             QPushButton* m_button_database_create; /*!< \brief Кнопка создания файла базы             */
+                       QVBoxLayout* m_layout_button_storage;      /*!< \brief Layout для кнопок                    */
 		                  QPushButton* m_button_ok_storage;       /*!< \brief OK                                   */
 		                  QPushButton* m_button_cancel_storage;   /*!< \brief Отмена                               */
 		                  QSpacerItem* m_spacer_button_storage;   /*!< \brief Выравнивание кнопок вверх            */
@@ -119,6 +120,21 @@ class FormSettingsUI : public QDialog
 		                  QPushButton* m_button_cancel_ui;        /*!< \brief Отмена                               */
 		                  QSpacerItem* m_spacer_button_ui;        /*!< \brief Выравнивание кнопок вверх            */
 		            QSpacerItem* m_ui_spacer;                     /*!< \brief Выравнивание всего вверх             */
+
+
+
+                    QWidget* m_other_settings;                        /*!< \brief Виджет таба для дополнительных настроек   */
+                       QVBoxLayout* m_layout_other_spacer;            /*!< \brief Layout для выравнивания по вертикали */
+                          QHBoxLayout* m_layout_other;                /*!< \brief Общий layout для настроек хранилища  */
+                             QVBoxLayout* m_layout_label_other;       /*!< \brief Layout для надписей                  */
+                                QLabel* m_label_logging_level;          /*!< \brief Уровень логирования                */
+                             QVBoxLayout* m_layout_text_other;        /*!< \brief Layout для текстовых полей           */
+                                QComboBox* m_combo_logging_level;       /*!< \brief Тип базы хранилища                 */
+                             QVBoxLayout* m_layout_button_other;      /*!< \brief Layout для кнопок                    */
+                                QPushButton* m_button_ok_other;       /*!< \brief OK                                   */
+                                QPushButton* m_button_cancel_other;   /*!< \brief Отмена                               */
+                                QSpacerItem* m_spacer_button_other;   /*!< \brief Выравнивание кнопок вверх            */
+                          QSpacerItem* m_other_spacer;                /*!< \brief Выравнивание всего вверх             */
 
 	private:
 
