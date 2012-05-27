@@ -31,7 +31,7 @@ QString getTagline ()
 
 	QString tagline = settings.value("ui/tagline", "%%version%%").toString();
 
-	tagline = tagline.replace("%%version%%", "[url=http://trac.opensvn.ru/avalon/wiki/screenshot]" + getVersionString() + "[/url]");
+	tagline = tagline.replace("%%version%%", "[url=https://github.com/rsdn/avalon/wiki]" + getVersionString() + "[/url]");
 
 	return tagline;
 }
