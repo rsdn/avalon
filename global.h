@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Заголовочный файл для глобальных настроек
- *
- * $Date: 2010-08-26 06:32:00 +0400 (Чтв, 26 Авг 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 359 $
- * $URL: svn://opensvn.ru/avalon/trunk/global.h $
  */
 
 #ifndef _avalon_global_h_
