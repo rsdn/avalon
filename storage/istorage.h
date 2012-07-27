@@ -48,14 +48,12 @@ class IAStorage : public ADatabaseError
 		/*!
 		 * \brief Получение информации о текущем пользователе.
 		 * \param info Информация о пользователе, перед вызовом должно быть заполнено поле Name (логин на RSDN).
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool whoAmI (AUserInfo& info) = 0;
 
 		/*!
 		 * \brief Получение версий строк (снимков).
 		 * \param list Версии строк.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getRowVersion (ARowVersion& list) = 0;
 
@@ -63,28 +61,24 @@ class IAStorage : public ADatabaseError
 		 * \brief Возвращает дерево форумов.
 		 * \param list Список групп/форумов.
 		 * \param subscribed_only true, для того, чтобы получить только дерево подписаных форумов, false - все форумы.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getForumList (AForumGroupInfoList& list, bool subscribed_only) = 0;
 
 		/*!
 		 * \brief Устанавливает (сохраняет) дерево форумов.
 		 * \param list Заполненый список описателей форумов.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool setForumList (const AForumGroupInfoList& list) = 0;
 
 		/*!
 		 * \brief Возвращает список описателей подписаных форумов.
 		 * \param list Список описателей.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getSubscribedForumList (ASubscribedForumInfoList& list) = 0;
 
 		/*!
 		 * \brief Устанавливает (сохраняет) список описателей подписаных форумов.
 		 * \param list Заполненый список описателей подписаных форумов.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool setSubscribedForumList (const ASubscribedForumInfoList& list) = 0;
 
@@ -92,7 +86,6 @@ class IAStorage : public ADatabaseError
 		 * \brief Получение описателя форума
 		 * \param id_forum ID форума
 		 * \param info Описатель форума
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getForumInfo (int id_forum, AForumInfo& info) = 0;
 
@@ -100,7 +93,6 @@ class IAStorage : public ADatabaseError
 		 * \brief Сохраняет список пользователей добавляя новых и обновляя информацию о существующих.
 		 * \param list Заполненый список описателей пользователей.
 		 * \param row_version Версия снимка.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool setUserList (const AUserInfoList& list, const QString& row_version) = 0;
 
@@ -108,7 +100,6 @@ class IAStorage : public ADatabaseError
 		 * \brief Возвращает максимальный id для списка сообщений
 		 * Функция полезна для работы с полной таблицей по диапазонам id
 		 * \param max_id - максимальный id для таблицы со списком сообщений
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getMaxIDMessage (int& max_id) = 0;
 
@@ -116,14 +107,12 @@ class IAStorage : public ADatabaseError
 		 * \brief Возвращает минимальный id для списка сообщений
 		 * Функция полезна для работы с полной таблицей по диапазонам id
 		 * \param min_id - минимальный id для таблицы со списком сообщений
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getMinIDMessage (int& min_id) = 0;
 
 		/*!
 		 * \brief Возвращает параметры для получения списка сообщений.
 		 * \param query Список форумов, поломанных веток и id сообщений для загрузки.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getMessageQuery (ADataQuery& query) = 0;
 
@@ -132,9 +121,8 @@ class IAStorage : public ADatabaseError
 		 * \param list Список сообщений, рейтингов, модерилок.
 		 * \param row_version Версия строки (снимка).
 		 * \param save_row_version true, для того, чтобы сохранить версии строк,
-		 * false, для того, чтобы игнорировать список	 строк и не считать сохраненные сообщения за новые,
+		 * false, для того, чтобы игнорировать список и не считать сохраненные сообщения за новые,
 		 * добавлен для реализации workaround при вытягивании всей базы RSDN (см. IAStorage::GetMessageIds).
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool setMessageList (const ADataList& list, const ARowVersion& row_version, bool save_row_version) = 0;
 
@@ -143,7 +131,6 @@ class IAStorage : public ADatabaseError
 		 * в т.ч. и для спец-группы "Локальные" (см. константы SPECIAL_ID_FORUM_xxx в model/forum.h).
 		 * \param list Список с количеством непрочитанных сообщений для id форумов.
 		 * \param id_me ID текущего пользователя avalon.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getUnreadCount (AUnreadForumCountInfoList& list, int id_me) = 0;
 
@@ -152,7 +139,6 @@ class IAStorage : public ADatabaseError
 		 * \param id_forum ID форума.
 		 * \param count Количество топиков (0 - все).
 		 * \param list Список id родительских сообщений (топиков).
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getForumTopicList (int id_forum, int count, QList<int>& list) = 0;
 
@@ -176,7 +162,6 @@ class IAStorage : public ADatabaseError
 		 * что положительно влияет на скорость)
 		 * \param list Список топиков (с установленным полем ID, по которому будет производиться дальнейшее заполнение информацией).
 		 * \param id_me ID текущего пользователя avalon.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getTopicInfoList (int id_forum, AMessageInfoGUIPtrList& list, int id_me) = 0;
 
@@ -200,7 +185,6 @@ class IAStorage : public ADatabaseError
 		 * \param factory Фабрика для создания элементов (каждый элемент списка создается вызовом IMessageInfoGUIFactory::createItem),
 		 * поля (кроме Item) предполагаются заполненными значениями полей по умолчанию (см. AMessageInfoGUI::AMessageInfoGUI)
 		 * и не меняются без необходимости.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getTopicMessageList (int id_forum, int id_topic, AMessageInfoGUIPtrList& list, IMessageInfoGUIFactory* factory) = 0;
 
@@ -208,7 +192,6 @@ class IAStorage : public ADatabaseError
 		 * \brief Возвращает тело сообщения.
 		 * \param id_message ID сообщения.
 		 * \param body Тело сообщения.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getMessageBody (int id_message, QString& body) = 0;
 
@@ -221,7 +204,6 @@ class IAStorage : public ADatabaseError
 		 * \param type Тип сущностей.
 		 * \param read Флаг прочитано (true) или нет (false).
 		 * \param date До даты / После даты или все, если дата не валидна.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool setIDsAsRead (const QList<int>& list, AIDSet type, bool read, QDateTime date) = 0;
 
@@ -230,14 +212,12 @@ class IAStorage : public ADatabaseError
 		 * \param list Список ID форумов, групп.
 		 * \param type  {idsForum | idsGroup}.
 		 * \param clean true - очистить базу от "лишних" сообщений, false не удалять сообщения.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool unsubscribe (const QList<int>& list, AIDSet type, bool clean) = 0;
 
 		/*!
 		 * \brief Добавление сообщения в очередь на отправку.
 		 * \param info Описатель сообщения на отправку.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool addMessage2Send (const AMessage2Send& info) = 0;
 
@@ -245,14 +225,12 @@ class IAStorage : public ADatabaseError
 		 * \brief Возвращает список всех сообщений к отправке.
 		 * \param list Список сообщений к отправке.
 		 * \param drafts Флаг выбора черновиков.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getMessage2SendList (AMessageInfoList& list, bool drafts) = 0;
 
 		/*!
 		 * \brief Добавление рейтинга в очередь на отправку.
 		 * \param info Описатель рейтинга на отправку.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool addRating2Send (const ARating2Send& info) = 0;
 
@@ -261,14 +239,12 @@ class IAStorage : public ADatabaseError
 		 * Индексы в списках сообщений и рейтингов соответствуют.
 		 * \param message_list Список оцененых сообщений.
 		 * \param rating_list Список оценок.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getRating2SendList (AMessageInfoList& message_list, ARating2SendList& rating_list) = 0;
 
 		/*!
 		 * \brief Возвращает список всех рейтингов к отправке.
 		 * \param list Список рейтингов.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getRating2SendList (ARating2SendList& list) = 0;
 
@@ -276,14 +252,12 @@ class IAStorage : public ADatabaseError
 		 * \brief Смена оценки
 		 * \param id ID оценки (локальный)
 		 * \param new_rate Новая оценка
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool changeRating (int id, int new_rate) = 0;
 
 		/*!
 		 * \brief Добавление модерилки в очередь на отправку.
 		 * \param info Описатель модерилки.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool addModerate2Send (const AModerate2Send& info) = 0;
 
@@ -292,14 +266,12 @@ class IAStorage : public ADatabaseError
 		 * Индексы в списках сообщений и рейтингов соответствуют.
 		 * \param message_list Список оцененых сообщений.
 		 * \param moderate_list Список модерилок.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getModerate2SendList (AMessageInfoList& message_list, AModerate2SendList& moderate_list) = 0;
 
 		/*!
 		 * \brief Возвращает список всех модерилок к отправке.
 		 * \param list Список описателей модерилок.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getModerate2SendList (AModerate2SendList& list) = 0;
 
@@ -307,14 +279,12 @@ class IAStorage : public ADatabaseError
 		 * \brief Возвращает описатель модерилки к отправке
 		 * \param id Локальный ID модерилки
 		 * \param info Описатель модерилки
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getModerate2SendInfo (int id, AModerate2Send& info) = 0;
 
 		/*!
 		 * \brief Коммит результата отправки.
 		 * \param info Описатель с информацией о коммите.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool setCommitResult (const ACommitInfo& info) = 0;
 
@@ -322,7 +292,6 @@ class IAStorage : public ADatabaseError
 		 * \brief Удаление элементов из спец-папок.
 		 * \param ids Список id элементов.
 		 * \param id_special ID специального форума (см. константы SPECIAL_ID_FORUM_ххх в model/forum.h).
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool deleteSpecial (const QList<int>& ids, int id_special) = 0;
 
@@ -335,7 +304,6 @@ class IAStorage : public ADatabaseError
 		 * \param from_id Начальный ID сообщения.
 		 * \param to_id Конечный ID сообщения.
 		 * \param list Список существующих id сообщений в заданном интервале.
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getMessageIds (int from_id, int to_id, QList<int>& list) = 0;
 
@@ -344,7 +312,6 @@ class IAStorage : public ADatabaseError
 		 * Дополнительно см. примечания к ARatingInfo
 		 * \param id_message ID сообщения
 		 * \param list Список рейтингов
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getMessageRatingList (int id_message, AMessageRatingList& list) = 0;
 
@@ -366,7 +333,6 @@ class IAStorage : public ADatabaseError
 		 * \param id_forum ID форума, в котором находится сообщение
 		 * \param path Список, который заполняется ID сообщений от корня (корневой ID в начале списка).
 		 * В случае, если сообщение не найдено, id_forum = 0 и список будет пуст
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getMessagePath (int id_message, int& id_forum, QList<int>& path) = 0;
 
@@ -374,14 +340,12 @@ class IAStorage : public ADatabaseError
 		 * \brief Добавление сообщений на дозагрузку
 		 * \param id_message ID сообщения
 		 * \param is_topic Является ли сообщение топиком
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool addBroken (int id_message, bool is_topic) = 0;
 
 		/*!
 		 * \brief Проверка наличия поломанных веток
 		 * \param result true, если есть поломанные ветки / сообщения
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool hasBroken (bool& result) = 0;
 
@@ -390,7 +354,6 @@ class IAStorage : public ADatabaseError
 		 * \param id_me ID текущего пользователя avalon
 		 * \param count Количество сообщений
 		 * \param list Список ID сообщений
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getMyMessageList (int id_me, int count, QList<int>& list) = 0;
 
@@ -399,7 +362,6 @@ class IAStorage : public ADatabaseError
 		 * \param id_me ID текущего пользователя avalon
 		 * \param count Количество сообщений
 		 * \param list Список ID сообщений
-		 * \param progress Прогресс выполнения операции.
 		 */
 		virtual bool getAnswers2MeList (int id_me, int count, QList<int>& list) = 0;
 };
