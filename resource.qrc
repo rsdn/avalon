@@ -152,5 +152,7 @@
 
 		<file>icons/Main-Logo.icns</file>
 
+		<file>dev/avalon.sqlite.sql</file>
+
 	</qresource>
 </RCC>

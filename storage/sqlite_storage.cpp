@@ -1,9 +1,3 @@
-//----------------------------------------------------------------------------------------------
-// $Date: 2011-04-20 17:27:00 +0400 (Срд, 20 Апр 2011) $
-// $Author: antonbatenev.ya.ru $
-// $Revision: 419 $
-// $URL: svn://opensvn.ru/avalon/trunk/storage/sqlite_storage.cpp $
-//----------------------------------------------------------------------------------------------
 #include "sqlite_storage.h"
 //----------------------------------------------------------------------------------------------
 #include "../global.h"
@@ -50,6 +44,39 @@ bool ASQLiteStorage::ping ()
 		return false;
 
 	return query_select->exec();
+}
+//----------------------------------------------------------------------------------------------
+
+bool ASQLiteStorage::createDatabase ()
+{
+	QFile file(":dev/avalon.sqlite.sql");
+
+	if (file.open(QIODevice::ReadOnly) == false)
+		return returnError(QString::fromUtf8("Ошибка открытия ресурса"));
+
+	QString schema = QString::fromUtf8(file.readAll().data());
+
+	file.close();
+
+	QStringList statements = schema.split(';', QString::SkipEmptyParts);
+
+	for (int i = 0; i < statements.count(); i++)
+	{
+		QString sql = statements.at(i).trimmed();
+
+		if (sql.length() == 0)
+			continue;
+
+		std::auto_ptr<AQuery> query_create(createQuery(sql));
+
+		if (query_create.get() == NULL)
+			return returnError(ASQLiteDatabase::getLastError());
+
+		if (query_create->exec() == false)
+			return returnError(query_create->getLastError());
+	}
+
+	return returnSuccess();
 }
 //----------------------------------------------------------------------------------------------
 

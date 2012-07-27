@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Форма настроек программы
- *
- * $Date: 2010-08-26 05:43:49 +0400 (Чтв, 26 Авг 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 358 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_settings.h $
  */
 
 #ifndef _avalon_form_settings_h_
@@ -36,10 +31,6 @@ class FormSettings : public FormSettingsUI
 		 * \brief Восстановление настроек
 		 */
 		void restore ();
-		bool can_create_sqlitedb( const QString &path);
-
-	private:
-		bool m_sqlite3Exists;
 
 	private slots:
 
@@ -57,14 +48,16 @@ class FormSettings : public FormSettingsUI
 		 * \brief Выбор файла для файловых хранилищ
 		 */
 		void button_database_file_clicked ();
+
+		/*!
+		 * \brief Выбор файла для создания нового хранилища
+		 */
 		void button_database_create_clicked ();
-		void text_changed_slot(const QString &path);
 
 		/*!
 		 * \brief Смена типа БД
 		 */
 		void combo_database_type_current_index_changed (const QString& text);
-		void combo_logging_level_current_index_changed(const QString& text);
 };
 
 #endif   // _avalon_form_settings_h_

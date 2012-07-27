@@ -1,9 +1,3 @@
-//----------------------------------------------------------------------------------------------
-// $Date: 2010-12-04 20:27:36 +0300 (Сбт, 04 Дек 2010) $
-// $Author: antonbatenev.ya.ru $
-// $Revision: 372 $
-// $URL: svn://opensvn.ru/avalon/trunk/form_settings_ui.cpp $
-//----------------------------------------------------------------------------------------------
 #include "form_settings_ui.h"
 //----------------------------------------------------------------------------------------------
 #include "colorer.h"
@@ -264,13 +258,13 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_layout_database_file->addWidget(m_text_database_file);
 
 	m_button_database_file = new QPushButton(this);
-	m_button_database_file->setFlat(true);
 	m_button_database_file->setIcon(QIcon(":/icons/open16.png"));
 	m_button_database_file->setMaximumSize(m_text_database_file->height(), m_text_database_file->height());
 	m_layout_database_file->addWidget(m_button_database_file);
 
 	m_button_database_create = new QPushButton(this);
-	m_button_database_create->setText(QString::fromUtf8("Создать"));
+	m_button_database_create->setIcon(QIcon(":/icons/new16.png"));
+	m_button_database_create->setMaximumSize(m_text_database_file->height(), m_text_database_file->height());
 	m_layout_database_file->addWidget(m_button_database_create);
 
 	m_layout_text_storage->addLayout(m_layout_database_file);

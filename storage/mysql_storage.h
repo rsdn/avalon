@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Хранилище на базе MySQL
- *
- * $Date: 2011-04-07 11:52:43 +0400 (Чтв, 07 Апр 2011) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 415 $
- * $URL: svn://opensvn.ru/avalon/trunk/storage/mysql_storage.h $
  */
 
 #ifndef _avalon_mysql_storage_h_
@@ -45,6 +40,7 @@ class AMySQLStorage :
 	private:
 
 		bool ping                   ();
+		bool createDatabase         ();
 		bool whoAmI                 (AUserInfo& info);
 		bool getRowVersion          (ARowVersion& list);
 		bool getForumList           (AForumGroupInfoList& list, bool subscribed_only);

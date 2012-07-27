@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief GUI формы настроек программы
- *
- * $Date: 2010-08-26 05:43:49 +0400 (Чтв, 26 Авг 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 358 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_settings_ui.h $
  */
 
 #ifndef _avalon_form_settings_ui_h_

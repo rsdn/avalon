@@ -1,20 +1,12 @@
-//----------------------------------------------------------------------------------------------
-// $Date: 2010-08-26 05:43:49 +0400 (Чтв, 26 Авг 2010) $
-// $Author: antonbatenev.ya.ru $
-// $Revision: 358 $
-// $URL: svn://opensvn.ru/avalon/trunk/form_settings.cpp $
-//----------------------------------------------------------------------------------------------
 #include "form_settings.h"
 //----------------------------------------------------------------------------------------------
 #include "colorer.h"
 #include "global.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
-FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent), m_sqlite3Exists(false)
+FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent)
 {
-	QProcess p;
-	m_sqlite3Exists = p.execute("sqlite3 --version") != -2;
-
 	connect(m_button_cancel_network, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(m_button_ok_network,     SIGNAL(clicked()), this, SLOT(button_ok_clicked()));
 
@@ -34,10 +26,6 @@ FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent), m_sqlite
 	connect(m_button_database_file, SIGNAL(clicked()), this, SLOT(button_database_file_clicked()));
 
 	connect(m_button_database_create, SIGNAL(clicked()), this, SLOT(button_database_create_clicked()));
-
-	connect(m_text_database_file, SIGNAL(textChanged(const QString&)), this, SLOT(text_changed_slot(const QString&)));
-
-	connect(m_combo_logging_level, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(combo_logging_level_current_index_changed(const QString&)));
 
 	restore();
 }
@@ -67,34 +55,48 @@ void FormSettings::button_database_file_clicked ()
 
 void FormSettings::button_database_create_clicked ()
 {
-	m_button_database_create->setEnabled(false);
+	QSettings settings;
 
-	QString pathToDb = m_text_database_file->text();
-	QFileInfo path(pathToDb);
-	QDir dbDir = path.dir();
-	qDebug() << dbDir.absolutePath();
-	dbDir.mkpath(dbDir.absolutePath());
+	QString old_value = settings.value("sqlite/file", QDir::homePath() + "/avalon/avalon.db").toString();
 
-	QProcess p;
-	QString pathToSql = QDir::currentPath();
-#ifdef __APPLE__
-	pathToSql.append("/avalon.app/Contents");
-#endif
-	pathToSql.append("/dev/avalon.sqlite.sql");
-	QFileInfo sqlFileInfo(pathToSql);
-	if(!sqlFileInfo.isFile())
+	QString new_value = QFileDialog::getSaveFileName(this, QString::fromUtf8("Имя файла данных"), m_text_database_file->text());
+
+	if (new_value.length() > 0)
 	{
-		qWarning() << "Can not find script for creating database," << pathToSql;
-		return;
-	}
-	QString cmd = "sqlite3 -init " + pathToSql + " " + pathToDb + " .quit";
-	qDebug() << "Creating database with command" << cmd;
-	p.start(cmd);
-	p.waitForFinished(-1);
-	qDebug() << "sqlite3 exit code" << p.exitCode() << "stdout" << p.readAllStandardOutput()
-		<< "stderr" << p.readAllStandardError();
+		if (QFile::exists(new_value) == true)
+			if (QFile::resize(new_value, 0) == false)
+			{
+				QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Ошибка записи в файл"));
+				return;
+			}
 
-	m_button_database_create->setEnabled(can_create_sqlitedb(m_text_database_file->text()));
+		// хранилище будет получать настройки из файла настроек
+		settings.setValue("sqlite/file", new_value);
+
+		// получение хранилища
+		std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
+
+		if (storage.get() == NULL)
+		{
+			settings.setValue("sqlite/file", old_value);
+			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Не выбрано хранилище данных"));
+			return;
+		}
+
+		// создание базы
+		if (storage->createDatabase() == false)
+		{
+			settings.setValue("sqlite/file", old_value);
+			storage->showError(this);
+			return;
+		}
+
+		// в настройках пока сохранено старое значение на случай нажатия отмены
+		settings.setValue("sqlite/file", old_value);
+
+		// замена текста на имя файла вновь созданной базы
+		m_text_database_file->setText(new_value);
+	}
 }
 //----------------------------------------------------------------------------------------------
 
@@ -114,13 +116,6 @@ void FormSettings::check_use_proxy_state_changed (int state)
 }
 //----------------------------------------------------------------------------------------------
 
-bool FormSettings::can_create_sqlitedb (const QString &path)
-{
-	QFileInfo fi(path);
-	return !fi.exists() && m_sqlite3Exists;
-}
-//----------------------------------------------------------------------------------------------
-
 void FormSettings::combo_database_type_current_index_changed (const QString& text)
 {
 	bool e = false;
@@ -135,10 +130,7 @@ void FormSettings::combo_database_type_current_index_changed (const QString& tex
 	m_text_database_password->setEnabled(e);
 	m_text_database_file->setEnabled(!e);
 	m_button_database_file->setEnabled(!e);
-	bool canCreateDB = !e;
-	if(canCreateDB)
-		canCreateDB = can_create_sqlitedb(m_text_database_file->text());
-	m_button_database_create->setEnabled(canCreateDB);
+	m_button_database_create->setEnabled(!e);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -198,12 +190,6 @@ void FormSettings::save ()
 	QtMsgType logLevel = (QtMsgType)m_combo_logging_level->currentIndex();
 	settings.setValue("other/logging_level", logLevel);
 	g_logger.setDebugLevel(logLevel);
-}
-//----------------------------------------------------------------------------------------------
-
-void FormSettings::text_changed_slot (const QString &path)
-{
-	m_button_database_create->setEnabled(can_create_sqlitedb(m_text_database_file->text()));
 }
 //----------------------------------------------------------------------------------------------
 
@@ -319,10 +305,5 @@ void FormSettings::restore ()
 	m_combo_logging_level->setCurrentIndex(loggingLevel);
 
 	m_text_rsdn_host->setFocus();
-}
-//----------------------------------------------------------------------------------------------
-
-void FormSettings::combo_logging_level_current_index_changed (const QString& text)
-{
 }
 //----------------------------------------------------------------------------------------------

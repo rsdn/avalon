@@ -1,12 +1,5 @@
 #!/bin/sh
 
-###
-# $Date: 2010-12-22 13:06:11 +0300 (Срд, 22 Дек 2010) $
-# $Author: antonbatenev.ya.ru $
-# $Revision: 381 $
-# $URL: svn://opensvn.ru/avalon/trunk/dev/build.sh $
-###
-
 # имя проекта
 PROJECT_NAME="avalon"
 

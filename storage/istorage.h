@@ -41,6 +41,11 @@ class IAStorage : public ADatabaseError
 		virtual bool ping () = 0;
 
 		/*!
+		 * \brief Создание новой БД.
+		 */
+		virtual bool createDatabase () = 0;
+
+		/*!
 		 * \brief Получение информации о текущем пользователе.
 		 * \param info Информация о пользователе, перед вызовом должно быть заполнено поле Name (логин на RSDN).
 		 */
