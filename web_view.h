@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Cабклассинг QWebView, т.к. он криво масштабируется и установка дефолтного поведения
- *
- * $Date: 2011-04-07 11:26:34 +0400 (Чтв, 07 Апр 2011) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 410 $
- * $URL: svn://opensvn.ru/avalon/trunk/web_view.h $
  */
 
 #ifndef _avalon_web_view_h_

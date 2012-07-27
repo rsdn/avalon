@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief GUI формы создания или ответа на сообщение.
- *
- * $Date: 2010-12-04 18:38:49 +0300 (Сбт, 04 Дек 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 371 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_message_ui.h $
  */
 
 #ifndef _avalon_form_message_ui_h_

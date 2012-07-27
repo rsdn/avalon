@@ -1,12 +1,5 @@
 @ECHO OFF
 
-REM *********************************************************
-REM * $Date: 2010-02-28 20:40:21 +0300 #$
-REM * $Author: antonbatenev.ya.ru $
-REM * $Revision: 317 $
-REM * $URL: svn://svn.opensvn.ru/avalon/trunk/dev/build.bat $
-REM *********************************************************
-
 REM ***************
 REM * имя проекта *
 REM ***************

@@ -1,11 +1,4 @@
 ###
-# $Date: 2009-07-17 16:21:49 +0400 (Птн, 17 Июл 2009) $
-# $Author: antonbatenev.ya.ru $
-# $Revision: 271 $
-# $URL: svn://opensvn.ru/avalon/trunk/dev/avalon.mysql.sql $
-###
-
-###
 #
 # схема хранилища MySQL
 #

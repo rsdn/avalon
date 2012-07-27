@@ -3,11 +3,6 @@
 /*!
  * \file
  * \brief Быстрый тест выбоки списка топиков для форума с включенным кэшем и сортировкой
- *
- * $Date: 2009-04-06 05:58:55 +0400 (Пнд, 06 Апр 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 211 $
- * $URL: svn://opensvn.ru/avalon/test/mysql2sqlite/topic_list.php $
  */
 
 /*

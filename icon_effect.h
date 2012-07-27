@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Класс для работы эффектами иконок
- *
- * $Date: 2009-03-28 10:11:23 +0300 (Сбт, 28 Мар 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 193 $
- * $URL: svn://opensvn.ru/avalon/trunk/icon_effect.h $
  */
 
 #ifndef _avalon_icon_effect_h_

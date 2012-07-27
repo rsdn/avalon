@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Интерфейс для отображения прогресса
- *
- * $Date: 2011-04-07 11:11:49 +0400 (Чтв, 07 Апр 2011) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 406 $
- * $URL: svn://opensvn.ru/avalon/trunk/iprogress.h $
  */
 
 #ifndef _avalon_iprogress_h_

@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Виджет дерева сообщений
- *
- * $Date: 2010-11-03 17:31:56 +0300 (Срд, 03 Ноя 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 365 $
- * $URL: svn://opensvn.ru/avalon/trunk/message_tree.h $
  */
 
 #ifndef _avalon_message_tree_h_

@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Класс подсветки синтаксиса орфографии
- *
- * $Date: 2010-08-03 20:39:59 +0400 (Втр, 03 Авг 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 349 $
- * $URL: svn://opensvn.ru/avalon/trunk/spellchecker.h $
  */
 
 #ifndef _avalon_spellchecker_h_

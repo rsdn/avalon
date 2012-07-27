@@ -1,11 +1,4 @@
 /**
- * $Date: 2010-09-12 04:08:31 +0400 (Вск, 12 Сен 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 362 $
- * $URL: svn://opensvn.ru/avalon/trunk/dev/avalon.sqlite.sql $
- **/
-
-/**
  *
  * Схема хранилища SQLite
  *

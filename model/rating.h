@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Модели для работы с рейтингом
- *
- * $Date: 2009-03-30 19:53:38 +0400 (Пнд, 30 Мар 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 197 $
- * $URL: svn://opensvn.ru/avalon/trunk/model/rating.h $
  */
 
 #ifndef _avalon_rating_info_h_

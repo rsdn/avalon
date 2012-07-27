@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Интерфейс для работы с главной формой приложения
- *
- * $Date: 2009-04-26 06:05:44 +0400 (Вск, 26 Апр 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 233 $
- * $URL: svn://opensvn.ru/avalon/trunk/iform_main.h $
  */
 
 #ifndef _avalon_iform_main_h_

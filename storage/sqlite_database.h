@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Обертка для работы с SQLite
- *
- * $Date: 2011-04-20 17:27:00 +0400 (Срд, 20 Апр 2011) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 419 $
- * $URL: svn://opensvn.ru/avalon/trunk/storage/sqlite_database.h $
  */
 
 #ifndef _avalon_sqlite_database_h_

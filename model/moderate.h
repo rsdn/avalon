@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Модели для работы с модерилками
- *
- * $Date: 2009-04-04 22:03:27 +0400 (Сбт, 04 Апр 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 204 $
- * $URL: svn://opensvn.ru/avalon/trunk/model/moderate.h $
  */
 
 #ifndef _avalon_moderate_info_h_

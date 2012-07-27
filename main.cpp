@@ -1,11 +1,6 @@
 /*!
  * \file
  * Точка входа
- *
- * $Date: 2010-07-06 05:08:24 +0400 (Втр, 06 Июл 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 337 $
- * $URL: svn://opensvn.ru/avalon/trunk/main.cpp $
  */
 
 #include "form_main.h"

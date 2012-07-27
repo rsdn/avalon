@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Форма просмотра сообщения в raw
- *
- * $Date: 2009-03-22 04:07:17 +0300 (Вск, 22 Мар 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 172 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_source.h $
  */
 
 #ifndef _avalon_form_source_h_

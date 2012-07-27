@@ -1,9 +1,3 @@
-//----------------------------------------------------------------------------------------------
-// $Date: 2011-04-07 11:52:43 +0400 (Чтв, 07 Апр 2011) $
-// $Author: antonbatenev.ya.ru $
-// $Revision: 415 $
-// $URL: svn://opensvn.ru/avalon/trunk/message_view.cpp $
-//----------------------------------------------------------------------------------------------
 #include "parser.h"
 #include "message_view.h"
 #include "storage/storage_factory.h"

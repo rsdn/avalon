@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief GUI формы запроса ввода пользователя (аналог InputBox)
- *
- * $Date: 2009-04-27 05:21:25 +0400 (Пнд, 27 Апр 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 236 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_input_ui.h $
  */
 
 #ifndef _avalon_form_input_ui_h_

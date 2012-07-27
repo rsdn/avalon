@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief GUI главной формы приложения
- *
- * $Date: 2011-04-07 12:00:34 +0400 (Чтв, 07 Апр 2011) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 416 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_main_ui.h $
  */
 
 #ifndef _avalon_form_main_ui_h_

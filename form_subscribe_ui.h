@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief GUI формы подписки на форумы
- *
- * $Date: 2008-09-18 03:51:17 +0400 (Чтв, 18 Сен 2008) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 103 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_subscribe_ui.h $
  */
 
 #ifndef _avalon_form_subscribe_ui_h_

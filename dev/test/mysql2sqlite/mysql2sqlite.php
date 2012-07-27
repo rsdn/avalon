@@ -3,11 +3,6 @@
 /*!
  * \file
  * \brief Конвертация базы MySQL в базу SQLite
- *
- * $Date: 2010-07-30 15:27:33 +0400 (Птн, 30 Июл 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 347 $
- * $URL: svn://opensvn.ru/avalon/test/mysql2sqlite/mysql2sqlite.php $
  */
 
 //

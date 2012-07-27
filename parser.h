@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Парсер текста сообщения для отображения
- *
- * $Date: 2009-03-30 19:53:38 +0400 (Пнд, 30 Мар 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 197 $
- * $URL: svn://opensvn.ru/avalon/trunk/parser.h $
  */
 
 #ifndef _avalon_parser_parser_h_

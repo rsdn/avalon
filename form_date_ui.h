@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief GUI формы выбора даты/времени
- *
- * $Date: 2010-08-10 04:24:45 +0400 (Втр, 10 Авг 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 350 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_date_ui.h $
  */
 
 #ifndef _avalon_form_date_ui_h_

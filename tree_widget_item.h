@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Элемент (лист) древовидных виджетов
- *
- * $Date: 2008-11-16 00:09:58 +0300 (Вск, 16 Ноя 2008) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 130 $
- * $URL: svn://opensvn.ru/avalon/trunk/tree_widget_item.h $
  */
 
 #ifndef _avalon_tree_widget_item_h_

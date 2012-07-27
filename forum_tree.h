@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Виджет дерева форумов
- *
- * $Date: 2009-07-31 17:48:25 +0400 (Птн, 31 Июл 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 290 $
- * $URL: svn://opensvn.ru/avalon/trunk/forum_tree.h $
  */
 
 #ifndef _avalon_forum_tree_h_

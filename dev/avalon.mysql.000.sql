@@ -1,11 +1,4 @@
 ###
-# $Date: 2009-07-13 20:46:26 +0400 (Пнд, 13 Июл 2009) $
-# $Author: antonbatenev.ya.ru $
-# $Revision: 262 $
-# $URL: svn://opensvn.ru/avalon/trunk/dev/avalon.mysql.000.sql $
-###
-
-###
 #
 # патч для установки начального значения версии после создания пустой базы
 #

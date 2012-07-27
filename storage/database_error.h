@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Обертка для контроля ошибок при работе с БД
- *
- * $Date: 2010-12-03 02:53:46 +0300 (Птн, 03 Дек 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 369 $
- * $URL: svn://opensvn.ru/avalon/trunk/storage/database_error.h $
  */
 
 #ifndef _avalon_database_error_h_

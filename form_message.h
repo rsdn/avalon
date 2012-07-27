@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Форма создания сообщения или ответа на сообщение
- *
- * $Date: 2010-07-03 19:05:06 +0400 (Сбт, 03 Июл 2010) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 326 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_message.h $
  */
 
 #ifndef _avalon_form_message_h_

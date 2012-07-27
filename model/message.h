@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Модели для работы с сообщениями
- *
- * $Date: 2009-04-05 03:29:19 +0400 (Вск, 05 Апр 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 207 $
- * $URL: svn://opensvn.ru/avalon/trunk/model/message.h $
  */
 
 #ifndef _avalon_message_info_h_

@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Модели для работы с форумами
- *
- * $Date: 2009-07-17 19:36:33 +0400 (Птн, 17 Июл 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 272 $
- * $URL: svn://opensvn.ru/avalon/trunk/model/forum.h $
  */
 
 #ifndef _avalon_forum_info_h_

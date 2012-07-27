@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Модели для работы с группами форумов
- *
- * $Date: 2008-10-27 02:19:26 +0300 (Пнд, 27 Окт 2008) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 118 $
- * $URL: svn://opensvn.ru/avalon/trunk/model/forum_group.h $
  */
 
 #ifndef _avalon_forum_group_info_h_

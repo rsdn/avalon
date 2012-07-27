@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Форма для ввода информации о модерировании
- *
- * $Date: 2009-03-22 04:07:17 +0300 (Вск, 22 Мар 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 172 $
- * $URL: svn://opensvn.ru/avalon/trunk/form_moderate.h $
  */
 
 #ifndef _avalon_form_moderate_h_

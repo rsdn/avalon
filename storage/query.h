@@ -1,11 +1,6 @@
 /*!
  * \file
  * \brief Обертка для работы с SQL запросами
- *
- * $Date: 2009-04-27 21:06:02 +0400 (Пнд, 27 Апр 2009) $
- * $Author: antonbatenev.ya.ru $
- * $Revision: 239 $
- * $URL: svn://opensvn.ru/avalon/trunk/storage/query.h $
  */
 
 #ifndef _avalon_query_h_
