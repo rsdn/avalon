@@ -36,9 +36,10 @@ class FormSettings : public FormSettingsUI
 		 * \brief Восстановление настроек
 		 */
 		void restore ();
-        bool can_create_sqlitedb( const QString &path);
-    private:
-        bool m_sqlite3Exists;
+		bool can_create_sqlitedb( const QString &path);
+
+	private:
+		bool m_sqlite3Exists;
 
 	private slots:
 
@@ -56,15 +57,14 @@ class FormSettings : public FormSettingsUI
 		 * \brief Выбор файла для файловых хранилищ
 		 */
 		void button_database_file_clicked ();
-        void button_database_create_clicked ();
-        void text_changed_slot(const QString &path);
-
+		void button_database_create_clicked ();
+		void text_changed_slot(const QString &path);
 
 		/*!
 		 * \brief Смена типа БД
 		 */
 		void combo_database_type_current_index_changed (const QString& text);
-        void combo_logging_level_current_index_changed(const QString& text);
+		void combo_logging_level_current_index_changed(const QString& text);
 };
 
 #endif   // _avalon_form_settings_h_

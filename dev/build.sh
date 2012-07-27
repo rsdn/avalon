@@ -17,7 +17,12 @@ cd ../
 make clean
 
 # создание pro-файла
-qmake -project -recursive -Wall -o ${PROJECT_NAME}.pro "CONFIG += debug_and_release" "QT += network sql webkit" "LIBS += -laspell -lz"
+qmake -project -recursive -Wall -o ${PROJECT_NAME}.pro \
+    "CONFIG += debug_and_release" \
+    "QT += network sql webkit" \
+    "LIBS += -laspell -lz" \
+    "ICON = icons/Main-Logo.icns" \
+    "macx { QMAKE_CXX = clang }"
 
 # создание make-файлов
 qmake ${PROJECT_NAME}.pro

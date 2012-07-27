@@ -17,14 +17,14 @@ Logger g_logger;
 
 static void log_helper(QtMsgType type, const char *msg)
 {
-    g_logger.logMessage(type, msg);
+	g_logger.logMessage(type, msg);
 }
 
 void init_logging()
 {
-    QSettings settings;
-    int loggingLevel = settings.value("other/logging_level", 2).toInt();
-    g_logger.setDebugLevel((QtMsgType)loggingLevel);
+	QSettings settings;
+	int loggingLevel = settings.value("other/logging_level", 2).toInt();
+	g_logger.setDebugLevel((QtMsgType)loggingLevel);
 }
 
 /*!
@@ -40,7 +40,7 @@ int main (int argc, char* argv[])
 
 	QApplication app(argc, argv);
 
-    qInstallMsgHandler(log_helper);
+	qInstallMsgHandler(log_helper);
 
 #ifndef Q_WS_MAC
 	// отображать иконки в меню для всех, кроме MacOS
@@ -75,7 +75,7 @@ int main (int argc, char* argv[])
 
 	app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
 
-    init_logging();
+	init_logging();
 
-    return app.exec();
+	return app.exec();
 }
