@@ -9,7 +9,7 @@ IAStorage* AStorageFactory::getStorage ()
 	// чтение типа хранилища из конфига
 	QSettings settings;
 
-	QString type = settings.value("storage/type", "MySQL").toString();
+	QString type = settings.value("storage/type", "SQLite").toString();
 
 	if (type == "MySQL")
 		return new AMySQLStorage();
