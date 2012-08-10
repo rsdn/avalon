@@ -172,7 +172,6 @@ void FormSettings::save ()
 	settings.setValue("ui/mark_as_read_timer",   m_text_mark_as_read_timer->text());
 	settings.setValue("ui/max_topic_to_show",    m_text_max_topic_to_show->text());
 	settings.setValue("ui/synchronize_interval", m_text_synchronize_interval->text());
-	settings.setValue("ui/colorer",              m_combo_colorer->currentText());
 	settings.setValue("ui/tagline",              m_text_tagline->text());
 
 #ifdef AVALON_USE_ZLIB
@@ -265,15 +264,6 @@ void FormSettings::restore ()
 	m_text_max_topic_to_show->setText    (settings.value("ui/max_topic_to_show",    "0"          ).toString());
 	m_text_synchronize_interval->setText (settings.value("ui/synchronize_interval", "0"          ).toString());
 	m_text_tagline->setText              (settings.value("ui/tagline",              "%%version%%").toString());
-
-	QString colorer_name = settings.value("ui/colorer", COLORER_DEFAULT_NAME).toString();
-
-	idx = m_combo_colorer->findText(colorer_name);
-
-	if (idx != -1)
-		m_combo_colorer->setCurrentIndex(idx);
-	else
-		m_combo_colorer->setCurrentIndex(0);
 
 #ifdef AVALON_USE_ZLIB
 	bool compression = settings.value("storage/compression", false).toInt();

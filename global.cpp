@@ -43,20 +43,6 @@ void AGlobal::reload ()
 	Compression = settings.value("storage/compression", false).toInt();
 #endif
 
-	// установка колорера для подсветки синтаксиса
-	QString colorer = settings.value("ui/colorer", COLORER_DEFAULT_NAME).toString();
-
-	if (colorer == COLORER_ENSCRIPT_NAME)
-		Colorer = acEnscript;
-	else if (colorer == COLORER_COLORER_TAKE5_NAME)
-		Colorer = acColorerTake5;
-	else if (colorer == COLORER_GNU_SOURCE_HIGHLIGHT_NAME)
-		Colorer = acGNUSourceHighlight;
-	else if (colorer == COLORER_HIGHLIGHT_JS_NAME)
-		Colorer = acHighlightJS;
-	else
-		Colorer = COLORER_DEFAULT;
-
 	// информация о текущем пользователе avalon
 	Me.ID             = -1;
 	Me.Name           = "(n/a)";

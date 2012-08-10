@@ -1,7 +1,5 @@
 #include "form_settings_ui.h"
 //----------------------------------------------------------------------------------------------
-#include "colorer.h"
-//----------------------------------------------------------------------------------------------
 
 FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint
 #if QT_VERSION >= 0x040500
@@ -319,10 +317,6 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_label_synchronize_interval->setText(QString::fromUtf8("интервал автообновления (минут)"));
 	m_layout_label_ui->addWidget(m_label_synchronize_interval);
 
-	m_label_colorer = new QLabel(this);
-	m_label_colorer->setText(QString::fromUtf8("подсветка синтаксиса"));
-	m_layout_label_ui->addWidget(m_label_colorer);
-
 	m_label_tagline = new QLabel(this);
 	m_label_tagline->setText(QString::fromUtf8("tagline"));
 	m_layout_label_ui->addWidget(m_label_tagline);
@@ -366,13 +360,6 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_text_synchronize_interval->setAlignment(Qt::AlignRight);
 	m_text_synchronize_interval->setText("0");
 	m_layout_text_ui->addWidget(m_text_synchronize_interval);
-
-	m_combo_colorer = new QComboBox(this);
-	m_combo_colorer->insertItem(0, COLORER_ENSCRIPT_NAME);
-	m_combo_colorer->insertItem(1, COLORER_COLORER_TAKE5_NAME);
-	m_combo_colorer->insertItem(2, COLORER_GNU_SOURCE_HIGHLIGHT_NAME);
-	m_combo_colorer->insertItem(3, COLORER_HIGHLIGHT_JS_NAME);
-	m_layout_text_ui->addWidget(m_combo_colorer);
 
 	m_text_tagline = new QLineEdit(this);
 	m_text_tagline->setText("%%version%%");

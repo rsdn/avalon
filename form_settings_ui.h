@@ -90,7 +90,6 @@ class FormSettingsUI : public QDialog
 		                  QLabel* m_label_mark_as_read_timer;         /*!< \brief Время пометки как прочитанное           */
 		                  QLabel* m_label_max_topic_to_show;          /*!< \brief Максимальное количество топиков         */
 		                  QLabel* m_label_synchronize_interval;       /*!< \brief Интервал автообновления                 */
-		                  QLabel* m_label_colorer;                    /*!< \brief Подсветка синтаксиса                    */
 		                  QLabel* m_label_tagline;                    /*!< \brief Tagline                                 */
 #ifdef AVALON_USE_ZLIB
 		                  QLabel* m_label_compression;                /*!< \brief Включить сжатие тел сообщений           */
@@ -102,7 +101,6 @@ class FormSettingsUI : public QDialog
 		                  QLineEdit* m_text_mark_as_read_timer;       /*!< \brief Время пометки как прочитанное           */
 		                  QLineEdit* m_text_max_topic_to_show;        /*!< \brief Максимальное количество топиков         */
 		                  QLineEdit* m_text_synchronize_interval;     /*!< \brief Интервал автообновления                 */
-		                  QComboBox* m_combo_colorer;                 /*!< \brief Подсветка синтаксиса                    */
 		                  QLineEdit* m_text_tagline;                  /*!< \brief Tagline                                 */
 #ifdef AVALON_USE_ZLIB
 		                  QCheckBox* m_check_compression;             /*!< \brief Включить сжатие тел сообщений           */

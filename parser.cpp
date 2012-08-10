@@ -167,263 +167,67 @@ typedef struct AMessageBlock
 	QString Body;  /*!< \brief Тело тэга                          */
 } AMessageBlock;
 //----------------------------------------------------------------------------------------------
-
-const ASimpleTag* AParser::getCodeTags ()
+/*!
+ * \brief Список замены для подсветки синтаксиса Highlight.js
+ * см. http://softwaremaniacs.org/soft/highlight/
+ */
+ASimpleTag g_highlight_tags [] =
 {
-	//
-	// Enscript
-	// $ enscript --help-highlight
-	//
+	{"[code]",    ""          },
+	{"[asm]",     "cpp"       }, // ?
+	{"[ccode]",   "cpp"       },
+	{"[c]",       "cpp"       },
+	{"[cpp]",     "cpp"       }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
+	{"[vc]",      "cpp"       }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
+	{"[c#]",      "cs"        },
+	{"[csharp]",  "cs"        },
+	{"[cs]",      "cs"        },
+	{"[msil]",    "cpp"       }, // ?
+	{"[midl]",    "cpp"       }, // ?
+	{"[pascal]",  "vbscript"  }, // ?
+	{"[vb]",      "vbscript"  },
+	{"[sql]",     "sql"       },
+	{"[perl]",    "perl"      },
+	{"[php]",     "php"       },
+	{"[java]",    "java"      },
+	{"[js]",      "javascript"}, // avalon specific
+	{"[xml]",     "html-xml"  },
+	{"[lisp]",    "lisp"      },
+	{"[haskell]", "lisp"      }, // ?
 
-	static ASimpleTag colorer_enscript [] =
-	{
-		{"[code]",    ""          },
-		{"[asm]",     "asm"       },
-		{"[ccode]",   "cpp"       },
-		{"[c]",       "cpp"       },
-		{"[cpp]",     "cpp"       }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-		{"[vc]",      "cpp"       }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-		{"[c#]",      "cpp"       }, // ?
-		{"[csharp]",  "cpp"       }, // ?
-		{"[cs]",      "cpp"       }, // ?
-		{"[msil]",    "cpp"       }, // ?
-		{"[midl]",    "cpp"       }, // ?
-		{"[pascal]",  "delphi"    },
-		{"[vb]",      "vba"       },
-		{"[sql]",     "sql"       },
-		{"[perl]",    "perl"      },
-		{"[php]",     "perl"      }, // ?
-		{"[java]",    "java"      },
-		{"[js]",      "javascript"}, // avalon specific
-		{"[xml]",     "lang-html" }, // ?
-		{"[lisp]",    "elisp"     },
-		{"[haskell]", "haskell"   },
+	// http://www.rsdn.ru/forum/message/3227340.1.aspx
+	{"[code=]",            ""        },
+	{"[code=assembler]",   "cpp"     }, // ?
+	{"[code=c]",           "cpp"     },
+	{"[code=cpp]",         "cpp"     },
+	{"[code=csharp]",      "cs"      },
+	{"[code=cs]",          "cs"      },
+	{"[code=erlang]",      "lisp"    }, // ?
+	{"[code=haskell]",     "lisp"    }, // ?
+	{"[code=idl]",         "cpp"     }, // ?
+	{"[code=java]",        "java"    },
+	{"[code=lisp]",        "lisp"    },
+	{"[code=msil]",        "cpp"     }, // ?
+	{"[code=ocaml]",       "lisp"    }, // ?
+	{"[code=pascal]",      "vbscript"}, // ?
+	{"[code=perl]",        "perl"    },
+	{"[code=php]",         "php"     },
+	{"[code=prolog]",      "lisp"    }, // ?
+	{"[code=python]",      "python"  },
+	{"[code=ruby]",        "ruby"    },
+	{"[code=sql]",         "sql"     },
+	{"[code=visualbasic]", "vbscript"},
+	{"[code=xsl]",         "html-xml"},
+	// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
+	{"[code=cpp]",         "cpp"     },
 
-		// http://www.rsdn.ru/forum/message/3227340.1.aspx
-		{"[code=]",            ""         },
-		{"[code=assembler]",   "asm"      },
-		{"[code=c]",           "cpp"      },
-		{"[code=cpp]",         "cpp"      },
-		{"[code=csharp]",      "cpp"      }, // ?
-		{"[code=cs]",          "cpp"      }, // ?
-		{"[code=erlang]",      "haskell"  }, // ?
-		{"[code=haskell]",     "haskell"  },
-		{"[code=idl]",         "idl"      },
-		{"[code=java]",        "java"     },
-		{"[code=lisp]",        "elisp"    },
-		{"[code=msil]",        "cpp"      }, // ?
-		{"[code=ocaml]",       "haskell"  }, // ?
-		{"[code=pascal]",      "delphi"   },
-		{"[code=perl]",        "perl"     },
-		{"[code=php]",         "perl"     }, // ?
-		{"[code=prolog]",      "elisp"    }, // ?
-		{"[code=python]",      "python"   },
-		{"[code=ruby]",        "ruby"     },
-		{"[code=sql]",         "sql"      },
-		{"[code=visualbasic]", "vba"      },
-		{"[code=xsl]",         "lang-html"}, // ?
-		// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
-		{"[code=cpp]",         "cpp"      },
-
-		{NULL, NULL}
-	};
-
-	//
-	// Colorer take 5
-	// $ colorer -lt
-	//
-
-	static ASimpleTag colorer_take_5 [] =
-	{
-		{"[code]",    ""       },
-		{"[asm]",     "asm"    },
-		{"[ccode]",   "c"      },
-		{"[c]",       "c"      },
-		{"[cpp]",     "cpp"    }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-		{"[vc]",      "cpp"    }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-		{"[c#]",      "csharp" },
-		{"[csharp]",  "csharp" },
-		{"[cs]",      "csharp" },
-		{"[msil]",    "cpp"    }, // ?
-		{"[midl]",    "cpp"    }, // ?
-		{"[pascal]",  "pascal" },
-		{"[vb]",      "vbasic" },
-		{"[sql]",     "sql"    },
-		{"[perl]",    "perl"   },
-		{"[php]",     "php"    },
-		{"[java]",    "java"   },
-		{"[js]",      "jScript"}, // avalon specific
-		{"[xml]",     "xml"    },
-		{"[lisp]",    "lisp"   },
-		{"[haskell]", "lisp"   }, // ?
-
-		// http://www.rsdn.ru/forum/message/3227340.1.aspx
-		{"[code=]",            ""      },
-		{"[code=assembler]",   "asm"   },
-		{"[code=c]",           "c"     },
-		{"[code=cpp]",         "cpp"   },
-		{"[code=csharp]",      "csharp"},
-		{"[code=cs]",          "csharp"},
-		{"[code=erlang]",      "lisp"  }, // ?
-		{"[code=haskell]",     "lisp"  }, // ?
-		{"[code=idl]",         "idl"   },
-		{"[code=java]",        "java"  },
-		{"[code=lisp]",        "lisp"  },
-		{"[code=msil]",        "cpp"   }, // ?
-		{"[code=ocaml]",       "ocaml" },
-		{"[code=pascal]",      "pascal"},
-		{"[code=perl]",        "perl"  },
-		{"[code=php]",         "php"   },
-		{"[code=prolog]",      "lisp"  }, // ?
-		{"[code=python]",      "python"},
-		{"[code=ruby]",        "ruby"  },
-		{"[code=sql]",         "sql"   },
-		{"[code=visualbasic]", "vbasic"},
-		{"[code=xsl]",         "xslt"  }, // ?
-		// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
-		{"[code=cpp]",         "cpp"   },
-
-		{NULL, NULL}
-	};
-
-	//
-	// GNU Source-highlight
-	// $ source-highlight --lang-list
-	//
-
-	static ASimpleTag colorer_gnu_source_highlight [] =
-	{
-		{"[code]",    ""      },
-		{"[asm]",     "c"     }, // ?
-		{"[ccode]",   "c"     },
-		{"[c]",       "c"     },
-		{"[cpp]",     "cpp"   }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-		{"[vc]",      "cpp"   }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-		{"[c#]",      "cs"    },
-		{"[csharp]",  "cs"    },
-		{"[cs]",      "cs"    },
-		{"[msil]",    "cpp"   }, // ?
-		{"[midl]",    "cpp"   }, // ?
-		{"[pascal]",  "pascal"},
-		{"[vb]",      "pascal"}, // ?
-		{"[sql]",     "sql"   },
-		{"[perl]",    "perl"  },
-		{"[php]",     "php"   },
-		{"[java]",    "java"  },
-		{"[js]",      "js"    }, // avalon specific
-		{"[xml]",     "xml"   },
-		{"[lisp]",    "ml"    }, // ?
-		{"[haskell]", "ml"    }, // ?
-
-		// http://www.rsdn.ru/forum/message/3227340.1.aspx
-		{"[code=]",            ""      },
-		{"[code=assembler]",   "c"     }, // ?
-		{"[code=c]",           "c"     },
-		{"[code=cpp]",         "cpp"   },
-		{"[code=csharp]",      "cs"    },
-		{"[code=c]",           "cs"    },
-		{"[code=erlang]",      "ml"    }, // ?
-		{"[code=haskell]",     "ml"    }, // ?
-		{"[code=idl]",         "cpp"   }, // ?
-		{"[code=java]",        "java"  },
-		{"[code=lisp]",        "ml"    }, // ?
-		{"[code=msil]",        "cpp"   }, // ?
-		{"[code=ocaml]",       "caml"  },
-		{"[code=pascal]",      "pascal"},
-		{"[code=perl]",        "perl"  },
-		{"[code=php]",         "php"   },
-		{"[code=prolog]",      "prolog"}, // ?
-		{"[code=python]",      "python"},
-		{"[code=ruby]",        "ruby"  },
-		{"[code=sql]",         "sql"   },
-		{"[code=visualbasic]", "pascal"}, // ?
-		{"[code=xsl]",         "xml"   }, // ?
-		// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
-		{"[code=cpp]",         "cpp"   },
-
-		{NULL, NULL}
-	};
-
-	//
-	// Highlight.js
-	// http://softwaremaniacs.org/soft/highlight/
-	//
-
-	static ASimpleTag colorer_highlight_js [] =
-	{
-		{"[code]",    ""          },
-		{"[asm]",     "cpp"       }, // ?
-		{"[ccode]",   "cpp"       },
-		{"[c]",       "cpp"       },
-		{"[cpp]",     "cpp"       }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-		{"[vc]",      "cpp"       }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-		{"[c#]",      "cs"        },
-		{"[csharp]",  "cs"        },
-		{"[cs]",      "cs"        },
-		{"[msil]",    "cpp"       }, // ?
-		{"[midl]",    "cpp"       }, // ?
-		{"[pascal]",  "vbscript"  }, // ?
-		{"[vb]",      "vbscript"  },
-		{"[sql]",     "sql"       },
-		{"[perl]",    "perl"      },
-		{"[php]",     "php"       },
-		{"[java]",    "java"      },
-		{"[js]",      "javascript"}, // avalon specific
-		{"[xml]",     "html-xml"  },
-		{"[lisp]",    "lisp"      },
-		{"[haskell]", "lisp"      }, // ?
-
-		// http://www.rsdn.ru/forum/message/3227340.1.aspx
-		{"[code=]",            ""        },
-		{"[code=assembler]",   "cpp"     }, // ?
-		{"[code=c]",           "cpp"     },
-		{"[code=cpp]",         "cpp"     },
-		{"[code=csharp]",      "cs"      },
-		{"[code=cs]",          "cs"      },
-		{"[code=erlang]",      "lisp"    }, // ?
-		{"[code=haskell]",     "lisp"    }, // ?
-		{"[code=idl]",         "cpp"     }, // ?
-		{"[code=java]",        "java"    },
-		{"[code=lisp]",        "lisp"    },
-		{"[code=msil]",        "cpp"     }, // ?
-		{"[code=ocaml]",       "lisp"    }, // ?
-		{"[code=pascal]",      "vbscript"}, // ?
-		{"[code=perl]",        "perl"    },
-		{"[code=php]",         "php"     },
-		{"[code=prolog]",      "lisp"    }, // ?
-		{"[code=python]",      "python"  },
-		{"[code=ruby]",        "ruby"    },
-		{"[code=sql]",         "sql"     },
-		{"[code=visualbasic]", "vbscript"},
-		{"[code=xsl]",         "html-xml"},
-		// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
-		{"[code=cpp]",         "cpp"     },
-
-		{NULL, NULL}
-	};
-
-	// выбор требуемого набора тэгов для текущего движка подсветки
-	switch (AGlobal::getInstance()->Colorer)
-	{
-		case acEnscript:
-			return colorer_enscript;
-		case acColorerTake5:
-			return colorer_take_5;
-		case acGNUSourceHighlight:
-			return colorer_gnu_source_highlight;
-		case acHighlightJS:
-			return colorer_highlight_js;
-		default:
-			return colorer_gnu_source_highlight;
-	}
-}
+	{NULL, NULL}
+};
 //----------------------------------------------------------------------------------------------
 
 QString AParser::formatMessage (const AMessageInfo& message, bool special, bool rated, const AMessageRatingList* rating_list)
 {
 	AGlobal::getInstance()->clearTempList();
-
-	AColorer colorer = AGlobal::getInstance()->Colorer;
 
 	QString data = message.Message;
 
@@ -526,24 +330,22 @@ QString AParser::formatMessage (const AMessageInfo& message, bool special, bool 
 	result += "<head>";
 	result += "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
 
-	if (colorer == acHighlightJS)
-	{
-		QString path = QCoreApplication::applicationDirPath();
+	// подключение highlight.js
+	QString path = QCoreApplication::applicationDirPath();
 
-		#if QT_VERSION >= 0x040500
-		result += "<style type='text/css'>pre { font-family: 'Courier New', courier; font-size: 11pt; }</style>";
-		#endif
+	#if QT_VERSION >= 0x040500
+	result += "<style type='text/css'>pre { font-family: 'Courier New', courier; font-size: 11pt; }</style>";
+	#endif
 
-		#ifdef Q_WS_WIN
-			result += "<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css'>";
-			result += "<script src='file:///" + path + "/highlight/highlight.pack.js'></script>";
-		#else
-			result += "<link rel='stylesheet' title='Magula' href='file://" + path + "/highlight/styles/magula.css'>";
-			result += "<script src='file://" + path + "/highlight/highlight.pack.js'></script>";
-		#endif
+	#ifdef Q_WS_WIN
+		result += "<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css'>";
+		result += "<script src='file:///" + path + "/highlight/highlight.pack.js'></script>";
+	#else
+		result += "<link rel='stylesheet' title='Magula' href='file://" + path + "/highlight/styles/magula.css'>";
+		result += "<script src='file://" + path + "/highlight/highlight.pack.js'></script>";
+	#endif
 
-		result += "<script>hljs.initHighlightingOnLoad();</script>";
-	}
+	result += "<script>hljs.initHighlightingOnLoad();</script>";
 
 	result += "<style type='text/css'>table { font-size: 11pt; }</style>";
 	result += "</head>";
@@ -797,12 +599,8 @@ QString AParser::formatMessage (const AMessageInfo& message, bool special, bool 
 			// табуляторы на стандартные(?) 4 пробела
 			block->Body.replace("\t", "    ");
 
-			// colorer не переваривает виндовые переводы строк :(
-			if (colorer == acColorerTake5)
-				block->Body.replace("\r\n", "\n");
-
-			// массив тэгов для текущего движка подсветки кода
-			const ASimpleTag* code_tags = AParser::getCodeTags();
+			// массив тэгов для подсветки кода
+			ASimpleTag* code_tags = g_highlight_tags;
 
 			while (code_tags->Source != NULL /* проход до последнего элемента массива тэгов, заданного {Source => NULL, Replace => NULL} */)
 			{
@@ -814,48 +612,7 @@ QString AParser::formatMessage (const AMessageInfo& message, bool special, bool 
 					if (replace.length() == 0)
 						break;
 
-					if (colorer != acHighlightJS)
-					{
-						QString program;
-
-						if (colorer == acEnscript)
-							program = "enscript --language=html --color --output=- --silent --pretty-print=" + replace;
-						else if (colorer == acColorerTake5)
-							program = "colorer -h -dc -dh -db -ds -t" + replace;
-						else if (colorer == acGNUSourceHighlight)
-							program = "source-highlight --out-format=html --tab=4 --src-lang=" + replace;
-
-						QProcess process;
-
-						process.start(program);
-
-						if (process.waitForStarted() == true)
-						{
-							QString plain_source = block->Body;
-
-							plain_source.replace("&lt;",  "<");
-							plain_source.replace("&gt;",  ">");
-							plain_source.replace("&amp;", "&");
-
-							process.write(plain_source.toUtf8());
-
-							process.closeWriteChannel();
-
-							if (process.waitForFinished() == true)
-							{
-								plain_source = QString::fromUtf8(process.readAll().constData());
-
-								if (colorer == acEnscript || colorer == acGNUSourceHighlight)
-									plain_source.replace(QRegExp(".*<PRE>(.+)</PRE>.*", Qt::CaseInsensitive), "\\1");
-
-								block->Body = plain_source;
-							}
-						}
-					}
-					else   // if (colorer != acHighlightJS)
-					{
-						block->Body = "<code class='" + replace + "'>" + block->Body + "</code>";
-					}
+					block->Body = "<code class='" + replace + "'>" + block->Body + "</code>";
 
 					break;
 				}
@@ -863,14 +620,9 @@ QString AParser::formatMessage (const AMessageInfo& message, bool special, bool 
 				code_tags++;
 			}
 
-			if (colorer == acHighlightJS)
-				result += "<table width='98%' align='center'><tr><td><pre>";
-			else
-				result += "<table style='background-color: #f4f4f4;' width='98%' align='center'><tr><td><pre>";
-
+			result += "<table width='98%' align='center'><tr><td><pre>";
 			result += block->Body;
 			result += "</pre></tr></td></table><br />";
-
 		}
 
 		delete block;

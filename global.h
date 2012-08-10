@@ -6,7 +6,6 @@
 #ifndef _avalon_global_h_
 #define _avalon_global_h_
 
-#include "colorer.h"
 #include "model/user.h"
 
 /*!
@@ -37,7 +36,6 @@ class AGlobal
 		//
 
 		AUserInfo Me;          /*!< \brief Текущий пользователь avalon */
-		AColorer  Colorer;     /*!< \brief Движок подсветки синтаксиса */
 #ifdef AVALON_USE_ZLIB
 		bool      Compression; /*!< \brief Сжатие тел сообщений        */
 #endif
