@@ -15,9 +15,6 @@ FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent)
 	connect(m_button_cancel_ui, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(m_button_ok_ui,     SIGNAL(clicked()), this, SLOT(button_ok_clicked()));
 
-	connect(m_button_cancel_other, SIGNAL(clicked()), this, SLOT(reject()));
-	connect(m_button_ok_other,     SIGNAL(clicked()), this, SLOT(button_ok_clicked()));
-
 	connect(m_check_use_proxy, SIGNAL(stateChanged(int)), this, SLOT(check_use_proxy_state_changed(int)));
 
 	connect(m_combo_database_type, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(combo_database_type_current_index_changed(const QString&)));
@@ -185,10 +182,6 @@ void FormSettings::save ()
 #ifdef AVALON_USE_ASPELL
 	settings.setValue("ui/spellchecker", (m_check_spellchecker->checkState() == Qt::Checked ? 1 : 0));
 #endif
-
-	QtMsgType logLevel = (QtMsgType)m_combo_logging_level->currentIndex();
-	settings.setValue("other/logging_level", logLevel);
-	g_logger.setDebugLevel(logLevel);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -299,10 +292,5 @@ void FormSettings::restore ()
 	else
 		m_check_spellchecker->setCheckState(Qt::Unchecked);
 #endif
-
-	int loggingLevel = settings.value("other/logging_level", 1).toInt();
-	m_combo_logging_level->setCurrentIndex(loggingLevel);
-
-	m_text_rsdn_host->setFocus();
 }
 //----------------------------------------------------------------------------------------------

@@ -115,18 +115,6 @@ class FormSettingsUI : public QDialog
 		                  QPushButton* m_button_cancel_ui;            /*!< \brief Отмена                                  */
 		                  QSpacerItem* m_spacer_button_ui;            /*!< \brief Выравнивание кнопок вверх               */
 		            QSpacerItem* m_ui_spacer;                         /*!< \brief Выравнивание всего вверх                */
-		      QWidget* m_other_settings;                              /*!< \brief Виджет таба для дополнительных настроек */
-		         QVBoxLayout* m_layout_other_spacer;                  /*!< \brief Layout для выравнивания по вертикали    */
-		            QHBoxLayout* m_layout_other;                      /*!< \brief Общий layout для настроек хранилища     */
-		               QVBoxLayout* m_layout_label_other;             /*!< \brief Layout для надписей                     */
-		                  QLabel* m_label_logging_level;              /*!< \brief Уровень логирования                     */
-		               QVBoxLayout* m_layout_text_other;              /*!< \brief Layout для текстовых полей              */
-		                  QComboBox* m_combo_logging_level;           /*!< \brief Уровень логирования                     */
-		               QVBoxLayout* m_layout_button_other;            /*!< \brief Layout для кнопок                       */
-		                  QPushButton* m_button_ok_other;             /*!< \brief OK                                      */
-		                  QPushButton* m_button_cancel_other;         /*!< \brief Отмена                                  */
-		                  QSpacerItem* m_spacer_button_other;         /*!< \brief Выравнивание кнопок вверх               */
-		            QSpacerItem* m_other_spacer;                      /*!< \brief Выравнивание всего вверх                */
 
 	private:
 

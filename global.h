@@ -8,9 +8,6 @@
 
 #include "colorer.h"
 #include "model/user.h"
-#include "logger.h"
-
-extern Logger g_logger;
 
 /*!
  * \brief Глобальные настройки

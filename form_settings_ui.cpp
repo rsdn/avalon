@@ -42,9 +42,6 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_ui_settings = new QWidget();
 	m_tab->addTab(m_ui_settings, QString::fromUtf8("интерфейс"));
 
-	m_other_settings = new QWidget();
-	m_tab->addTab(m_other_settings, QString::fromUtf8("прочее"));
-
 	//
 	// таб настроек сети
 	//
@@ -413,64 +410,6 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 
 	m_spacer_button_ui = new QSpacerItem(1, 1, QSizePolicy::Maximum, QSizePolicy::Expanding);
 	m_layout_button_ui->addItem(m_spacer_button_ui);
-
-	//
-	// таб прочих настроек
-	//
-
-	m_layout_other_spacer = new QVBoxLayout(m_other_settings);
-
-	m_layout_other = new QHBoxLayout();
-	m_layout_other_spacer->addLayout(m_layout_other);
-
-	m_other_spacer = new QSpacerItem(1, height(), QSizePolicy::Maximum, QSizePolicy::Expanding);
-	m_layout_other_spacer->addItem(m_other_spacer);
-
-	//
-	// подписи к полям (остальное)
-	//
-
-	m_layout_label_other  = new QVBoxLayout();
-	m_layout_other->addLayout(m_layout_label_other);
-
-	m_label_logging_level = new QLabel(this);
-	m_label_logging_level->setText(QString::fromUtf8("Уровень логирования:"));
-	m_layout_label_other->addWidget(m_label_logging_level);
-
-	//
-	// поля (хранилище)
-	//
-
-	m_layout_text_other = new QVBoxLayout();
-	m_layout_other->addLayout(m_layout_text_other);
-
-	m_combo_logging_level = new QComboBox(this);
-	m_combo_logging_level->insertItem(0, "Error");
-	m_combo_logging_level->insertItem(0, "Warning");
-	m_combo_logging_level->insertItem(0, "Debug");
-	m_combo_logging_level->setCurrentIndex(2);
-	m_layout_text_other->addWidget(m_combo_logging_level);
-
-	//
-	// кнопки (хранилище)
-	//
-
-	m_layout_button_other = new QVBoxLayout();
-	m_layout_other->addLayout(m_layout_button_other);
-
-	m_button_ok_other = new QPushButton(this);
-	m_button_ok_other->setText(QString::fromUtf8("OK"));
-	m_button_ok_other->setShortcut(QKeySequence("Return"));
-	m_button_ok_other->setDefault(true);
-	m_layout_button_other->addWidget(m_button_ok_other);
-
-	m_button_cancel_other = new QPushButton(this);
-	m_button_cancel_other->setText(QString::fromUtf8("Отмена"));
-	m_button_cancel_other->setShortcut(QKeySequence("Esc"));
-	m_layout_button_other->addWidget(m_button_cancel_other);
-
-	m_spacer_button_other = new QSpacerItem(1, 1, QSizePolicy::Maximum, QSizePolicy::Expanding);
-	m_layout_button_other->addItem(m_spacer_button_other);
 }
 
 //----------------------------------------------------------------------------------------------
