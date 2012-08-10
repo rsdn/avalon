@@ -113,6 +113,7 @@ AStrongTag g_strong_tags [] =
 	{"[c#]",        "[/c#]"       },
 	{"[csharp]",    "[/csharp]"   },
 	{"[cs]",        "[/cs]"       },
+	{"[nemerle]",   "[/nemerle]"  },
 	{"[msil]",      "[/msil]"     },
 	{"[midl]",      "[/midl]"     },
 	{"[pascal]",    "[/pascal]"   },
@@ -137,6 +138,8 @@ AStrongTag g_strong_tags [] =
 	{"[code=assembler]",   "[/code]"},
 	{"[code=c]",           "[/code]"},
 	{"[code=csharp]",      "[/code]"},
+	{"[code=cs]",          "[/code]"},
+	{"[code=nemerle]",     "[/code]"},
 	{"[code=erlang]",      "[/code]"},
 	{"[code=haskell]",     "[/code]"},
 	{"[code=idl]",         "[/code]"},
@@ -174,7 +177,7 @@ typedef struct AMessageBlock
 ASimpleTag g_highlight_tags [] =
 {
 	{"[code]",    ""          },
-	{"[asm]",     "cpp"       }, // ?
+	{"[asm]",     "avrasm"    },
 	{"[ccode]",   "cpp"       },
 	{"[c]",       "cpp"       },
 	{"[cpp]",     "cpp"       }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
@@ -182,34 +185,36 @@ ASimpleTag g_highlight_tags [] =
 	{"[c#]",      "cs"        },
 	{"[csharp]",  "cs"        },
 	{"[cs]",      "cs"        },
+	{"[nemerle]", "cs"        }, // ?
 	{"[msil]",    "cpp"       }, // ?
 	{"[midl]",    "cpp"       }, // ?
-	{"[pascal]",  "vbscript"  }, // ?
-	{"[vb]",      "vbscript"  },
+	{"[pascal]",  "delphi"    },
+	{"[vb]",      "vbscript"  }, // ?
 	{"[sql]",     "sql"       },
 	{"[perl]",    "perl"      },
 	{"[php]",     "php"       },
 	{"[java]",    "java"      },
 	{"[js]",      "javascript"}, // avalon specific
-	{"[xml]",     "html-xml"  },
+	{"[xml]",     "xml"       },
 	{"[lisp]",    "lisp"      },
-	{"[haskell]", "lisp"      }, // ?
+	{"[haskell]", "haskell"   },
 
 	// http://www.rsdn.ru/forum/message/3227340.1.aspx
 	{"[code=]",            ""        },
-	{"[code=assembler]",   "cpp"     }, // ?
+	{"[code=assembler]",   "avrasm"  },
 	{"[code=c]",           "cpp"     },
 	{"[code=cpp]",         "cpp"     },
 	{"[code=csharp]",      "cs"      },
 	{"[code=cs]",          "cs"      },
-	{"[code=erlang]",      "lisp"    }, // ?
-	{"[code=haskell]",     "lisp"    }, // ?
+	{"[code=nemerle]",     "cs"      },
+	{"[code=erlang]",      "erlang"  },
+	{"[code=haskell]",     "haskell" },
 	{"[code=idl]",         "cpp"     }, // ?
 	{"[code=java]",        "java"    },
 	{"[code=lisp]",        "lisp"    },
 	{"[code=msil]",        "cpp"     }, // ?
 	{"[code=ocaml]",       "lisp"    }, // ?
-	{"[code=pascal]",      "vbscript"}, // ?
+	{"[code=pascal]",      "delphi"  },
 	{"[code=perl]",        "perl"    },
 	{"[code=php]",         "php"     },
 	{"[code=prolog]",      "lisp"    }, // ?
@@ -217,7 +222,7 @@ ASimpleTag g_highlight_tags [] =
 	{"[code=ruby]",        "ruby"    },
 	{"[code=sql]",         "sql"     },
 	{"[code=visualbasic]", "vbscript"},
-	{"[code=xsl]",         "html-xml"},
+	{"[code=xsl]",         "xml"     },
 	// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
 	{"[code=cpp]",         "cpp"     },
 
