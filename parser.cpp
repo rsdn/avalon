@@ -125,6 +125,7 @@ AStrongTag g_strong_tags [] =
 	{"[xml]",       "[/xml]"      },
 	{"[lisp]",      "[/lisp]"     },
 	{"[haskell]",   "[/haskell]"  },
+	{"[ruby]",      "[/ruby]"     },
 	{"[tagline]",   "[/tagline]"  },
 	{"[moderator]", "[/moderator]"},
 	{"[q]",         "[/q]"        },
@@ -198,6 +199,7 @@ ASimpleTag g_highlight_tags [] =
 	{"[xml]",     "xml"       },
 	{"[lisp]",    "lisp"      },
 	{"[haskell]", "haskell"   },
+	{"[ruby]",    "ruby"      },
 
 	// http://www.rsdn.ru/forum/message/3227340.1.aspx
 	{"[code=]",            ""        },
