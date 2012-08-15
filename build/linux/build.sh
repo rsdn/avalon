@@ -4,7 +4,7 @@
 PROJECT_NAME="avalon"
 
 # переход в директорию проекта
-cd ../
+cd ../../
 
 # очистка
 make clean
