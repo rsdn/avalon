@@ -15,4 +15,4 @@ Makefile.Release
 highlight
 
 # документация, генерируемая doxygen
-dev/doxygen/html/*
+doxygen/html/*
