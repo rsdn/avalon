@@ -15,7 +15,8 @@ qmake -project -recursive -Wall -o ${PROJECT_NAME}.pro \
     "QT += network sql webkit" \
     "LIBS += -laspell -lz" \
     "ICON = icons/Main-Logo.icns" \
-    "macx { QMAKE_CXX = clang }"
+    "macx { QMAKE_CXX = clang }" \
+    src
 
 # создание make-файлов
 qmake ${PROJECT_NAME}.pro
