@@ -73,9 +73,6 @@ const AStrongTag g_strong_tags [] =
 
 	// внешние изображения всегда отдельным блоком
 	{ "[img]",              "[/img]",       pbtImage,     pbstSourceCode },
-
-	// avalon specific, http://rsdn.ru/forum/rsdn/2240671.1.aspx
-	{ "[graphviz]",         "[/graphviz]",  pbtGraphviz,  pbstSourceCode }
 };
 //----------------------------------------------------------------------------------------------
 

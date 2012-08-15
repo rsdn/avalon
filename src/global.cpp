@@ -29,8 +29,6 @@ AGlobal::AGlobal ()
 
 AGlobal::~AGlobal ()
 {
-	clearTempList();
-
 	g_global = NULL;
 }
 //----------------------------------------------------------------------------------------------
@@ -60,17 +58,6 @@ void AGlobal::reload ()
 	{
 		Me.Name = settings.value("rsdn/login", "").toString();
 		storage->whoAmI(Me);
-	}
-}
-//----------------------------------------------------------------------------------------------
-
-void AGlobal::clearTempList ()
-{
-	while (TempFileList.count() > 0)
-	{
-		QTemporaryFile* file = TempFileList.takeLast();
-
-		delete file;
 	}
 }
 //----------------------------------------------------------------------------------------------

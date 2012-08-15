@@ -46,16 +46,6 @@ class AGlobal
 
 		QString AnonymousName; /*!< \brief Отображаемое имя анонима */
 		QString DateFormat;    /*!< \brief Формат даты/времени      */
-
-		/*!
-		 * \brief Список временных файлов для работы (пока только для файлов graphviz)
-		 */
-		QList<QTemporaryFile*> TempFileList;
-
-		/*!
-		 * \brief Очистка (удаление) временных файлов
-		 */
-		void clearTempList ();
 };
 
 #endif   // _avalon_global_h_

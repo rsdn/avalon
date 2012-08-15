@@ -76,8 +76,6 @@ typedef enum
 	pbtTable,     /*!< \brief Блок таблицы              */
 	pbtCut,       /*!< \brief Блок cut                  */
 	pbtImage,     /*!< \brief Блок изображения          */
-	// avalon specific, http://rsdn.ru/forum/rsdn/2240671.1.aspx
-	pbtGraphviz   /*!< \brief Блок диаграмы Graphviz    */
 } AParsedBlockType;
 
 /*

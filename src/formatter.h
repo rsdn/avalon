@@ -1,6 +1,6 @@
 /*!
  * \file
- * \brief Парсер текста сообщения для отображения
+ * \brief Форматтер текста сообщения для отображения
  */
 
 #ifndef _avalon_formatter_h_
@@ -9,16 +9,7 @@
 #include "model/all.h"
 
 /*!
- * \brief Описатель простого тэга для парсера сообщений
- */
-typedef struct ASimpleTag
-{
-	const char* Source;  /*!< \brief Имя тэга (со скобками) */
-	const char* Replace; /*!< \brief Текст замены           */
-} ASimpleTag;
-
-/*!
- * \brief Парсер текста сообщения для отображения
+ * \brief Форматтер текста сообщения для отображения
  */
 class AFormatter
 {
@@ -50,12 +41,6 @@ class AFormatter
 		static int isURL (const QString& text);
 
 	private:
-
-		/*!
-		 * \brief Возвращает массив простых тэгов подсветки синтаксиса
-		 * \return Массив простых тэгов с нулевым окончанием
-		 */
-		static const ASimpleTag* getCodeTags ();
 
 		/*!
 		 * \brief Создание аббриветауры ника из полного имени

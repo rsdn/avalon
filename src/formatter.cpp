@@ -1,5 +1,16 @@
 #include "formatter.h"
+//----------------------------------------------------------------------------------------------
 #include "global.h"
+#include "parser.h"
+//----------------------------------------------------------------------------------------------
+/*!
+ * \brief Описатель простого тэга для парсера сообщений
+ */
+typedef struct ASimpleTag
+{
+	const char* Source;  /*!< \brief Имя тэга (со скобками) */
+	const char* Replace; /*!< \brief Текст замены           */
+} ASimpleTag;
 //----------------------------------------------------------------------------------------------
 /*!
  * \brief Регексп для проверки URL
@@ -7,7 +18,6 @@
  * http://web.archive.org/web/20070705044149/www.foad.org/~abigail/Perl/url3.regex
  */
 const QString g_url_regex = "(?:http://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)|(?:ftp://(?:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?&=])*)(?::(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?&=])*))?@)?(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?))(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*))*)(?:;type=[AIDaid])?)?)|(?:news:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;/?:&=])+@(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3})))|(?:[a-zA-Z](?:[a-zA-Z\\d]|[_.+-])*)|\\*))|(?:nntp://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)/(?:[a-zA-Z](?:[a-zA-Z\\d]|[_.+-])*)(?:/(?:\\d+))?)|(?:telnet://(?:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?&=])*)(?::(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?&=])*))?@)?(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?))/?)|(?:gopher://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))*)(?:%09(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:%09(?:(?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))*))?)?)?)?)|(?:wais://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)/(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*)(?:(?:/(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*)/(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*))|\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)|(?:mailto:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))+))|(?:file://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))|localhost)?/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*))*))|(?:prospero://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*))*)(?:(?:;(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&])*)=(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&])*)))*)|(?:ldap://(?:(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?))?/(?:(?:(?:(?:(?:(?:(?:[a-zA-Z\\d]|%(?:3\\d|[46][a-fA-F\\d]|[57][Aa\\d]))|(?:%20))+|(?:OID|oid)\\.(?:(?:\\d+)(?:\\.(?:\\d+))*))(?:(?:%0[Aa])?(?:%20)*)=(?:(?:%0[Aa])?(?:%20)*))?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*))(?:(?:(?:%0[Aa])?(?:%20)*)\\+(?:(?:%0[Aa])?(?:%20)*)(?:(?:(?:(?:(?:[a-zA-Z\\d]|%(?:3\\d|[46][a-fA-F\\d]|[57][Aa\\d]))|(?:%20))+|(?:OID|oid)\\.(?:(?:\\d+)(?:\\.(?:\\d+))*))(?:(?:%0[Aa])?(?:%20)*)=(?:(?:%0[Aa])?(?:%20)*))?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*)))*)(?:(?:(?:(?:%0[Aa])?(?:%20)*)(?:[;,])(?:(?:%0[Aa])?(?:%20)*))(?:(?:(?:(?:(?:(?:[a-zA-Z\\d]|%(?:3\\d|[46][a-fA-F\\d]|[57][Aa\\d]))|(?:%20))+|(?:OID|oid)\\.(?:(?:\\d+)(?:\\.(?:\\d+))*))(?:(?:%0[Aa])?(?:%20)*)=(?:(?:%0[Aa])?(?:%20)*))?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*))(?:(?:(?:%0[Aa])?(?:%20)*)\\+(?:(?:%0[Aa])?(?:%20)*)(?:(?:(?:(?:(?:[a-zA-Z\\d]|%(?:3\\d|[46][a-fA-F\\d]|[57][Aa\\d]))|(?:%20))+|(?:OID|oid)\\.(?:(?:\\d+)(?:\\.(?:\\d+))*))(?:(?:%0[Aa])?(?:%20)*)=(?:(?:%0[Aa])?(?:%20)*))?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*)))*))*(?:(?:(?:%0[Aa])?(?:%20)*)(?:[;,])(?:(?:%0[Aa])?(?:%20)*))?)(?:\\?(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+)(?:,(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))*)?)(?:\\?(?:base|one|sub)(?:\\?(?:((?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))+)))?)?)?)|(?:(?:z39\\.50[rs])://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+)(?:\\+(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))*(?:\\?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))?)?(?:;esn=(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))?(?:;rs=(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+)(?:\\+(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))*)?))|(?:cid:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?:@&=])*))|(?:mid:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?:@&=])*))?)|(?:vemmi://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[/?:@&=])*)(?:(?:;(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[/?:@&])*)=(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[/?:@&])*))*))?)|(?:imap://(?:(?:(?:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~])+)(?:(?:;[Aa][Uu][Tt][Hh]=(?:\\*|(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~])+))))?)|(?:(?:;[Aa][Uu][Tt][Hh]=(?:\\*|(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~])+)))(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~])+))?))@)?(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?))/(?:(?:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+)?;[Tt][Yy][Pp][Ee]=(?:[Ll](?:[Ii][Ss][Tt]|[Ss][Uu][Bb])))|(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+))?(?:(?:;[Uu][Ii][Dd][Vv][Aa][Ll][Ii][Dd][Ii][Tt][Yy]=(?:[1-9]\\d*)))?)|(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+)(?:(?:;[Uu][Ii][Dd][Vv][Aa][Ll][Ii][Dd][Ii][Tt][Yy]=(?:[1-9]\\d*)))?(?:/;[Uu][Ii][Dd]=(?:[1-9]\\d*))(?:(?:/;[Ss][Ee][Cc][Tt][Ii][Oo][Nn]=(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+)))?)))?)|(?:nfs:(?:(?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:(?:/(?:(?:(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*)(?:/(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*))*)?)))?)|(?:/(?:(?:(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*)(?:/(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*))*)?))|(?:(?:(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*)(?:/(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*))*)?)))";
-
 //----------------------------------------------------------------------------------------------
 /*!
  * \brief Список простых тэгов для парсера сообщений
@@ -90,88 +100,6 @@ ASimpleTag g_smile_tags [] =
 
 //----------------------------------------------------------------------------------------------
 /*!
- * \brief Описатель "монолитного" тэга для парсера сообщений
- */
-typedef struct AStrongTag
-{
-	const char* OpenTag;  /*!< \brief Открывающий тэг */
-	const char* CloseTag; /*!< \brief Закрывающий тэг */
-} AStrongTag;
-
-//----------------------------------------------------------------------------------------------
-/*!
- * \brief Список "монолитных" тэгов для парсера сообщений
- */
-AStrongTag g_strong_tags [] =
-{
-	{"[code]",      "[/code]"     },
-	{"[asm]",       "[/asm]"      },
-	{"[ccode]",     "[/ccode]"    },
-	{"[c]",         "[/c]"        },
-	{"[cpp]",       "[/cpp]"      },
-	{"[vc]",        "[/vc]"       },
-	{"[c#]",        "[/c#]"       },
-	{"[csharp]",    "[/csharp]"   },
-	{"[cs]",        "[/cs]"       },
-	{"[nemerle]",   "[/nemerle]"  },
-	{"[msil]",      "[/msil]"     },
-	{"[midl]",      "[/midl]"     },
-	{"[pascal]",    "[/pascal]"   },
-	{"[vb]",        "[/vb]"       },
-	{"[sql]",       "[/sql]"      },
-	{"[perl]",      "[/perl]"     },
-	{"[php]",       "[/php]"      },
-	{"[java]",      "[/java]"     },
-	{"[xml]",       "[/xml]"      },
-	{"[lisp]",      "[/lisp]"     },
-	{"[haskell]",   "[/haskell]"  },
-	{"[ruby]",      "[/ruby]"     },
-	{"[tagline]",   "[/tagline]"  },
-	{"[moderator]", "[/moderator]"},
-	{"[q]",         "[/q]"        },
-	{"[t]",         "[/t]"        },
-
-	// avalon specific, http://rsdn.ru/forum/rsdn/2240671.1.aspx
-	{"[graphviz]",  "[/graphviz]" },
-
-	// http://www.rsdn.ru/forum/message/3227340.1.aspx
-	{"[code=]",            "[/code]"},
-	{"[code=assembler]",   "[/code]"},
-	{"[code=c]",           "[/code]"},
-	{"[code=csharp]",      "[/code]"},
-	{"[code=cs]",          "[/code]"},
-	{"[code=nemerle]",     "[/code]"},
-	{"[code=erlang]",      "[/code]"},
-	{"[code=haskell]",     "[/code]"},
-	{"[code=idl]",         "[/code]"},
-	{"[code=java]",        "[/code]"},
-	{"[code=lisp]",        "[/code]"},
-	{"[code=msil]",        "[/code]"},
-	{"[code=ocaml]",       "[/code]"},
-	{"[code=pascal]",      "[/code]"},
-	{"[code=perl]",        "[/code]"},
-	{"[code=php]",         "[/code]"},
-	{"[code=prolog]",      "[/code]"},
-	{"[code=python]",      "[/code]"},
-	{"[code=ruby]",        "[/code]"},
-	{"[code=sql]",         "[/code]"},
-	{"[code=visualbasic]", "[/code]"},
-	{"[code=xsl]",         "[/code]"},
-	// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
-	{"[code=cpp]",         "[/code]"}
-};
-
-//----------------------------------------------------------------------------------------------
-/*!
- * \brief Блок текста для парсера исходного текста сообщения и формирования его HTML отображения
- */
-typedef struct AMessageBlock
-{
-	QString Tag;   /*!< \brief Содержимое тэга вместе со скобками */
-	QString Body;  /*!< \brief Тело тэга                          */
-} AMessageBlock;
-//----------------------------------------------------------------------------------------------
-/*!
  * \brief Список замены для подсветки синтаксиса Highlight.js
  * см. http://softwaremaniacs.org/soft/highlight/
  */
@@ -234,104 +162,24 @@ ASimpleTag g_highlight_tags [] =
 
 QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bool rated, const AMessageRatingList* rating_list)
 {
+	// очистка временных файлов (на данный момент graphiviz - TODO)
 	AGlobal::getInstance()->clearTempList();
 
-	QString data = message.Message;
+	// парсинг сообщения
+	AParsedBlockList list = AParser::parseBlocks(message.Message);
 
-	QList<AMessageBlock*> list;
+	// тема письма хранится без html замен
+	QString subject = message.Subject;
 
-	AMessageBlock* block = new AMessageBlock();
+	subject.replace("&", "&amp;");
+	subject.replace("<", "&lt;");
+	subject.replace(">", "&gt;");
 
-	list.append(block);
+	//
+	// формирование html
+	//
 
-	while (data.length() > 0)
-	{
-		// поиск начала тэга
-		int pos1 = data.indexOf("[");
-
-		if (pos1 == -1)
-		{
-			block->Body += data;
-			break;
-		}
-
-		if (pos1 + 1 == data.length())
-		{
-			block->Body += data;
-			break;
-		}
-
-		// проверка на "[["
-		if (data[pos1 + 1] == '[')
-		{
-			block->Body += data.mid(0, pos1) + "&#x5B;";
-			data.remove(0, pos1 + 2);
-			continue;
-		}
-
-		// найдено открытие начала тэга, поиск закрытия
-		int pos2 = data.indexOf("]", pos1);
-
-		if (pos2 == -1)
-		{
-			block->Body += data;
-			break;
-		}
-
-		// получение тэга
-		QString tag = data.mid(pos1, pos2 - pos1 + 1).toLower();
-
-		// игнорируем простые тэги
-		AStrongTag* found_tag = NULL;
-
-		for (size_t i = 0; i < sizeof(g_strong_tags) / sizeof(AStrongTag); i++)
-			if (tag == g_strong_tags[i].OpenTag)
-			{
-				found_tag = &g_strong_tags[i];
-				break;
-			}
-
-		if (found_tag == NULL)
-		{
-			block->Body += data.mid(0, pos2 + 1);
-			data.remove(0, pos2 + 1);
-			continue;
-		}
-
-		// найден не простой тэг
-		QString close_tag = found_tag->CloseTag;
-
-		int pos3 = data.indexOf(close_tag, pos2 + 1, Qt::CaseInsensitive);
-
-		if (pos3 == -1)
-		{
-			block->Body += data.mid(0, pos2 + 1);
-			data.remove(0, pos2 + 1);
-			continue;
-		}
-
-		// найдено закрытие непростого тэга
-
-		// копируем хвост в текущий блок
-		block->Body += data.mid(0, pos1);
-
-		// создание нового блока для спец-тэга
-		block = new AMessageBlock();
-
-		list.append(block);
-
-		block->Tag  = tag;
-		block->Body = data.mid(pos2 + 1, pos3 - pos2 - 1);
-
-		data.remove(0, pos3 + close_tag.length());
-
-		// открываем новый блок
-		block = new AMessageBlock();
-
-		list.append(block);
-	}
-
-	QString	result;
+	QString result;
 
 	result += "<html>";
 	result += "<head>";
@@ -353,20 +201,15 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 	#endif
 
 	result += "<script>hljs.initHighlightingOnLoad();</script>";
-
 	result += "<style type='text/css'>table { font-size: 11pt; }</style>";
 	result += "</head>";
+
+	// тело html
 	result += "<body topmargin='0' leftmargin='0' rightmargin='0' bottommargin='0'>";
 	result += "<table width='100%' cellpadding='1' cellspacing='0' border='0'>";
-
 	result += "<tr style='background-color: #E6F2E6' valign='center'>";
 
-	QString subject = message.Subject;
-
-	subject.replace("&", "&amp;");
-	subject.replace("<", "&lt;");
-	subject.replace(">", "&gt;");
-
+	// тема сообщения + ссылка на сообщение на сайте
 	result += "<td><a href='http://www.rsdn.ru/forum/message/" + QString::number(message.ID) + ".aspx'>" + QString::fromUtf8("<img src='qrc:/icons/show_topic.png' title='показать положение в теме' alt='показать положение в теме'>") + "</a><b>&nbsp;";
 
 	if (message.ID != 0 && special == false)
@@ -376,6 +219,7 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 
 	result += "</b></td>";
 
+	// иконки для выставления оценок
 	result += "<td align='right'>";
 
 	if (rated == true)
@@ -401,6 +245,7 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 	result += "&nbsp;&nbsp;";
 	result += "</td></tr>";
 
+	// имя пользователя + ссылка на профиль
 	if (message.IDUser == 0 || message.IDUser == -1)
 	{
 		if (message.UserNick.length() > 0)
@@ -413,7 +258,7 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 
 	result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;" + QString::fromUtf8("Дата:") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>" + message.MessageDate.toString("dd.MM.yyyy HH:mm") + "</td></tr>";
 
-	// формирование строки рейтинга
+	// формирование строки рейтинга сообщения
 	if (rating_list != NULL && rating_list->count() > 0)
 	{
 		/* "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2 */
@@ -471,146 +316,63 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 		}
 	}
 
-	//if (message.ID != 0 && special == false)
-	//	result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;URL:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><a href='http://www.rsdn.ru/forum/message/" + QString::number(message.ID) + ".1.aspx'>http://www.rsdn.ru/forum/message/" + QString::number(message.ID) + ".1.aspx</a></td></tr>";
-
 	result += "<tr><td colspan='2'><table width='99%' align='center'><tr><td><br />";
 
-	int index = 0;
-
-	// удаление пустых блоков
-	while (index < list.size())
-	{
-		AMessageBlock* block = list.at(index);
-
-		if (block->Body.trimmed().length() == 0)
-		{
-			delete block;
-			list.removeAt(index);
-			continue;
-		}
-
-		index++;
-	}
-
-	// формирование результата
+	// формирование тела сообщения
 	int size = list.size();
 
 	for (int i = 0; i < size; i++)
 	{
-		AMessageBlock* block = list.at(0);
+		AParsedBlock block = list.at(i);
 
-		if (block->Body.trimmed().length() == 0)
+		if (block.Type == pbtText)
 		{
-			delete block;
-			list.removeAt(0);
-			continue;
+			//result += processSimpleText(block->Body.trimmed(), message) + "<br /><br />";
 		}
 
-		if (block->Tag == "")
+		else if (block.Type == pbtQuote)
 		{
-			result += processSimpleText(block->Body.trimmed(), message) + "<br /><br />";
-		}
-
-		else if (block->Tag == "[q]")
-		{
-			result += "<table style='background-color: #FFFFE0;' width='98%' align='center'><tr><td>";
+			/*result += "<table style='background-color: #FFFFE0;' width='98%' align='center'><tr><td>";
 			result += processSimpleText(block->Body.trimmed(), message);
-			result += "</td></tr></table><br />";
+			result += "</td></tr></table><br />";*/
 		}
 
-		else if (block->Tag == "[moderator]")
+		else if (block.Type == pbtModerator)
 		{
-			result += "<table style='background-color: #FFC0C0;' width='100%'><tr><td>";
+			/*result += "<table style='background-color: #FFC0C0;' width='100%'><tr><td>";
 			result += processSimpleText(block->Body.trimmed(), message);
 			result += "</td></tr></table>";
 
 			// бывает так, что пишут текст после сообщения модератора
 			if (i + 1 != size)
-				result += "<br />";
+				result += "<br />";*/
 		}
 
-		else if (block->Tag == "[tagline]")
+		else if (block.Type == pbtTagline)
 		{
-			result += "<font color='#A52A2A' size=-1>";
+			/*result += "<font color='#A52A2A' size=-1>";
 			result += processSimpleText(block->Body.trimmed(), message);
-			result += "</font><br />";
+			result += "</font><br />";*/
 		}
-		else if (block->Tag == "[t]")
+
+		else if (block.Type == pbtTable)
 		{
-			QString temp = block->Body.trimmed();
+			/*QString temp = block->Body.trimmed();
 			QRegExp r("\\]((\r\n)|(\n))+\\[");
 			temp.replace(r, "][");
 
 			result += "<table align='center'>";
 			result += processSimpleText(temp, message);
-			result += "</table><br />";
+			result += "</table><br />";*/
 		}
 
-		else if (block->Tag == "[graphviz]")
-		{
-			QTemporaryFile* file = new QTemporaryFile();
-
-			if (file->open() == true)
-			{
-				QString program = "dot -Tgif -o " + file->fileName();
-
-				QProcess process;
-
-				process.start(program);
-
-				if (process.waitForStarted() == true)
-				{
-					QString plain_source = block->Body.trimmed();
-
-					plain_source.replace("&lt;",  "<");
-					plain_source.replace("&gt;",  ">");
-					plain_source.replace("&amp;", "&");
-
-					process.write(plain_source.toUtf8());
-
-					process.closeWriteChannel();
-
-					if (process.waitForFinished() == true)
-					{
-						AGlobal::getInstance()->TempFileList.append(file);
-
-						#ifdef Q_WS_WIN
-						result += "<p align='center'><img src='file:///" + file->fileName() + "'></p>";
-						#else
-						result += "<p align='center'><img src='file://" + file->fileName() + "'></p>";
-						#endif
-					}
-					else
-						delete file;
-				}
-				else
-					delete file;
-			}
-			else
-				delete file;
-		}
 		else
 		{
-			// костыль для того, чтобы удалить лишние строки в начале и конце блока
-			QStringList lst = block->Body.split("\n");
-
-			while (lst.size() && lst.at(0).trimmed().length() == 0)
-				lst.removeAt(0);
-
-			while (lst.size() && lst.at(lst.size() - 1).trimmed().length() == 0)
-				lst.removeAt(lst.size() - 1);
-
-			block->Body = lst.join("\n");
-
-			// табуляторы на стандартные(?) 4 пробела
-			block->Body.replace("\t", "    ");
-
 			// массив тэгов для подсветки кода
-			ASimpleTag* code_tags = g_highlight_tags;
+			//ASimpleTag* code_tags = g_highlight_tags;
 
-			while (code_tags->Source != NULL /* проход до последнего элемента массива тэгов, заданного {Source => NULL, Replace => NULL} */)
-			{
+			//while (code_tags->Source != NULL /* проход до последнего элемента массива тэгов, заданного {Source => NULL, Replace => NULL} */)
+			/*{
 				QString source  = QString::fromUtf8(code_tags->Source);
 				QString replace = QString::fromUtf8(code_tags->Replace);
 
@@ -629,14 +391,11 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 
 			result += "<table width='98%' align='center'><tr><td><pre>";
 			result += block->Body;
-			result += "</pre></tr></td></table><br />";
+			result += "</pre></tr></td></table><br />";*/
 		}
-
-		delete block;
-
-		list.removeAt(0);
 	}
 
+	// хвост html
 	result += "</td></tr></table></td></tr>";
 	result += "<tr style='background-color: #E6F2E6'><td colspan='2'><b>&nbsp;</b></td></tr>";
 
@@ -835,7 +594,7 @@ QString AFormatter::normalizeBody (const QString& body, const QString& nick)
 {
 	QString data = body;
 
-	// отбрасываем 	"[tagline]" и "[moderator]"
+	// отбрасываем "[tagline]" и "[moderator]"
 	QRegExp tagline("\\[tagline\\](.+)\\[/tagline\\]",       Qt::CaseInsensitive);
 	QRegExp moderator("\\[moderator\\](.+)\\[/moderator\\]", Qt::CaseInsensitive);
 
