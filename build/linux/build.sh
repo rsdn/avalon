@@ -10,7 +10,7 @@ cd ../../
 make clean
 
 # создание pro-файла
-qmake -project -recursive -Wall -o ${PROJECT_NAME}.pro \
+qmake -project -recursive -Wall -nopwd -o ${PROJECT_NAME}.pro \
     "CONFIG += debug_and_release" \
     "QT += network sql webkit" \
     "LIBS += -laspell -lz" \

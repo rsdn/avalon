@@ -1,0 +1,8 @@
+# временные файлы сборки
+debug/*
+release/*
+
+# файлы, генерируемые qmake
+Makefile
+Makefile.Debug
+Makefile.Release

@@ -1,0 +1,21 @@
+AParsedBlockList
+(
+	[0] = AParsedBlock
+	(
+		Type    = pbtCode
+		SubType = pbstSourceCode
+		Strings = AQuotedStringList
+		(
+			[0] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = многострочный код
+			)
+			[1] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = на разных строках
+			)
+		)
+	)
+)

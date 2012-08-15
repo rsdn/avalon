@@ -1,0 +1,48 @@
+AParsedBlockList
+(
+	[0] = AParsedBlock
+	(
+		Type    = pbtText
+		SubType = pbstText
+		Strings = AQuotedStringList
+		(
+			[0] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = простой текст без квоты
+			)
+			[1] = AQuotedString
+			(
+				QuoteLevel = 1
+				QuoteText  = A>
+				Data       = простой текст сообщения
+			)
+		)
+	)
+	[1] = AParsedBlock
+	(
+		Type    = pbtCode
+		SubType = pbstSourceCode
+		Strings = AQuotedStringList
+		(
+			[0] = AQuotedString
+			(
+				QuoteLevel = 1
+				QuoteText  = A>
+				Data       = многострочный код
+			)
+			[1] = AQuotedString
+			(
+				QuoteLevel = 1
+				QuoteText  = A>
+				Data       = на разных строках
+			)
+			[2] = AQuotedString
+			(
+				QuoteLevel = 1
+				QuoteText  = A>
+				Data       = с квотой
+			)
+		)
+	)
+)

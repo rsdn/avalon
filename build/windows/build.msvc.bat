@@ -28,7 +28,7 @@ REM *******************************
 REM * создание проекта и makefile *
 REM *******************************
 cd ../../
-%QT_QMAKE% -project -recursive -Wall -o %PROJECT_NAME%.pro "CONFIG += release" "QT += network sql webkit" "INCLUDEPATH += %ASPELL_INC% %ZLIB_INC%" "LIBS += %ASPELL_LIB% %ZLIB_LIB%" "RC_FILE += resource.rc" src
+%QT_QMAKE% -project -recursive -Wall -nopwd -o %PROJECT_NAME%.pro "CONFIG += release" "QT += network sql webkit" "INCLUDEPATH += %ASPELL_INC% %ZLIB_INC%" "LIBS += %ASPELL_LIB% %ZLIB_LIB%" "RC_FILE += resource.rc" src
 %QT_QMAKE% %PROJECT_NAME%.pro
 
 REM ******************************************
