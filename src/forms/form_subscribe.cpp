@@ -1,10 +1,9 @@
 #include "form_subscribe.h"
 //----------------------------------------------------------------------------------------------
-#include "../webservice.h"
-#include "../widgets/tree_widget_item.h"
-#include "../storage/storage_factory.h"
-//----------------------------------------------------------------------------------------------
 #include "form_request.h"
+#include "webservice.h"
+#include "widgets/tree_widget_item.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 /*!
  * \brief Элемент для дерева форумов с информацией о форуме

@@ -1,7 +1,7 @@
 #include "form_settings.h"
 //----------------------------------------------------------------------------------------------
-#include "../global.h"
-#include "../storage/storage_factory.h"
+#include "global.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
 FormSettings::FormSettings (QWidget* parent) : FormSettingsUI (parent)

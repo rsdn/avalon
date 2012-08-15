@@ -1,6 +1,6 @@
 #include "form_moderate_ui.h"
 //----------------------------------------------------------------------------------------------
-#include "../storage/storage_factory.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
 FormModerateUI::FormModerateUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint

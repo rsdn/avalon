@@ -6,8 +6,8 @@
 #ifndef _avalon_istorage_h_
 #define _avalon_istorage_h_
 
-#include "../model/all.h"
-#include "../iprogress.h"
+#include "model/all.h"
+#include "iprogress.h"
 #include "database_error.h"
 
 /*!

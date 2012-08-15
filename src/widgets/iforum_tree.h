@@ -6,7 +6,7 @@
 #ifndef _avalon_iforum_tree_h_
 #define _avalon_iforum_tree_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Интерфейс для работы с деревом форумов

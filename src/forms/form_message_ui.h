@@ -6,8 +6,8 @@
 #ifndef _avalon_form_message_ui_h_
 #define _avalon_form_message_ui_h_
 
-#include "../widgets/web_view.h"
-#include "../widgets/spell_edit.h"
+#include "widgets/web_view.h"
+#include "widgets/spell_edit.h"
 
 /*!
  * \brief GUI формы создания или ответа на сообщение.

@@ -1,6 +1,6 @@
 #include "form_moderate.h"
 //----------------------------------------------------------------------------------------------
-#include "../storage/storage_factory.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
 FormModerate::FormModerate  (QWidget* parent, int id_message, int edit_id) : FormModerateUI (parent)

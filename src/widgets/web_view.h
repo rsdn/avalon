@@ -6,7 +6,7 @@
 #ifndef _avalon_web_view_h_
 #define _avalon_web_view_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Cабклассинг QWebView для установки дефолтного поведения

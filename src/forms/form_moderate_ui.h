@@ -6,7 +6,7 @@
 #ifndef _avalon_form_moderate_ui_h_
 #define _avalon_form_moderate_ui_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Описатель действия для списка действий при создании модерилки

@@ -1,6 +1,6 @@
 #include "sqlite_storage.h"
 //----------------------------------------------------------------------------------------------
-#include "../global.h"
+#include "global.h"
 //----------------------------------------------------------------------------------------------
 
 ASQLiteStorage::ASQLiteStorage () : ASQLiteDatabase(), IAStorage ()

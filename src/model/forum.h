@@ -6,7 +6,7 @@
 #ifndef _avalon_forum_info_h_
 #define _avalon_forum_info_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Описатель форума

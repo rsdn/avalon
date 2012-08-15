@@ -7,7 +7,7 @@
 #define _avalon_message_view_h_
 
 #include "web_view.h"
-#include "../interfaces.h"
+#include "interfaces.h"
 
 /*!
  * \brief Виджет отображения сообщений

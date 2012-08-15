@@ -6,7 +6,7 @@
 #ifndef _avalon_forum_tree_h_
 #define _avalon_forum_tree_h_
 
-#include "../interfaces.h"
+#include "interfaces.h"
 
 /*!
  * \brief Виджет дерева форумов

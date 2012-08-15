@@ -1,14 +1,13 @@
 #include "form_main.h"
 //----------------------------------------------------------------------------------------------
-#include "../global.h"
-#include "../webservice.h"
-#include "../storage/storage_factory.h"
-//----------------------------------------------------------------------------------------------
+#include "global.h"
 #include "form_date.h"
+#include "webservice.h"
 #include "form_input.h"
 #include "form_request.h"
 #include "form_settings.h"
 #include "form_subscribe.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
 AFormMain::AFormMain () : AFormMainUI (), IFormMain ()

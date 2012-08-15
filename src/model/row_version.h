@@ -6,7 +6,7 @@
 #ifndef _avalon_row_version_info_h_
 #define _avalon_row_version_info_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Описатель версий строк

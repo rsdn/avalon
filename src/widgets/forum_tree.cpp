@@ -1,13 +1,12 @@
 #include "forum_tree.h"
 //----------------------------------------------------------------------------------------------
-#include "../global.h"
-#include "../model/all.h"
-#include "../icon_effect.h"
-#include "../forms/form_date.h"
-#include "../forms/form_message.h"
-#include "../storage/storage_factory.h"
-//----------------------------------------------------------------------------------------------
+#include "global.h"
+#include "model/all.h"
+#include "icon_effect.h"
+#include "forms/form_date.h"
 #include "tree_widget_item.h"
+#include "forms/form_message.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 /*!
  * \brief Элемент для дерева группы форумов с информацией о группе

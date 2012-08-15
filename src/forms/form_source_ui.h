@@ -6,7 +6,7 @@
 #ifndef _avalon_form_source_ui_h_
 #define _avalon_form_source_ui_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief GUI формы просмотра сообщения в raw

@@ -6,8 +6,7 @@
 #ifndef _avalon_form_subscribe_h_
 #define _avalon_form_subscribe_h_
 
-#include "../model/all.h"
-
+#include "model/all.h"
 #include "form_subscribe_ui.h"
 
 /*!

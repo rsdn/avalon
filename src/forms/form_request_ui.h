@@ -6,7 +6,7 @@
 #ifndef _avalon_form_request_ui_h_
 #define _avalon_form_request_ui_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief GUI формы для отображения прогресса работы и для HTTP запросов

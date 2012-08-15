@@ -6,7 +6,7 @@
 #ifndef _avalon_query_h_
 #define _avalon_query_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Обертка для работы с SQL запросами

@@ -6,9 +6,9 @@
 #ifndef _avalon_form_main_ui_h_
 #define _avalon_form_main_ui_h_
 
-#include "../widgets/forum_tree.h"
-#include "../widgets/message_tree.h"
-#include "../widgets/message_view.h"
+#include "widgets/forum_tree.h"
+#include "widgets/message_tree.h"
+#include "widgets/message_view.h"
 
 /*!
  * \brief Класс для генерации GUI части главной формы

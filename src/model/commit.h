@@ -6,7 +6,7 @@
 #ifndef _avalon_commit_info_h_
 #define _avalon_commit_info_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Описатель исключения коммита при отправке сообщений/оценок/модерилок на сервер

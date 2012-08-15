@@ -6,7 +6,7 @@
 #ifndef _avalon_tree_widget_item_h_
 #define _avalon_tree_widget_item_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Обертка для QTreeWidgetItem упрощающая навигацию по элементам дерева

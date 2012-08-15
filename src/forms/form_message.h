@@ -6,9 +6,8 @@
 #ifndef _avalon_form_message_h_
 #define _avalon_form_message_h_
 
-#include "../model/all.h"
-#include "../interfaces.h"
-
+#include "model/all.h"
+#include "interfaces.h"
 #include "form_message_ui.h"
 
 /*!

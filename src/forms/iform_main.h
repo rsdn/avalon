@@ -6,7 +6,7 @@
 #ifndef _avalon_iform_main_h_
 #define _avalon_iform_main_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Перечисление действий/меню для включения отключения

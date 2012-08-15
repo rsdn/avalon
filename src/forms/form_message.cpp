@@ -1,8 +1,8 @@
 #include "form_message.h"
 //----------------------------------------------------------------------------------------------
-#include "../parser.h"
-#include "../global.h"
-#include "../storage/storage_factory.h"
+#include "parser.h"
+#include "global.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
 FormMessage::FormMessage (QWidget* parent, bool is_reply, const AMessageInfoGUI& info, int edit_id) : FormMessageUI (parent)

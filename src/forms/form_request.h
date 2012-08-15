@@ -6,8 +6,7 @@
 #ifndef _avalon_form_request_h_
 #define _avalon_form_request_h_
 
-#include "../iprogress.h"
-
+#include "iprogress.h"
 #include "form_request_ui.h"
 
 /*!

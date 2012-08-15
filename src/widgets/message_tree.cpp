@@ -1,13 +1,12 @@
 #include "message_tree.h"
 //----------------------------------------------------------------------------------------------
-#include "../global.h"
-#include "../icon_effect.h"
-#include "../forms/form_source.h"
-#include "../forms/form_message.h"
-#include "../forms/form_moderate.h"
-#include "../storage/storage_factory.h"
-//----------------------------------------------------------------------------------------------
+#include "global.h"
+#include "icon_effect.h"
 #include "tree_widget_item.h"
+#include "forms/form_source.h"
+#include "forms/form_message.h"
+#include "forms/form_moderate.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 /*!
  * \brief Максимальная длина истории для навигации Вперед / Назад

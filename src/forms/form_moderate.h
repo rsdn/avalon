@@ -7,8 +7,7 @@
 #define _avalon_form_moderate_h_
 
 #include "form_moderate_ui.h"
-
-#include "../widgets/iforum_tree.h"
+#include "widgets/iforum_tree.h"
 
 /*!
  * \brief Форма для ввода информации о модерировании

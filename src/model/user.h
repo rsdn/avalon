@@ -6,7 +6,7 @@
 #ifndef _avalon_user_info_h_
 #define _avalon_user_info_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Описатель пользователя

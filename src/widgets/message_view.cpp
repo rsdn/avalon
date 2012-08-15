@@ -1,7 +1,7 @@
 #include "message_view.h"
 //----------------------------------------------------------------------------------------------
-#include "../parser.h"
-#include "../storage/storage_factory.h"
+#include "parser.h"
+#include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
 AMessageView::AMessageView (QWidget* parent) : AWebViewWidget (parent), IMessageView ()

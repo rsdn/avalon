@@ -6,7 +6,7 @@
 #ifndef _avalon_imessage_view_h_
 #define _avalon_imessage_view_h_
 
-#include "../model/all.h"
+#include "model/all.h"
 
 /*!
  * \brief Интерфейс для работы с областью отображения HTML сообщения извне

@@ -6,7 +6,7 @@
 #ifndef _avalon_database_error_h_
 #define _avalon_database_error_h_
 
-#include "../sysheaders.h"
+#include "sysheaders.h"
 
 /*!
  * \brief Обертка для контроля и отображения ошибок при работе с БД
