@@ -1,6 +1,6 @@
 #include "message_view.h"
 //----------------------------------------------------------------------------------------------
-#include "parser.h"
+#include "formatter.h"
 #include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
@@ -53,15 +53,15 @@ void AMessageView::setMessage (const AMessageInfo& message, bool special, bool r
 			AMessageRatingList list;
 
 			if (storage->getMessageRatingList(message.ID, list) != false)
-				body = AParser::formatMessage(message, special, rated, (list.count() > 0 ? &list : NULL));
+				body = AFormatter::formatMessage(message, special, rated, (list.count() > 0 ? &list : NULL));
 			else
-				body = AParser::formatMessage(message, special, rated);
+				body = AFormatter::formatMessage(message, special, rated);
 		}
 		else
-			body = AParser::formatMessage(message, special, rated);
+			body = AFormatter::formatMessage(message, special, rated);
 	}
 	else
-		body = AParser::formatMessage(message, special, rated);
+		body = AFormatter::formatMessage(message, special, rated);
 
 	View->setHtml(body);
 }

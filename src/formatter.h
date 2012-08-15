@@ -3,8 +3,8 @@
  * \brief Парсер текста сообщения для отображения
  */
 
-#ifndef _avalon_parser_parser_h_
-#define _avalon_parser_parser_h_
+#ifndef _avalon_formatter_h_
+#define _avalon_formatter_h_
 
 #include "model/all.h"
 
@@ -20,7 +20,7 @@ typedef struct ASimpleTag
 /*!
  * \brief Парсер текста сообщения для отображения
  */
-class AParser
+class AFormatter
 {
 	public:
 
@@ -73,4 +73,4 @@ class AParser
 		static QString processSimpleText (const QString& text, const AMessageInfo& message);
 };
 
-#endif
+#endif   // _avalon_formatter_h_

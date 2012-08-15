@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "formatter.h"
 #include "global.h"
 //----------------------------------------------------------------------------------------------
 /*!
@@ -232,7 +232,7 @@ ASimpleTag g_highlight_tags [] =
 };
 //----------------------------------------------------------------------------------------------
 
-QString AParser::formatMessage (const AMessageInfo& message, bool special, bool rated, const AMessageRatingList* rating_list)
+QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bool rated, const AMessageRatingList* rating_list)
 {
 	AGlobal::getInstance()->clearTempList();
 
@@ -648,7 +648,7 @@ QString AParser::formatMessage (const AMessageInfo& message, bool special, bool 
 }
 //----------------------------------------------------------------------------------------------
 
-QString AParser::processSimpleText (const QString& text, const AMessageInfo& message)
+QString AFormatter::processSimpleText (const QString& text, const AMessageInfo& message)
 {
 	QString data = text;
 
@@ -831,7 +831,7 @@ QString AParser::processSimpleText (const QString& text, const AMessageInfo& mes
 }
 //----------------------------------------------------------------------------------------------
 
-QString AParser::normalizeBody (const QString& body, const QString& nick)
+QString AFormatter::normalizeBody (const QString& body, const QString& nick)
 {
 	QString data = body;
 
@@ -865,7 +865,7 @@ QString AParser::normalizeBody (const QString& body, const QString& nick)
 	// разбиение
 	QStringList source = data.split("\n");
 
-	QString nick_3 = AParser::nick3(nick);
+	QString nick_3 = AFormatter::nick3(nick);
 
 	// добавление квотинга к строкам
 	for (int i = 0; i < source.size(); i++)
@@ -948,7 +948,7 @@ QString AParser::normalizeBody (const QString& body, const QString& nick)
 }
 //----------------------------------------------------------------------------------------------
 
-int AParser::isURL (const QString& text)
+int AFormatter::isURL (const QString& text)
 {
 	QRegExp url(g_url_regex, Qt::CaseInsensitive);
 
@@ -962,7 +962,7 @@ int AParser::isURL (const QString& text)
 }
 //----------------------------------------------------------------------------------------------
 
-QString AParser::nick3 (const QString& nick)
+QString AFormatter::nick3 (const QString& nick)
 {
 	if (nick.length() < 4)
 		return nick;

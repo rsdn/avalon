@@ -1,6 +1,6 @@
 #include "form_message_ui.h"
 //----------------------------------------------------------------------------------------------
-#include "parser.h"
+#include "formatter.h"
 //----------------------------------------------------------------------------------------------
 /*!
  * \brief Описатель спецсимвола для вставки
@@ -552,7 +552,7 @@ void FormMessageUI::button_hyperlink_triggered ()
 
 	QString text = cursor.selectedText();
 
-	int url = AParser::isURL(text);
+	int url = AFormatter::isURL(text);
 
 	if (url == 1)
 		cursor.insertText((QString)"[url=" + cursor.selectedText() + QString::fromUtf8("]здесь[/url]"));

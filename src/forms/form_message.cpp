@@ -1,7 +1,7 @@
 #include "form_message.h"
 //----------------------------------------------------------------------------------------------
-#include "parser.h"
 #include "global.h"
+#include "formatter.h"
 #include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ FormMessage::FormMessage (QWidget* parent, bool is_reply, const AMessageInfoGUI&
 		// корректировка тела сообщения
 		//
 
-		body = AParser::normalizeBody(body, info.UserNick).trimmed();
+		body = AFormatter::normalizeBody(body, info.UserNick).trimmed();
 
 		if (body.length() > 0)
 			body += "\r\n\r\n";
@@ -306,7 +306,7 @@ void FormMessage::tab_changed (int tab_index)
 		info.Message        = body;
 		info.MessageDate    = QDateTime::currentDateTime();
 
-		body = AParser::formatMessage(info);
+		body = AFormatter::formatMessage(info);
 
 		m_text_view->View->setHtml(body);
 	}
