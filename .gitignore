@@ -5,7 +5,7 @@ avalon
 debug/*
 release/*
 
-# файлы, генерируемые qmake (см. dev/build.*)
+# файлы, генерируемые qmake
 avalon.pro
 Makefile
 Makefile.Debug
