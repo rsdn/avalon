@@ -6,6 +6,7 @@
 #ifndef _avalon_formatter_h_
 #define _avalon_formatter_h_
 
+#include "parser.h"
 #include "model/all.h"
 
 /*!
@@ -41,6 +42,21 @@ class AFormatter
 		static int isURL (const QString& text);
 
 	private:
+
+		/*!
+		 * \brief Форматирование блока текста
+		 * \param block Описатель блока
+		 * \return Строка html для вставки
+		 */
+		static QString formatParsedBlock (const AParsedBlock& block);
+
+		/*!
+		 * \brief Форматирование списка квотированных строк
+		 * \param list Список строк
+		 * \param sub_type Подтип блока строк
+		 * \return Строка html для вставки
+		 */
+		static QString formatQuotedStringList (const AQuotedStringList& list, AParsedBlockSubType sub_type);
 
 		/*!
 		 * \brief Создание аббриветауры ника из полного имени

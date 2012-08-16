@@ -1,7 +1,6 @@
 #include "formatter.h"
 //----------------------------------------------------------------------------------------------
 #include "global.h"
-#include "parser.h"
 //----------------------------------------------------------------------------------------------
 /*!
  * \brief Описатель простого тэга для парсера сообщений
@@ -97,74 +96,10 @@ ASimpleTag g_smile_tags [] =
 	{":xz:",         "<img src='qrc:/smiles/wrong.png'>"     },
 	{":beer:",       "<img src='qrc:/smiles/beer.png'>"      }
 };
-
-//----------------------------------------------------------------------------------------------
-/*!
- * \brief Список замены для подсветки синтаксиса Highlight.js
- * см. http://softwaremaniacs.org/soft/highlight/
- */
-ASimpleTag g_highlight_tags [] =
-{
-	{"[code]",    ""          },
-	{"[asm]",     "avrasm"    },
-	{"[ccode]",   "cpp"       },
-	{"[c]",       "cpp"       },
-	{"[cpp]",     "cpp"       }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-	{"[vc]",      "cpp"       }, // avalon specific, в FAQ нету такого, но, как выяснилось, встречается
-	{"[c#]",      "cs"        },
-	{"[csharp]",  "cs"        },
-	{"[cs]",      "cs"        },
-	{"[nemerle]", "cs"        }, // ?
-	{"[msil]",    "cpp"       }, // ?
-	{"[midl]",    "cpp"       }, // ?
-	{"[pascal]",  "delphi"    },
-	{"[vb]",      "vbscript"  }, // ?
-	{"[sql]",     "sql"       },
-	{"[perl]",    "perl"      },
-	{"[php]",     "php"       },
-	{"[java]",    "java"      },
-	{"[js]",      "javascript"}, // avalon specific
-	{"[xml]",     "xml"       },
-	{"[lisp]",    "lisp"      },
-	{"[haskell]", "haskell"   },
-	{"[ruby]",    "ruby"      },
-
-	// http://www.rsdn.ru/forum/message/3227340.1.aspx
-	{"[code=]",            ""        },
-	{"[code=assembler]",   "avrasm"  },
-	{"[code=c]",           "cpp"     },
-	{"[code=cpp]",         "cpp"     },
-	{"[code=csharp]",      "cs"      },
-	{"[code=cs]",          "cs"      },
-	{"[code=nemerle]",     "cs"      },
-	{"[code=erlang]",      "erlang"  },
-	{"[code=haskell]",     "haskell" },
-	{"[code=idl]",         "cpp"     }, // ?
-	{"[code=java]",        "java"    },
-	{"[code=lisp]",        "lisp"    },
-	{"[code=msil]",        "cpp"     }, // ?
-	{"[code=ocaml]",       "lisp"    }, // ?
-	{"[code=pascal]",      "delphi"  },
-	{"[code=perl]",        "perl"    },
-	{"[code=php]",         "php"     },
-	{"[code=prolog]",      "lisp"    }, // ?
-	{"[code=python]",      "python"  },
-	{"[code=ruby]",        "ruby"    },
-	{"[code=sql]",         "sql"     },
-	{"[code=visualbasic]", "vbscript"},
-	{"[code=xsl]",         "xml"     },
-	// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
-	{"[code=cpp]",         "cpp"     },
-
-	{NULL, NULL}
-};
 //----------------------------------------------------------------------------------------------
 
 QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bool rated, const AMessageRatingList* rating_list)
 {
-	// очистка временных файлов (на данный момент graphiviz - TODO)
-	AGlobal::getInstance()->clearTempList();
-
 	// парсинг сообщения
 	AParsedBlockList list = AParser::parseBlocks(message.Message);
 
@@ -319,81 +254,8 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 	result += "<tr><td colspan='2'><table width='99%' align='center'><tr><td><br />";
 
 	// формирование тела сообщения
-	int size = list.size();
-
-	for (int i = 0; i < size; i++)
-	{
-		AParsedBlock block = list.at(i);
-
-		if (block.Type == pbtText)
-		{
-			//result += processSimpleText(block->Body.trimmed(), message) + "<br /><br />";
-		}
-
-		else if (block.Type == pbtQuote)
-		{
-			/*result += "<table style='background-color: #FFFFE0;' width='98%' align='center'><tr><td>";
-			result += processSimpleText(block->Body.trimmed(), message);
-			result += "</td></tr></table><br />";*/
-		}
-
-		else if (block.Type == pbtModerator)
-		{
-			/*result += "<table style='background-color: #FFC0C0;' width='100%'><tr><td>";
-			result += processSimpleText(block->Body.trimmed(), message);
-			result += "</td></tr></table>";
-
-			// бывает так, что пишут текст после сообщения модератора
-			if (i + 1 != size)
-				result += "<br />";*/
-		}
-
-		else if (block.Type == pbtTagline)
-		{
-			/*result += "<font color='#A52A2A' size=-1>";
-			result += processSimpleText(block->Body.trimmed(), message);
-			result += "</font><br />";*/
-		}
-
-		else if (block.Type == pbtTable)
-		{
-			/*QString temp = block->Body.trimmed();
-			QRegExp r("\\]((\r\n)|(\n))+\\[");
-			temp.replace(r, "][");
-
-			result += "<table align='center'>";
-			result += processSimpleText(temp, message);
-			result += "</table><br />";*/
-		}
-
-		else
-		{
-			// массив тэгов для подсветки кода
-			//ASimpleTag* code_tags = g_highlight_tags;
-
-			//while (code_tags->Source != NULL /* проход до последнего элемента массива тэгов, заданного {Source => NULL, Replace => NULL} */)
-			/*{
-				QString source  = QString::fromUtf8(code_tags->Source);
-				QString replace = QString::fromUtf8(code_tags->Replace);
-
-				if (block->Tag == source)
-				{
-					if (replace.length() == 0)
-						break;
-
-					block->Body = "<code class='" + replace + "'>" + block->Body + "</code>";
-
-					break;
-				}
-
-				code_tags++;
-			}
-
-			result += "<table width='98%' align='center'><tr><td><pre>";
-			result += block->Body;
-			result += "</pre></tr></td></table><br />";*/
-		}
-	}
+	for (int i = 0; i < list.count(); i++)
+        result += formatParsedBlock(list.at(i));
 
 	// хвост html
 	result += "</td></tr></table></td></tr>";
@@ -402,6 +264,125 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 	result += "</table>";
 	result += "</body>";
 	result += "</html>";
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::formatParsedBlock (const AParsedBlock& block)
+{
+	QString result;
+
+	if (block.Type == pbtText)
+	{
+		result += formatQuotedStringList(block.Strings, block.SubType);
+		result += "<br /><br />";
+	}
+
+	else if (block.Type == pbtQuote)
+	{
+		result += "<table style='background-color: #FFFFE0;' width='98%' align='center'><tr><td>";
+		result += formatQuotedStringList(block.Strings, block.SubType);
+		result += "</td></tr></table><br />";
+	}
+
+	else if (block.Type == pbtModerator)
+	{
+		result += "<table style='background-color: #FFC0C0;' width='100%'><tr><td>";
+		result += formatQuotedStringList(block.Strings, block.SubType);
+		result += "</td></tr></table>";
+	}
+
+	else if (block.Type == pbtTagline)
+	{
+		result += "<font color='#A52A2A' size=-1>";
+		result += formatQuotedStringList(block.Strings, block.SubType);
+		result += "</font><br />";
+	}
+
+	else if (block.Type == pbtTable)
+	{
+		result += "<table align='center'>";
+		result += formatQuotedStringList(block.Strings, block.SubType);
+		result += "</table><br />";
+	}
+
+	else
+	{
+		/*!
+		 * Описатель соответствий языку и имени для подсветки
+		 */
+		typedef struct AHighlightMap
+		{
+			AParsedBlockType Type;      /*!< \brief Тип кода для подсветки    */
+			const char*      CodeClass; /*!< \brief Класс кода в Highlight.js */
+		} AHighlightMap;
+
+		// Список замены для подсветки синтаксиса Highlight.js
+		// см. http://softwaremaniacs.org/soft/highlight/
+		const AHighlightMap highlight_map [] =
+		{
+			{ pbtCode,      ""          },
+			{ pbtAssembler, "avrasm"    },
+			{ pbtC,         "cpp"       },
+			{ pbtCPP,       "cpp"       },
+			{ pbtCSharp,    "cs"        },
+			{ pbtMSIL,      "cpp"       },
+			{ pbtIDL,       "cpp"       },
+			{ pbtPascal,    "delphi"    },
+			{ pbtBasic,     "vbscript"  },
+			{ pbtSQL,       "sql"       },
+			{ pbtPerl,      "perl"      },
+			{ pbtPHP,       "php"       },
+			{ pbtJava,      "java"      },
+			{ pbtXML,       "xml"       },
+			{ pbtLisp,      "lisp"      },
+			{ pbtHaskell,   "haskell"   },
+			{ pbtErlang,    "erlang"    },
+			{ pbtOCaml,     "lisp"      },
+			{ pbtProlog,    "lisp"      },
+			{ pbtPython,    "python"    },
+			{ pbtRuby,      "ruby"      },
+			{ pbtNemerle,   "cs"        },
+			{ pbtText,      NULL        }  // last
+		};
+
+		// массив тэгов для подсветки кода
+		const AHighlightMap* map = highlight_map;
+
+		while (map->CodeClass != NULL)
+		{
+			if (block.Type == map->Type)
+			{
+				QString code_class = QString::fromUtf8(map->CodeClass);
+
+				if (code_class.length() == 0)
+					break;
+
+				result += "<table width='98%' align='center'><tr><td><pre>";
+				result = "<code class='" + code_class + "'>" + formatQuotedStringList(block.Strings, block.SubType) + "</code>";
+				result += "</pre></tr></td></table><br />";
+
+				break;
+			}
+
+			map++;
+		}
+	}
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, AParsedBlockSubType sub_type)
+{
+	QString result;
+
+	for (int i = 0; i < list.count(); i++)
+	{
+		AQuotedString string = list.at(i);
+		result += string.QuoteText + string.Data + "<br>";
+	}
 
 	return result;
 }
