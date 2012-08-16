@@ -360,7 +360,7 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 					break;
 
 				result += "<table width='98%' align='center'><tr><td><pre>";
-				result = "<code class='" + code_class + "'>" + formatQuotedStringList(block.Strings, block.SubType) + "</code>";
+				result += "<code class='" + code_class + "'>" + formatQuotedStringList(block.Strings, block.SubType) + "</code>";
 				result += "</pre></tr></td></table><br />";
 
 				break;
@@ -378,10 +378,34 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 {
 	QString result;
 
+	int last_quote_level = 0;
+
 	for (int i = 0; i < list.count(); i++)
 	{
 		AQuotedString string = list.at(i);
-		result += string.QuoteText + string.Data + "<br>";
+
+		QString line = string.QuoteText + " " + string.Data;
+
+		if (sub_type != pbstSourceCode)
+		{
+			last_quote_level = string.QuoteLevel;
+
+			if (last_quote_level != 0)
+			{
+				if (last_quote_level % 3 == 0)
+					result += "<font color=darkblue>" + line + "</font>";
+				else if (last_quote_level % 2 == 0)
+					result += "<font color=darkred>" + line + "</font>";
+				else
+					result += "<font color=darkgreen>" + line + "</font>";
+			}
+			else
+				result += line;
+
+			result += "<br><br>";
+		}
+		else
+			result += line + "<br>";
 	}
 
 	return result;
