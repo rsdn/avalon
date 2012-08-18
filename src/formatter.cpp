@@ -135,7 +135,7 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 		result += "<script src='file://" + path + "/highlight/highlight.pack.js'></script>";
 	#endif
 
-	result += "<script>hljs.initHighlightingOnLoad();</script>";
+	result += "<script>hljs.tabReplace = '    '; hljs.initHighlightingOnLoad();</script>";
 	result += "<style type='text/css'>table { font-size: 11pt; }</style>";
 	result += "</head>";
 
@@ -350,24 +350,28 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 		// массив тэгов для подсветки кода
 		const AHighlightMap* map = highlight_map;
 
+		QString code_class;
+
 		while (map->CodeClass != NULL)
 		{
 			if (block.Type == map->Type)
 			{
-				QString code_class = QString::fromUtf8(map->CodeClass);
-
-				if (code_class.length() == 0)
-					break;
-
-				result += "<table width='98%' align='center'><tr><td><pre>";
-				result += "<code class='" + code_class + "'>" + formatQuotedStringList(block.Strings, block.SubType) + "</code>";
-				result += "</pre></tr></td></table><br />";
-
+				code_class = QString::fromUtf8(map->CodeClass);
 				break;
 			}
 
 			map++;
 		}
+
+		result += "<table width='98%' align='center'><tr><td><pre>";
+
+		if (code_class.length() > 0)
+			result += "<code class='" + code_class + "'>";
+		else
+			result += "<code>";
+
+		result += formatQuotedStringList(block.Strings, block.SubType) + "</code>";
+		result += "</pre></tr></td></table><br />";
 	}
 
 	return result;
@@ -378,7 +382,7 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 {
 	QString result;
 
-	int last_quote_level = 0;
+	int last_quote_level = -1;
 
 	for (int i = 0; i < list.count(); i++)
 	{
@@ -388,9 +392,15 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 
 		if (sub_type != pbstSourceCode)
 		{
-			last_quote_level = string.QuoteLevel;
+			if (i != 0 && string.QuoteLevel != last_quote_level)
+				// дополнительная пустая строка между квотами
+				result += "<br>";
 
-			if (last_quote_level != 0)
+			if (string.QuoteLevel == 0 && last_quote_level == 0)
+				// дополнительная пустая строка в рамках нулевой квоты (разделение абзацев)
+				result += "<br>";
+
+			if (string.QuoteLevel != 0)
 			{
 				if (last_quote_level % 3 == 0)
 					result += "<font color=darkblue>" + line + "</font>";
@@ -402,7 +412,9 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 			else
 				result += line;
 
-			result += "<br><br>";
+			result += "<br>";
+
+			last_quote_level = string.QuoteLevel;
 		}
 		else
 			result += line + "<br>";

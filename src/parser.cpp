@@ -39,6 +39,7 @@ const AStrongTag g_strong_tags [] =
 	{ "[haskell]",          "[/haskell]",   pbtHaskell,   pbstSourceCode },
 	{ "[ruby]",             "[/ruby]",      pbtRuby,      pbstSourceCode },
 	{ "[nemerle]",          "[/nemerle]",   pbtNemerle,   pbstSourceCode },
+	{ "[python]",           "[/python]",    pbtPython,    pbstSourceCode },
 
 	// http://www.rsdn.ru/forum/message/3227340.1.aspx
 	{ "[code=]",            "[/code]",      pbtCode,      pbstSourceCode },
