@@ -74,8 +74,7 @@ typedef enum
 	pbtModerator, /*!< \brief Блок сообщения модератора */
 	pbtQuote,     /*!< \brief Блок цитаты               */
 	pbtTable,     /*!< \brief Блок таблицы              */
-	pbtCut,       /*!< \brief Блок cut                  */
-	pbtImage,     /*!< \brief Блок изображения          */
+	pbtCut        /*!< \brief Блок cut                  */
 } AParsedBlockType;
 
 /*

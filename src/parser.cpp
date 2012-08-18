@@ -71,9 +71,6 @@ const AStrongTag g_strong_tags [] =
 	{ "[moderator]",        "[/moderator]", pbtModerator, pbstText  },
 	{ "[q]",                "[/q]",         pbtQuote,     pbstText  },
 	{ "[t]",                "[/t]",         pbtTable,     pbstText  },
-
-	// внешние изображения всегда отдельным блоком
-	{ "[img]",              "[/img]",       pbtImage,     pbstSourceCode },
 };
 //----------------------------------------------------------------------------------------------
 

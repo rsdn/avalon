@@ -219,17 +219,6 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 		result += "</table><br />";
 	}
 
-	else if (block.Type == pbtImage)
-	{
-		if (block.Strings.count() == 1)
-			result += "<p align='center'><img src='" + block.Strings[0].Data + "'></p>";
-		else
-		{
-			formatQuotedStringList(block.Strings, block.Type, block.SubType);
-			result += "<br />";
-		}
-	}
-
 	else
 	{
 		/*!

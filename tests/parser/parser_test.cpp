@@ -225,8 +225,6 @@ QString AParser_Test::ParsedBlockToString (const AParsedBlock& block, const QStr
 		case pbtQuote:     result += "pbtQuote";     break;
 		case pbtTable:     result += "pbtTable";     break;
 		case pbtCut:       result += "pbtCut";       break;
-		case pbtImage:     result += "pbtImage";     break;
-		case pbtGraphviz:  result += "pbtGraphviz";  break;
 		default:           result += "default";
 	}
 
