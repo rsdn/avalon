@@ -60,6 +60,15 @@ class AFormatter
 		static QString formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType type, AParsedBlockSubType sub_type);
 
 		/*!
+		 * \brief Форматирование квотированной строки
+		 * \param string Строка
+		 * \param type Тип блока строк
+		 * \param sub_type Подтип блока строк
+		 * \return Строка html для вставки
+		 */
+		static QString formatQuotedString (const AQuotedString& string, AParsedBlockType type, AParsedBlockSubType sub_type);
+
+		/*!
 		 * \brief Создание аббриветауры ника из полного имени
 		 * \param nick Ник
 		 * \return 1-3 символа

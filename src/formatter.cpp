@@ -3,99 +3,11 @@
 #include "global.h"
 //----------------------------------------------------------------------------------------------
 /*!
- * \brief Описатель простого тэга для парсера сообщений
- */
-typedef struct ASimpleTag
-{
-	const char* Source;  /*!< \brief Имя тэга (со скобками) */
-	const char* Replace; /*!< \brief Текст замены           */
-} ASimpleTag;
-//----------------------------------------------------------------------------------------------
-/*!
  * \brief Регексп для проверки URL
  * http://web.archive.org/web/20070807114147/http://www.foad.org/~abigail/Perl/url2.html
  * http://web.archive.org/web/20070705044149/www.foad.org/~abigail/Perl/url3.regex
  */
 const QString g_url_regex = "(?:http://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)|(?:ftp://(?:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?&=])*)(?::(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?&=])*))?@)?(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?))(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*))*)(?:;type=[AIDaid])?)?)|(?:news:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;/?:&=])+@(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3})))|(?:[a-zA-Z](?:[a-zA-Z\\d]|[_.+-])*)|\\*))|(?:nntp://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)/(?:[a-zA-Z](?:[a-zA-Z\\d]|[_.+-])*)(?:/(?:\\d+))?)|(?:telnet://(?:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?&=])*)(?::(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?&=])*))?@)?(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?))/?)|(?:gopher://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))*)(?:%09(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:%09(?:(?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))*))?)?)?)?)|(?:wais://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)/(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*)(?:(?:/(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*)/(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*))|\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)|(?:mailto:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))+))|(?:file://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))|localhost)?/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*))*))|(?:prospero://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&=])*))*)(?:(?:;(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&])*)=(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[?:@&])*)))*)|(?:ldap://(?:(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?))?/(?:(?:(?:(?:(?:(?:(?:[a-zA-Z\\d]|%(?:3\\d|[46][a-fA-F\\d]|[57][Aa\\d]))|(?:%20))+|(?:OID|oid)\\.(?:(?:\\d+)(?:\\.(?:\\d+))*))(?:(?:%0[Aa])?(?:%20)*)=(?:(?:%0[Aa])?(?:%20)*))?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*))(?:(?:(?:%0[Aa])?(?:%20)*)\\+(?:(?:%0[Aa])?(?:%20)*)(?:(?:(?:(?:(?:[a-zA-Z\\d]|%(?:3\\d|[46][a-fA-F\\d]|[57][Aa\\d]))|(?:%20))+|(?:OID|oid)\\.(?:(?:\\d+)(?:\\.(?:\\d+))*))(?:(?:%0[Aa])?(?:%20)*)=(?:(?:%0[Aa])?(?:%20)*))?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*)))*)(?:(?:(?:(?:%0[Aa])?(?:%20)*)(?:[;,])(?:(?:%0[Aa])?(?:%20)*))(?:(?:(?:(?:(?:(?:[a-zA-Z\\d]|%(?:3\\d|[46][a-fA-F\\d]|[57][Aa\\d]))|(?:%20))+|(?:OID|oid)\\.(?:(?:\\d+)(?:\\.(?:\\d+))*))(?:(?:%0[Aa])?(?:%20)*)=(?:(?:%0[Aa])?(?:%20)*))?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*))(?:(?:(?:%0[Aa])?(?:%20)*)\\+(?:(?:%0[Aa])?(?:%20)*)(?:(?:(?:(?:(?:[a-zA-Z\\d]|%(?:3\\d|[46][a-fA-F\\d]|[57][Aa\\d]))|(?:%20))+|(?:OID|oid)\\.(?:(?:\\d+)(?:\\.(?:\\d+))*))(?:(?:%0[Aa])?(?:%20)*)=(?:(?:%0[Aa])?(?:%20)*))?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))*)))*))*(?:(?:(?:%0[Aa])?(?:%20)*)(?:[;,])(?:(?:%0[Aa])?(?:%20)*))?)(?:\\?(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+)(?:,(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))*)?)(?:\\?(?:base|one|sub)(?:\\?(?:((?:[a-zA-Z\\d$\\-_.+!*'(),;/?:@&=]|(?:%[a-fA-F\\d]{2}))+)))?)?)?)|(?:(?:z39\\.50[rs])://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+)(?:\\+(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))*(?:\\?(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))?)?(?:;esn=(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))?(?:;rs=(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+)(?:\\+(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))+))*)?))|(?:cid:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?:@&=])*))|(?:mid:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;?:@&=])*))?)|(?:vemmi://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[/?:@&=])*)(?:(?:;(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[/?:@&])*)=(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[/?:@&])*))*))?)|(?:imap://(?:(?:(?:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~])+)(?:(?:;[Aa][Uu][Tt][Hh]=(?:\\*|(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~])+))))?)|(?:(?:;[Aa][Uu][Tt][Hh]=(?:\\*|(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~])+)))(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~])+))?))@)?(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?))/(?:(?:(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+)?;[Tt][Yy][Pp][Ee]=(?:[Ll](?:[Ii][Ss][Tt]|[Ss][Uu][Bb])))|(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+))?(?:(?:;[Uu][Ii][Dd][Vv][Aa][Ll][Ii][Dd][Ii][Tt][Yy]=(?:[1-9]\\d*)))?)|(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+)(?:(?:;[Uu][Ii][Dd][Vv][Aa][Ll][Ii][Dd][Ii][Tt][Yy]=(?:[1-9]\\d*)))?(?:/;[Uu][Ii][Dd]=(?:[1-9]\\d*))(?:(?:/;[Ss][Ee][Cc][Tt][Ii][Oo][Nn]=(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[&=~:@/])+)))?)))?)|(?:nfs:(?:(?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:(?:/(?:(?:(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*)(?:/(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*))*)?)))?)|(?:/(?:(?:(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*)(?:/(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*))*)?))|(?:(?:(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*)(?:/(?:(?:(?:[a-zA-Z\\d\\$\\-_.!~*'(),])|(?:%[a-fA-F\\d]{2})|[:@&=+])*))*)?)))";
-//----------------------------------------------------------------------------------------------
-/*!
- * \brief Список простых тэгов для парсера сообщений
- */
-ASimpleTag g_simple_tags [] =
-{
-	{"[b]",    "<b>" },
-	{"[/b]",   "</b>"},
-
-	{"[i]",    "<i>" },
-	{"[/i]",   "</i>"},
-
-	// upd 22.01.2010, http://www.rsdn.ru/forum/rsdn/3677582.1.aspx
-	{"[u]",    "<u>" },
-	{"[/u]",   "</u>"},
-
-	// upd 22.01.2010, http://www.rsdn.ru/forum/rsdn/3677582.1.aspx
-	{"[s]",    "<strike>" },
-	{"[/s]",   "</strike>"},
-
-	// upd 22.01.2010, http://www.rsdn.ru/forum/rsdn/3677582.1.aspx
-	{"[cut]",  "<span><a href='#' title='развернуть' onclick=\"obj = this.parentNode.childNodes[1].style; tmp = (obj.display != 'block') ? 'block' : 'none'; obj.display = tmp; return false;\">(развернуть)</a><span style='display: none'><table style='background-color: #FFFFE0;' cellpadding='0' cellspacing='0' width='98%' align='center'><tr><td>" },
-	{"[/cut]", "</td></tr></table></span></span>"},
-
-	{"[tr]",   "<tr>" },
-	{"[/tr]",  "</tr>"},
-
-	{"[td]",   "<td>" },
-	{"[/td]",  "</td>"},
-
-	{"[th]",   "<td align='center' style='background-color: #DCDCDC;'>"},
-	{"[/th]",  "</td>"},
-
-	/*{"[img]",  "<img src='"},
-	{"[/img]", "'>"},*/
-
-	{"[hr]",   "<hr>"},
-
-	{"[h1]",   "<h1>" },
-	{"[/h1]",  "</h1>"},
-	{"[h2]",   "<h2>" },
-	{"[/h2]",  "</h2>"},
-	{"[h3]",   "<h3>" },
-	{"[/h3]",  "</h3>"},
-	{"[h4]",   "<h4>" },
-	{"[/h4]",  "</h4>"},
-	{"[h5]",   "<h5>" },
-	{"[/h5]",  "</h5>"},
-	{"[h6]",   "<h6>" },
-	{"[/h6]",  "</h6>"},
-
-	{"[*]",    "<li />"}
-};
-
-//----------------------------------------------------------------------------------------------
-/*!
- * \brief Список смайлов для парсера сообщений
- */
-ASimpleTag g_smile_tags [] =
-{
-	{":)))",         "<img src='qrc:/smiles/sideways.png'>"  },
-	{":))",          "<img src='qrc:/smiles/biggrin.png'>"   },
-	{":)",           "<img src='qrc:/smiles/smile.png'>"     },
-	{":(",           "<img src='qrc:/smiles/sad.png'>"       },
-	{";)",           "<img src='qrc:/smiles/wink.png'>"      },
-	{":-\\",         "<img src='qrc:/smiles/pouty.png'>"     },
-	{":???:",        "<img src='qrc:/smiles/wacko.png'>"     },
-	{":no:",         "<img src='qrc:/smiles/stop.png'>"      },
-	{":up:",         "<img src='qrc:/smiles/thumbs_up.png'>" },
-	{":down:",       "<img src='qrc:/smiles/thumb_down.png'>"},
-	{":super:",      "<img src='qrc:/smiles/cool.png'>"      },
-	{":shuffle:",    "<img src='qrc:/smiles/blush.png'>"     },
-	{":wow:",        "<img src='qrc:/smiles/shock.png'>"     },
-	{":crash:",      "<img src='qrc:/smiles/angry.png'>"     },
-	{":user:",       "<img src='qrc:/smiles/music.png'>"     },
-	{":maniac:",     "<img src='qrc:/smiles/devil.png'>"     },
-	{":xz:",         "<img src='qrc:/smiles/wrong.png'>"     },
-	{":beer:",       "<img src='qrc:/smiles/beer.png'>"      }
-};
 //----------------------------------------------------------------------------------------------
 
 QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bool rated, const AMessageRatingList* rating_list)
@@ -322,29 +234,29 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 		// см. http://softwaremaniacs.org/soft/highlight/
 		const AHighlightMap highlight_map [] =
 		{
-			{ pbtCode,      ""          },
-			{ pbtAssembler, "avrasm"    },
-			{ pbtC,         "cpp"       },
-			{ pbtCPP,       "cpp"       },
-			{ pbtCSharp,    "cs"        },
-			{ pbtMSIL,      "cpp"       },
-			{ pbtIDL,       "cpp"       },
-			{ pbtPascal,    "delphi"    },
-			{ pbtBasic,     "vbscript"  },
-			{ pbtSQL,       "sql"       },
-			{ pbtPerl,      "perl"      },
-			{ pbtPHP,       "php"       },
-			{ pbtJava,      "java"      },
-			{ pbtXML,       "xml"       },
-			{ pbtLisp,      "lisp"      },
-			{ pbtHaskell,   "haskell"   },
-			{ pbtErlang,    "erlang"    },
-			{ pbtOCaml,     "lisp"      },
-			{ pbtProlog,    "lisp"      },
-			{ pbtPython,    "python"    },
-			{ pbtRuby,      "ruby"      },
-			{ pbtNemerle,   "cs"        },
-			{ pbtText,      NULL        }  // last
+			{ pbtCode,      ""         },
+			{ pbtAssembler, "avrasm"   },
+			{ pbtC,         "cpp"      },
+			{ pbtCPP,       "cpp"      },
+			{ pbtCSharp,    "cs"       },
+			{ pbtMSIL,      "cpp"      },
+			{ pbtIDL,       "cpp"      },
+			{ pbtPascal,    "delphi"   },
+			{ pbtBasic,     "vbscript" },
+			{ pbtSQL,       "sql"      },
+			{ pbtPerl,      "perl"     },
+			{ pbtPHP,       "php"      },
+			{ pbtJava,      "java"     },
+			{ pbtXML,       "xml"      },
+			{ pbtLisp,      "lisp"     },
+			{ pbtHaskell,   "haskell"  },
+			{ pbtErlang,    "erlang"   },
+			{ pbtOCaml,     "lisp"     },
+			{ pbtProlog,    "lisp"     },
+			{ pbtPython,    "python"   },
+			{ pbtRuby,      "ruby"     },
+			{ pbtNemerle,   "cs"       },
+			{ pbtText,      NULL       }  // last
 		};
 
 		// массив тэгов для подсветки кода
@@ -388,7 +300,7 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 	{
 		AQuotedString string = list.at(i);
 
-		QString line = string.QuoteText + " " + string.Data;
+		QString line = formatQuotedString(string, type, sub_type);
 
 		if (sub_type != pbstSourceCode)
 		{
@@ -424,186 +336,78 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 }
 //----------------------------------------------------------------------------------------------
 
-QString AFormatter::processSimpleText (const QString& text, const AMessageInfo& message)
+QString AFormatter::formatQuotedString (const AQuotedString& string, AParsedBlockType /*type*/, AParsedBlockSubType sub_type)
 {
-	QString data = text;
+	if (sub_type == pbstSourceCode)
+		// строка исходного кода никак не форматируется далее
+		return string.QuoteText + " " + string.Data;
 
-	// замена стандартных тэгов
-	for (size_t i = 0; i < sizeof(g_simple_tags) / sizeof(ASimpleTag); i++)
-		data.replace(QString::fromUtf8(g_simple_tags[i].Source), QString::fromUtf8(g_simple_tags[i].Replace), Qt::CaseInsensitive);
-
-	for (size_t i = 0; i < sizeof(g_smile_tags) / sizeof(ASimpleTag); i++)
-		data.replace(g_smile_tags[i].Source, g_smile_tags[i].Replace, Qt::CaseInsensitive);
-
-	// выравнивание (или нет) изображений (см. #87)
-	QRegExp img1("(^|\r|\n)\\s{0,}\\[img\\]\\s{0,}(\\S+)\\s{0,}\\[/img\\]\\s{0,}(\r|\n|$)", Qt::CaseInsensitive);
-	QRegExp img2("\\[img\\]\\s{0,}(\\S+)\\s{0,}\\[/img\\]", Qt::CaseInsensitive);
-
-	img1.setMinimal(true);
-	img2.setMinimal(true);
-
-	data.replace(img1, "<p align='center'><img src='\\2'></p>");
-	data.replace(img2, "<img src='\\1'>");
-
-	// исправление кривых урлов, которые создаются криворукими топик-стартерами
-	// Пример [http://www.rsdn.ru/forum/flame.comp/3673367.1.aspx]
-	QRegExp url0(QString::fromUtf8("\\[url=(здесь|тут)\\](\\S+)\\[/url\\]"), Qt::CaseInsensitive);
-	url0.setMinimal(true);
-	data.replace(url0, QString::fromUtf8("<a href='\\2'>здесь</a>"));
-
-	// стандартные url
-	QRegExp url1("\\[url=data:(\\S+)\\](.+)\\[/url\\]", Qt::CaseInsensitive);
-	QRegExp url2("\\[url=(\\S+)\\](.+)\\[/url\\]",      Qt::CaseInsensitive);
-	QRegExp url3("\\[url\\](\\S+)\\[/url\\]",           Qt::CaseInsensitive);
-
-	url1.setMinimal(true);
-	url2.setMinimal(true);
-	url3.setMinimal(true);
-
-	data.replace(url1, "<a href='bad link'>\\2</a>");
-	data.replace(url2, "<a href='\\1'>\\2</a>");
-	data.replace(url3, "<a href='\\1'>\\1</a>");
-
-	// email url
-	QRegExp email("\\[email\\](\\S+)\\[/email\\]",  Qt::CaseInsensitive);
-	email.setMinimal(true);
-	data.replace(email, (QString)"<a href='mailto:\\1?subject=" + QUrl::toPercentEncoding("RE: " + message.Subject).constData() + "'>\\1</a>");
-
-	// msdn url
-	QRegExp msdn("\\[msdn\\](\\S+)\\[/msdn\\]",    Qt::CaseInsensitive);
-	msdn.setMinimal(true);
-	data.replace(msdn, "<a href='http://search.msdn.microsoft.com/Default.aspx?brand=Msdn&query=\\1'>\\1</a>");
-
-	// замена списков
-	QRegExp list1("\\[list=1\\](.+)\\[/list\\]", Qt::CaseInsensitive);
-	QRegExp list2("\\[list=a\\](.+)\\[/list\\]", Qt::CaseInsensitive);
-	QRegExp list3("\\[list\\](.+)\\[/list\\]",   Qt::CaseInsensitive);
-
-	list1.setMinimal(true);
-	list2.setMinimal(true);
-	list3.setMinimal(true);
-
-	data.replace(list1, "<ol type='1' start='1' style='margin-top:0; margin-bottom:0;'>\\1</ol>");
-	data.replace(list2, "<ol type='a' style='margin-top:0; margin-bottom:0;'>\\1</ol>");
-	data.replace(list3, "<ul style='margin-top:0; margin-bottom:0;'>\\1</ul>");
-
-	// подстановка тэга cut=text
-	QRegExp cut1("\\[cut=(.+)\\]", Qt::CaseInsensitive);
-
-	cut1.setMinimal(true);
-
-	data.replace(cut1, "<span><a href='#' title='\\1' onclick=\"obj = this.parentNode.childNodes[1].style; tmp = (obj.display != 'block') ? 'block' : 'none'; obj.display = tmp; return false;\">\\1</a><span style='display: none'><table style='background-color: #FFFFE0;' cellpadding='0' cellspacing='0' width='98%' align='center'><tr><td>");
-
-	// исправление кривых урлов (для которых не проставлен тэг)
-	//
-	// универсальный regexp для URL:
-	// http://web.archive.org/web/20070807114147/http://www.foad.org/~abigail/Perl/url2.html
-	// http://web.archive.org/web/20070705044149/www.foad.org/~abigail/Perl/url3.regex
-	//
-	// универсальный regexp для e-mail:
-	// http://ex-parrot.com/~pdw/Mail-RFC822-Address.html
-	//
-	// однако, ценность применения тких монстров несколько сомнительна...
-	// хотя, если кому-то удастся прикрутить ЭТО...
-
-	QRegExp url5("(^|[^/])(www\\.\\S+)", Qt::CaseInsensitive);
-	// TODO: необходимо исправление, см. http://www.rsdn.ru/forum/web/3988233.1.aspx
-	QRegExp url6("(^|[^'>])((http|https|ftp)://[a-zA-Z0-9\\-_\\./\\?\\&\\=\\%\\+\\:\\;\\#]+[a-zA-Z0-9\\-_/\\?\\&\\=\\%\\+\\:\\;])(\\s|,|\\.[^a-zA-Z0-9\\-_/\\?\\&\\=\\%]|\\[|\\]|\\;|\\)|\\(|$)", Qt::CaseInsensitive);
-
-	data.replace(url5, "\\1http://\\2");
-	data.replace(url6, "\\1<a href='\\2'>\\2</a>\\4");
-
-	//
-	// исправление кривого квотинга
-	//
-
-	QStringList source = data.split("\n");
-
-	// удаление дублирующихся пустых строк
-	int index = 0;
-
-	// регексп для приветствий в квотинге
-	QRegExp hello(QString::fromUtf8("&gt;\\s*Здравствуйте, .+, Вы писали:"));
-
-	while (index < source.size() - 1)
+	/*!
+	 * \brief Описатель соответствий простых BB тэгов и их html замен
+	 */
+	typedef struct ASimpleTag
 	{
-		if (source.at(index).trimmed().length() == 0 && source.at(index + 1).trimmed().length() == 0)
-		{
-			source.removeAt(index);
-			continue;
-		}
-		else if (source.at(index).indexOf(hello) != -1)
-		{
-			source.removeAt(index);
+		const char* Source;  /*!< \brief Имя тэга (со скобками) */
+		const char* Replace; /*!< \brief Текст замены           */
+	} ASimpleTag;
 
-			if (index > 0)
-				index--;
-
-			continue;
-		}
-
-		index++;
-	}
-
-	// вычисление уровня квотинга
-	QList<int> quoting_level;
-
-	int size = source.size();
-
-	for (int i = 0; i < size; i++)
+	// Список замены BB кодов
+	const ASimpleTag replace_map [] =
 	{
-		QString temp = source.at(i).trimmed();
+		{ "[b]",       "<b>"       },
+		{ "[/b]",      "</b>"      },
+		{ "[i]",       "<i>"       },
+		{ "[/i]",      "</i>"      },
+		{ "[u]",       "<u>"       },
+		{ "[/u]",      "</u>"      },
+		{ "[s]",       "<strike>"  },
+		{ "[/s]",      "</strike>" },
+		{ "[tr]",      "<tr>"      },
+		{ "[/tr]",     "</tr>"     },
+		{ "[td]",      "<td>"      },
+		{ "[/td]",     "</td>"     },
+		{ "[th]",      "<td align='center' style='background-color: #DCDCDC;'>" },
+		{ "[/th]",     "</td>"     },
+		{ "[hr]",      "<hr>"      },
+		{ "[h1]",      "<h1>"      },
+		{ "[/h1]",     "</h1>"     },
+		{ "[h2]",      "<h2>"      },
+		{ "[/h2]",     "</h2>"     },
+		{ "[h3]",      "<h3>"      },
+		{ "[/h3]",     "</h3>"     },
+		{ "[h4]",      "<h4>"      },
+		{ "[/h4]",     "</h4>"     },
+		{ "[h5]",      "<h5>"      },
+		{ "[/h5]",     "</h5>"     },
+		{ "[h6]",      "<h6>"      },
+		{ "[/h6]",     "</h6>"     },
+		{ "[*]",       "<li />"    },
+		{ ":)))",      "<img src='qrc:/smiles/sideways.png'>"   },
+		{ ":))",       "<img src='qrc:/smiles/biggrin.png'>"    },
+		{ ":)",        "<img src='qrc:/smiles/smile.png'>"      },
+		{ ":(",        "<img src='qrc:/smiles/sad.png'>"        },
+		{ ";)",        "<img src='qrc:/smiles/wink.png'>"       },
+		{ ":-\\",      "<img src='qrc:/smiles/pouty.png'>"      },
+		{ ":???:",     "<img src='qrc:/smiles/wacko.png'>"      },
+		{ ":no:",      "<img src='qrc:/smiles/stop.png'>"       },
+		{ ":up:",      "<img src='qrc:/smiles/thumbs_up.png'>"  },
+		{ ":down:",    "<img src='qrc:/smiles/thumb_down.png'>" },
+		{ ":super:",   "<img src='qrc:/smiles/cool.png'>"       },
+		{ ":shuffle:", "<img src='qrc:/smiles/blush.png'>"      },
+		{ ":wow:",     "<img src='qrc:/smiles/shock.png'>"      },
+		{ ":crash:",   "<img src='qrc:/smiles/angry.png'>"      },
+		{ ":user:",    "<img src='qrc:/smiles/music.png'>"      },
+		{ ":maniac:",  "<img src='qrc:/smiles/devil.png'>"      },
+		{ ":xz:",      "<img src='qrc:/smiles/wrong.png'>"      },
+		{ ":beer:",    "<img src='qrc:/smiles/beer.png'>"       }
+	};
 
-		int level = 0;
+	QString data = string.Data;
 
-		for (int j = 0; j < temp.length() - 3; j++)
-		{
-			// после символа квотинга может быть пробел для красивого оформления
-			if (temp[j] == ' ' && !(temp[j + 1] == '&' || temp[j + 2] == '&' || temp[j + 3] == '&'))
-				break;
-			// встречен символ квотинга ">"
-			else if (temp[j] == '&' && temp[j + 1] == 'g' && temp[j + 2] == 't' && temp[j + 3] == ';')
-			{
-				level++;
-				j += 3;
-			}
-			// встречен обратный знак "<" - после него квотинга точно нет
-			else if (temp[j] == '&' && temp[j + 1] == 'l' && temp[j + 2] == 't' && temp[j + 3] == ';')
-				break;
-		}
+	for (size_t i = 0; i < sizeof(replace_map) / sizeof(ASimpleTag); i++)
+		data.replace(QString::fromUtf8(replace_map[i].Source), QString::fromUtf8(replace_map[i].Replace), Qt::CaseInsensitive);
 
-		quoting_level.append(level);
-
-		source[i] = temp;
-	}
-
-	// вставка пустых строк между разными уровнями квотинга
-	for (int i = 0; i < size - 1; i++)
-	{
-		if (source[i].length() == 0)
-			continue;
-
-		if (quoting_level.at(i) != quoting_level.at(i + 1) && source[i + 1].length() /*&& (quoting_level.at(i) == 0 || quoting_level.at(i + 1) == 0)*/)
-			source[i] = source[i] + "<br />";
-	}
-
-	// подсветка квотинга
-	for (int i = 0; i < size; i++)
-	{
-		if (quoting_level.at(i) != 0)
-		{
-			if (quoting_level.at(i) % 3 == 0)
-				source[i] = "<font color=darkblue>" + source[i] + "</font>";
-			else if (quoting_level.at(i) % 2 == 0)
-				source[i] = "<font color=darkred>" + source[i] + "</font>";
-			else
-				source[i] = "<font color=darkgreen>" + source[i] + "</font>";
-		}
-	}
-
-	data = source.join("<br />");
-
-	return data;
+	return string.QuoteText + " " + data;
 }
 //----------------------------------------------------------------------------------------------
 
