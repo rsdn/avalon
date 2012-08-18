@@ -275,35 +275,35 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 
 	if (block.Type == pbtText)
 	{
-		result += formatQuotedStringList(block.Strings, block.SubType);
-		result += "<br /><br />";
+		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
+		result += "<br />";
 	}
 
 	else if (block.Type == pbtQuote)
 	{
 		result += "<table style='background-color: #FFFFE0;' width='98%' align='center'><tr><td>";
-		result += formatQuotedStringList(block.Strings, block.SubType);
+		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
 		result += "</td></tr></table><br />";
 	}
 
 	else if (block.Type == pbtModerator)
 	{
 		result += "<table style='background-color: #FFC0C0;' width='100%'><tr><td>";
-		result += formatQuotedStringList(block.Strings, block.SubType);
+		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
 		result += "</td></tr></table>";
 	}
 
 	else if (block.Type == pbtTagline)
 	{
 		result += "<font color='#A52A2A' size=-1>";
-		result += formatQuotedStringList(block.Strings, block.SubType);
+		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
 		result += "</font><br />";
 	}
 
 	else if (block.Type == pbtTable)
 	{
 		result += "<table align='center'>";
-		result += formatQuotedStringList(block.Strings, block.SubType);
+		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
 		result += "</table><br />";
 	}
 
@@ -370,15 +370,15 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 		else
 			result += "<code>";
 
-		result += formatQuotedStringList(block.Strings, block.SubType) + "</code>";
-		result += "</pre></tr></td></table><br />";
+		result += formatQuotedStringList(block.Strings, block.Type, block.SubType) + "</code>";
+		result += "</pre></tr></td></table>";
 	}
 
 	return result;
 }
 //----------------------------------------------------------------------------------------------
 
-QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, AParsedBlockSubType sub_type)
+QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType type, AParsedBlockSubType sub_type)
 {
 	QString result;
 
@@ -396,7 +396,7 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 				// дополнительная пустая строка между квотами
 				result += "<br>";
 
-			if (string.QuoteLevel == 0 && last_quote_level == 0)
+			if (type == pbtText && string.QuoteLevel == 0 && last_quote_level == 0)
 				// дополнительная пустая строка в рамках нулевой квоты (разделение абзацев)
 				result += "<br>";
 

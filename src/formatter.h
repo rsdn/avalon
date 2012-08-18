@@ -53,10 +53,11 @@ class AFormatter
 		/*!
 		 * \brief Форматирование списка квотированных строк
 		 * \param list Список строк
+		 * \param type Тип блока строк
 		 * \param sub_type Подтип блока строк
 		 * \return Строка html для вставки
 		 */
-		static QString formatQuotedStringList (const AQuotedStringList& list, AParsedBlockSubType sub_type);
+		static QString formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType type, AParsedBlockSubType sub_type);
 
 		/*!
 		 * \brief Создание аббриветауры ника из полного имени
