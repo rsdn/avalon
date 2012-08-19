@@ -195,8 +195,16 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 
 		QString data = source_quote_list[i].Data;
 
-		if (current_block.Type != pbtText && data.length() == 0)
-			current_block.Strings.append(current_quote);
+		// пустая строка на входе
+		if (data.length() == 0)
+		{
+			// текст исходного кода оставляем без изменений
+			if (current_block.Type != pbtText)
+				current_block.Strings.append(current_quote);
+			// игнорируем более одной пустой строки подряд в рамках квоты одного уровня
+			else if (current_block.Strings.count() > 0 && current_block.Strings.last().QuoteLevel == current_quote.QuoteLevel && current_block.Strings.last().Data.length() > 0)
+				current_block.Strings.append(current_quote);
+		}
 
 		while (data.length() > 0)
 		{

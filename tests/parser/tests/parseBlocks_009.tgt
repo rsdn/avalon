@@ -13,6 +13,11 @@ AParsedBlockList
 			)
 			[1] = AQuotedString
 			(
+				QuoteLevel = 0
+				Data       = 
+			)
+			[2] = AQuotedString
+			(
 				QuoteLevel = 1
 				QuoteText  = A>
 				Data       = простой текст сообщения

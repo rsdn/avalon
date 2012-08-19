@@ -291,7 +291,7 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 }
 //----------------------------------------------------------------------------------------------
 
-QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType type, AParsedBlockSubType sub_type)
+QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType /*type*/, AParsedBlockSubType sub_type)
 {
 	QString result;
 
@@ -305,13 +305,8 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 
 		if (sub_type != pbstSourceCode)
 		{
-			// дополнительная пустая строка между квотами
-			if (i != 0 && string.QuoteLevel != last_quote_level)
-				result += "<br>";
-
-			// дополнительная пустая строка в рамках нулевой квоты (разделение абзацев)
-			// TODO: теряется пользовательское форматирование :(
-			if (type == pbtText && string.QuoteLevel == 0 && last_quote_level == 0)
+			// дополнительная пустая строка между квотами разного уровня, если она не была вставлена автором сообщения
+			if (i != 0 && string.QuoteLevel != last_quote_level && list.at(i - 1).Data.length() != 0)
 				result += "<br>";
 
 			if (string.QuoteLevel != 0)

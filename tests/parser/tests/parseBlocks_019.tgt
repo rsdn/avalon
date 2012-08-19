@@ -1,0 +1,36 @@
+AParsedBlockList
+(
+	[0] = AParsedBlock
+	(
+		Type    = pbtText
+		SubType = pbstText
+		Strings = AQuotedStringList
+		(
+			[0] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = Первая строка
+			)
+			[1] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = 
+			)
+			[2] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = Вторая строка с отступом
+			)
+			[3] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = 
+			)
+			[4] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = Третья строка с двумя отступами
+			)
+		)
+	)
+)
