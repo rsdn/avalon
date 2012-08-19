@@ -220,6 +220,22 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 		result += "</table><br />";
 	}
 
+	else if (block.Type == pbtCut)
+	{
+		// TODO: вложенные cut отображаются не совсем корректно
+		QString title = block.Title;
+
+		if (title.length() == 0)
+			title = QString::fromUtf8("(развернуть)");
+
+		result += (QString)"<span><a href='#' title='" + title  + "' onclick=\"obj = this.parentNode.childNodes[1].style; tmp = (obj.display != 'block') ? 'block' : 'none'; obj.display = tmp; return false;\">" + title + "</a><span style='display: none'><table style='background-color: #FFFFE0;' cellpadding='0' cellspacing='0' width='98%' align='center'><tr><td>";
+
+		for (int i = 0; i < block.SubBlocks.count(); i++)
+			result += formatParsedBlock(block.SubBlocks.at(i));
+
+		result += "</td></tr></table></span></span><br />";
+	}
+
 	else
 	{
 		/*!
