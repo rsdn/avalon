@@ -25,8 +25,9 @@ int main (int argc, char* argv[])
 #endif
 
 	// установка разделов для хранения конфигурации приложения
-	QCoreApplication::setOrganizationName("www.rsdn.ru");
+	QCoreApplication::setOrganizationName("rsdn.ru");
 	QCoreApplication::setApplicationName("avalon");
+	QCoreApplication::setApplicationVersion(getVersionString());
 
 	// переводчик стандартных сообщений и диалогов
 	QString tr_file = "qt_" + QLocale::system().name();

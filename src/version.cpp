@@ -15,13 +15,13 @@ int getBuildNumber ()
 
 QString getVersionString ()
 {
-	QString result = QString("avalon 1.0rc3 build ") + QString::number(getBuildNumber());
+	return QString("1.0.") + QString::number(getBuildNumber());
+}
+//----------------------------------------------------------------------------------------------
 
-#ifdef AVALON_USE_ZLIB
-	result += ", zlib " + QString(zlibVersion());
-#endif
-
-	return result;
+QString getAgentString ()
+{
+	return QString("avalon/") + getVersionString();
 }
 //----------------------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ QString getTagline ()
 
 	QString tagline = settings.value("ui/tagline", "%%version%%").toString();
 
-	tagline = tagline.replace("%%version%%", "[url=https://github.com/rsdn/avalon/wiki]" + getVersionString() + "[/url]");
+	tagline = tagline.replace("%%version%%", "[url=https://github.com/rsdn/avalon/wiki]" + getAgentString() + "[/url]");
 
 	return tagline;
 }

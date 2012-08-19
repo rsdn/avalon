@@ -22,6 +22,14 @@ AWebView::AWebView (QWidget* parent) : QWebView (parent)
 	pageAction(QWebPage::Copy)->setText(QString::fromUtf8("Копировать"));
 	pageAction(QWebPage::Copy)->setIcon(QIcon(":/icons/copy16.png"));
 	pageAction(QWebPage::Copy)->setShortcuts(QKeySequence::Copy);
+
+	settings()->setDefaultTextEncoding("utf-8");
+
+	settings()->setAttribute(QWebSettings::JavascriptCanOpenWindows, false);
+	settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, false);
+
+	// полезно для отладки генерируемого HTML
+	settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 };
 //----------------------------------------------------------------------------------------------
 

@@ -112,7 +112,7 @@ void AWebservice::getForumList_WebserviceQuery (QString& header, QString& data, 
 	header += "Accept-Encoding: gzip\r\n";
 	#endif
 
-	header += "User-Agent: " + getVersionString() + "\r\n";
+	header += "User-Agent: " + getAgentString() + "\r\n";
 	header += "Content-Type: text/xml; charset=utf-8\r\n";
 	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
 	header += "SOAPAction: \"http://rsdn.ru/Janus/GetForumList\"\r\n";
@@ -255,7 +255,7 @@ void AWebservice::getUserList_WebserviceQuery (QString& header, QString& data, c
 	header += "Accept-Encoding: gzip\r\n";
 	#endif
 
-	header += "User-Agent: " + getVersionString() + "\r\n";
+	header += "User-Agent: " + getAgentString() + "\r\n";
 	header += "Content-Type: text/xml; charset=utf-8\r\n";
 	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
 	header += "SOAPAction: \"http://rsdn.ru/Janus/GetNewUsers\"\r\n";
@@ -391,7 +391,7 @@ void AWebservice::getMessageList_WebserviceQuery (QString& header, QString& data
 	header += "Accept-Encoding: gzip\r\n";
 	#endif
 
-	header += "User-Agent: " + getVersionString() + "\r\n";
+	header += "User-Agent: " + getAgentString() + "\r\n";
 	header += "Content-Type: text/xml; charset=utf-8\r\n";
 	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
 	header += "SOAPAction: \"http://rsdn.ru/Janus/GetNewData\"\r\n";
@@ -623,7 +623,7 @@ void AWebservice::postChange_WebserviceQuery (QString& header, QString& data, co
 	header += "Accept-Encoding: gzip\r\n";
 	#endif
 
-	header += "User-Agent: " + getVersionString() + "\r\n";
+	header += "User-Agent: " + getAgentString() + "\r\n";
 	header += "Content-Type: text/xml; charset=utf-8\r\n";
 	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
 	header += "SOAPAction: \"http://rsdn.ru/Janus/PostChange\"\r\n";
@@ -695,7 +695,7 @@ void AWebservice::postChangeCommit_WebserviceQuery (QString& header, QString& da
 	header += "Accept-Encoding: gzip\r\n";
 	#endif
 
-	header += "User-Agent: " + getVersionString() + "\r\n";
+	header += "User-Agent: " + getAgentString() + "\r\n";
 	header += "Content-Type: text/xml; charset=utf-8\r\n";
 	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
 	header += "SOAPAction: \"http://rsdn.ru/Janus/PostChangeCommit\"\r\n";

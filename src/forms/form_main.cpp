@@ -683,7 +683,7 @@ void AFormMain::menu_q_about_triggered ()
 		"</ul>"
 	);
 
-	QMessageBox::about(this, getVersionString(), text);
+	QMessageBox::about(this, getAgentString(), text);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -1010,7 +1010,7 @@ void AFormMain::checkUpdate ()
 	header += "GET /rsdn/avalon/master/update.txt HTTP/1.1\r\n";
 	header += "Host: raw.github.com\r\n";
 	header += "Connection: close\r\n";
-	header += "User-Agent: " + getVersionString() + "\r\n";
+	header += "User-Agent: " + getAgentString() + "\r\n";
 
 	#ifdef AVALON_USE_ZLIB
 	header += "Accept-Encoding: gzip\r\n";

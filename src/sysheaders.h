@@ -110,13 +110,18 @@ int getBuildNumber ();
 
 /*!
  * \brief Получение строки версии (см. version.cpp)
- * \return Строка версии вида "avalon 1.0rc2 rev NNN"
+ * \return Строка версии вида "1.0 build NNN"
  */
 QString getVersionString ();
 
 /*!
+ * \brief Получение строки имени агента (см. version.cpp)
+ * \return Строка агента вида "avalon 1.0 build NNN"
+ */
+QString getAgentString ();
+
+/*!
  * \brief Получение tagline (см. version.cpp)
- * Ранее подставлялось getVersionString
  * \return Строка таглайна
  */
 QString getTagline ();
