@@ -431,6 +431,22 @@ QString AFormatter::formatSimpleText (const QString& text)
 		index += std::min(img.matchedLength(), html.length());
 	}
 
+	//
+	// списки
+	//
+
+	QRegExp list1("\\[list=1\\](.+)\\[/list\\]", Qt::CaseInsensitive, QRegExp::RegExp);
+	QRegExp list2("\\[list=a\\](.+)\\[/list\\]", Qt::CaseInsensitive, QRegExp::RegExp);
+	QRegExp list3("\\[list\\](.+)\\[/list\\]",   Qt::CaseInsensitive, QRegExp::RegExp);
+
+	list1.setMinimal(true);
+	list2.setMinimal(true);
+	list3.setMinimal(true);
+
+	result.replace(list1, "<ol type='1' start='1' style='margin-top:0; margin-bottom:0;'>\\1</ol>");
+	result.replace(list2, "<ol type='a' style='margin-top:0; margin-bottom:0;'>\\1</ol>");
+	result.replace(list3, "<ul style='margin-top:0; margin-bottom:0;'>\\1</ul>");
+
 	// гиперссылки
 	result = formatHyperlinks(result);
 
