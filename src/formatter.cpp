@@ -308,9 +308,9 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 
 			if (string.QuoteLevel != 0)
 			{
-				if (last_quote_level % 3 == 0)
+				if (string.QuoteLevel % 3 == 0)
 					result += "<font color=darkblue>" + line + "</font>";
-				else if (last_quote_level % 2 == 0)
+				else if (string.QuoteLevel % 2 == 0)
 					result += "<font color=darkred>" + line + "</font>";
 				else
 					result += "<font color=darkgreen>" + line + "</font>";
@@ -400,6 +400,35 @@ QString AFormatter::formatSimpleText (const QString& text)
 	for (size_t i = 0; i < sizeof(replace_map) / sizeof(ASimpleTag); i++)
 		result.replace(QString::fromUtf8(replace_map[i].Source), QString::fromUtf8(replace_map[i].Replace), Qt::CaseInsensitive);
 
+	//
+	// [img] ... [/img]
+	//
+
+	QRegExp img("\\[img\\](.+)\\[/img\\]", Qt::CaseInsensitive, QRegExp::RegExp);
+
+	img.setMinimal(true);
+
+	int index = 0;
+
+	while ((index = img.indexIn(result, index)) != -1)
+	{
+		QString html;
+		QString lstr = img.cap(1).trimmed();
+		int     lval = AParser::isURL(lstr);
+
+		if (lval == 1)
+			html = QString::fromUtf8("<p align='center'><img src='") + lstr + "'></p>";
+		else if (lval == 2)
+			html = QString::fromUtf8("<font color='red'>") + lstr + "</font>";
+		else // невалидная ссылка
+			html = lstr;
+
+		result.replace(img.cap(0), html);
+
+		index += std::min(img.matchedLength(), html.length());
+	}
+
+	// гиперссылки
 	result = formatHyperlinks(result);
 
 	return result;
@@ -492,7 +521,7 @@ QString AFormatter::formatHyperlinks (const QString& text)
 	// msdn url
 	QRegExp msdn("\\[msdn\\](\\S+)\\[/msdn\\]", Qt::CaseInsensitive, QRegExp::RegExp);
 	msdn.setMinimal(true);
-	data.replace(msdn, "<a href='http://search.msdn.microsoft.com/Default.aspx?brand=Msdn&query=\\1'>\\1</a>");
+	result.replace(msdn, "<a href='http://search.msdn.microsoft.com/Default.aspx?brand=Msdn&query=\\1'>\\1</a>");
 
 	return result;
 }
