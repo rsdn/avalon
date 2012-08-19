@@ -391,3 +391,22 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 	return result;
 }
 //----------------------------------------------------------------------------------------------
+
+int AParser::isURL (const QString& text)
+{
+	QUrl url = QUrl::fromUserInput(text);
+
+	if (url.isValid() == false)
+		return 0;
+
+	if (url.scheme() == "data" || url.scheme() == "file")
+		return 2;
+
+	QString host = url.host();
+
+	if (host.indexOf('.') == -1)
+		return 0;
+
+	return 1;
+}
+//----------------------------------------------------------------------------------------------

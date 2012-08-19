@@ -23,6 +23,7 @@ class AParser_Test : public CppUnit::TestFixture
 	CPPUNIT_TEST(parseQuote_test);
 	CPPUNIT_TEST(parseQuotes_test);
 	CPPUNIT_TEST(parseBlocks_test);
+	CPPUNIT_TEST(isURL_test);
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
@@ -33,6 +34,8 @@ class AParser_Test : public CppUnit::TestFixture
 		void parseQuotes_test ();
 		// тест парсинга блоков
 		void parseBlocks_test ();
+		// тест ссылки
+		void isURL_test       ();
 
 	private:
 

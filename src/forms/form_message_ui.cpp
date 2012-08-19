@@ -552,12 +552,10 @@ void FormMessageUI::button_hyperlink_triggered ()
 
 	QString text = cursor.selectedText();
 
-	int url = AFormatter::isURL(text);
+	int url = AParser::isURL(text);
 
 	if (url == 1)
 		cursor.insertText((QString)"[url=" + cursor.selectedText() + QString::fromUtf8("]здесь[/url]"));
-	else if (url == 2)
-		cursor.insertText((QString)"[url=http://" + cursor.selectedText() + QString::fromUtf8("]здесь[/url]"));
 	else
 		cursor.insertText((QString)"[url=]" + cursor.selectedText() + "[/url]");
 

@@ -294,3 +294,38 @@ QString AParser_Test::ParsedBlockListToString (const AParsedBlockList& list, con
 	return result;
 }
 //----------------------------------------------------------------------------------------------
+
+void AParser_Test::isURL_test ()
+{
+	typedef struct ATestEntry
+	{
+		const char* Source;
+		int         Result;
+	} ATestEntry;
+
+	ATestEntry test_data [] =
+	{
+		{ "http://yandex.ru",    1 },
+		{ "https://yandex.ru",   1 },
+		{ "yandex.ru",           1 },
+		{ "YANDEX.RU",           1 },
+		{ "мчс.рф",              1 },
+		{ "МЧС.РФ",              1 },
+		{ "здесь",               0 },
+		{ "тут",                 0 },
+		{ "somewhere",           0 },
+		{ "data://yandex.ru",    2 },
+		{ "/etc/passwd",         2 },
+		{ "file:///etc/passwd",  2 },
+	};
+
+	for (size_t i = 0; i < sizeof(test_data) / sizeof(ATestEntry); i++)
+	{
+		QString source = QString::fromUtf8(test_data[i].Source);
+
+		int result = AParser::isURL(source);
+
+		CPPUNIT_ASSERT_EQUAL_MESSAGE(make_msg("Assert is URL:\n", source + " (" + QUrl::fromUserInput(source).toString() + ")"), test_data[i].Result, result);
+	}
+}
+//----------------------------------------------------------------------------------------------

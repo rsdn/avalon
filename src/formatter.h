@@ -34,13 +34,6 @@ class AFormatter
 		 */
 		static QString normalizeBody (const QString& body, const QString& nick);
 
-		/*!
-		 * \brief Проверка является ли текст URL
-		 * \param text Текст для проверки
-		 * \return 0, если текст не является ссылкой, 1 - если текст является ссылкой, 2 - если текст является "кривой" ссылкой и требует добавления "http://"
-		 */
-		static int isURL (const QString& text);
-
 	private:
 
 		/*!
@@ -60,13 +53,11 @@ class AFormatter
 		static QString formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType type, AParsedBlockSubType sub_type);
 
 		/*!
-		 * \brief Форматирование квотированной строки
-		 * \param string Строка
-		 * \param type Тип блока строк
-		 * \param sub_type Подтип блока строк
+		 * \brief Форматирование блока текста
+		 * \param text Текст
 		 * \return Строка html для вставки
 		 */
-		static QString formatQuotedString (const AQuotedString& string, AParsedBlockType type, AParsedBlockSubType sub_type);
+		static QString formatSimpleText (const QString& text);
 
 		/*!
 		 * \brief Создание аббриветауры ника из полного имени

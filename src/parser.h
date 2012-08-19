@@ -141,6 +141,13 @@ class AParser
 		 * \return Список описателей монолитных блоков
 		 */
 		static AParsedBlockList parseBlocks (const QString& source);
+
+		/*!
+		 * \brief Проверка является ли текст URL
+		 * \param text Текст для проверки
+		 * \return 0, если текст не является ссылкой, 1 - если текст является ссылкой, 2 - если текст является опасной ссылкой
+		 */
+		static int isURL (const QString& text);
 };
 
 #endif   // _avalon_parser_h_
