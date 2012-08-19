@@ -493,6 +493,27 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		index += std::min(url2.matchedLength(), html.length());
 	}
 
+	// ссылки без тэгов
+	QRegExp url3("[^'>]((http://|https://|ftp://|[^/]www\\.)[^<\\s]+)", Qt::CaseInsensitive, QRegExp::RegExp);
+
+	index = 0;
+
+	while ((index = url3.indexIn(result, index)) != -1)
+	{
+		QString html;
+		QString lstr = url3.cap(1);
+		int     lval = AParser::isURL(lstr);
+
+		if (lval == 1)
+		{
+			html = QString::fromUtf8("<a href='") + lstr + "'>" + lstr + "</a>";
+			result.replace(lstr, html);
+			index += std::min(url3.matchedLength(), html.length());
+		}
+		else // невалидная или опасная ссылка
+			index += url3.matchedLength();
+	}
+
 	// email url
 	QRegExp email("\\[email\\](\\S+)\\[/email\\]", Qt::CaseInsensitive, QRegExp::RegExp);
 
