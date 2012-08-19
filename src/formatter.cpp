@@ -174,7 +174,7 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 	// http://www.mywot.com/en/blog/adding-ratings-to-your-website
 	// http://www.mywot.com/wiki/API
 	result += "<script type='text/javascript'>var wot_rating_options = {";
-	result += "exclude: /^(.+\\.){0,1}(rsdn\\.ru|yandex\\.ru|google\\.com|youtube\\.com|github\\.com)$/i";
+	result += "exclude: /^(.+\\.){0,1}(rsdn\\.ru|yandex\\.ru|google\\.com|youtube\\.com|github\\.com|wikipedia\\.org)$/i";
 	result += "};</script>";
 	result += "<script type='text/javascript' src='http://api.mywot.com/widgets/ratings.js'></script>";
 
