@@ -215,7 +215,7 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 	else
 	{
 		/*!
-		 * Описатель соответствий языку и имени для подсветки
+		 * \brief Описатель соответствий языку и имени для подсветки
 		 */
 		typedef struct AHighlightMap
 		{

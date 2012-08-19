@@ -1,78 +1,5 @@
 #include "parser.h"
 //----------------------------------------------------------------------------------------------
-/*!
- * \brief Описатель "монолитного" тэга для парсера сообщений
- */
-typedef struct AStrongTag
-{
-	const char*         OpenPart;  /*!< \brief Открывающая часть */
-	const char*         ClosePart; /*!< \brief Закрывающая часть */
-	AParsedBlockType    Type;      /*!< \brief Тип тэга-блока    */
-	AParsedBlockSubType SubType;   /*!< \brief Подтип тэга-блока */
-} AStrongTag;
-//----------------------------------------------------------------------------------------------
-/*!
- * \brief Список "монолитных" тэгов для парсера сообщений
- */
-const AStrongTag g_strong_tags [] =
-{
-	// тэги кода
-	{ "[code]",             "[/code]",      pbtCode,      pbstSourceCode },
-	{ "[asm]",              "[/asm]",       pbtAssembler, pbstSourceCode },
-	{ "[ccode]",            "[/ccode]",     pbtC,         pbstSourceCode },
-	{ "[c]",                "[/c]",         pbtC,         pbstSourceCode },
-	{ "[cpp]",              "[/cpp]",       pbtCPP,       pbstSourceCode },
-	{ "[vc]",               "[/vc]",        pbtCPP,       pbstSourceCode },
-	{ "[c#]",               "[/c#]",        pbtCSharp,    pbstSourceCode },
-	{ "[csharp]",           "[/csharp]",    pbtCSharp,    pbstSourceCode },
-	{ "[cs]",               "[/cs]",        pbtCSharp,    pbstSourceCode },
-	{ "[msil]",             "[/msil]",      pbtMSIL,      pbstSourceCode },
-	{ "[midl]",             "[/midl]",      pbtIDL,       pbstSourceCode },
-	{ "[pascal]",           "[/pascal]",    pbtPascal,    pbstSourceCode },
-	{ "[vb]",               "[/vb]",        pbtBasic,     pbstSourceCode },
-	{ "[sql]",              "[/sql]",       pbtSQL,       pbstSourceCode },
-	{ "[perl]",             "[/perl]",      pbtPerl,      pbstSourceCode },
-	{ "[php]",              "[/php]",       pbtPHP,       pbstSourceCode },
-	{ "[java]",             "[/java]",      pbtJava,      pbstSourceCode },
-	{ "[xml]",              "[/xml]",       pbtXML,       pbstSourceCode },
-	{ "[lisp]",             "[/lisp]",      pbtLisp,      pbstSourceCode },
-	{ "[haskell]",          "[/haskell]",   pbtHaskell,   pbstSourceCode },
-	{ "[ruby]",             "[/ruby]",      pbtRuby,      pbstSourceCode },
-	{ "[nemerle]",          "[/nemerle]",   pbtNemerle,   pbstSourceCode },
-	{ "[python]",           "[/python]",    pbtPython,    pbstSourceCode },
-
-	// http://www.rsdn.ru/forum/message/3227340.1.aspx
-	{ "[code=]",            "[/code]",      pbtCode,      pbstSourceCode },
-	{ "[code=assembler]",   "[/code]",      pbtAssembler, pbstSourceCode },
-	{ "[code=c]",           "[/code]",      pbtC,         pbstSourceCode },
-	{ "[code=csharp]",      "[/code]",      pbtCSharp,    pbstSourceCode },
-	{ "[code=erlang]",      "[/code]",      pbtErlang,    pbstSourceCode },
-	{ "[code=haskell]",     "[/code]",      pbtHaskell,   pbstSourceCode },
-	{ "[code=idl]",         "[/code]",      pbtIDL,       pbstSourceCode },
-	{ "[code=java]",        "[/code]",      pbtJava,      pbstSourceCode },
-	{ "[code=lisp]",        "[/code]",      pbtLisp,      pbstSourceCode },
-	{ "[code=msil]",        "[/code]",      pbtMSIL,      pbstSourceCode },
-	{ "[code=ocaml]",       "[/code]",      pbtOCaml,     pbstSourceCode },
-	{ "[code=pascal]",      "[/code]",      pbtPascal,    pbstSourceCode },
-	{ "[code=perl]",        "[/code]",      pbtPerl,      pbstSourceCode },
-	{ "[code=php]",         "[/code]",      pbtPHP,       pbstSourceCode },
-	{ "[code=prolog]",      "[/code]",      pbtProlog,    pbstSourceCode },
-	{ "[code=python]",      "[/code]",      pbtPython,    pbstSourceCode },
-	{ "[code=ruby]",        "[/code]",      pbtRuby,      pbstSourceCode },
-	{ "[code=sql]",         "[/code]",      pbtSQL,       pbstSourceCode },
-	{ "[code=visualbasic]", "[/code]",      pbtBasic,     pbstSourceCode },
-	{ "[code=xsl]",         "[/code]",      pbtXML,       pbstSourceCode },
-
-	// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
-	{ "[code=cpp]",         "[/code]",      pbtCPP,       pbstSourceCode },
-
-	// тэги, которые не обрабатываются подсветкой кода
-	{ "[tagline]",          "[/tagline]",   pbtTagline,   pbstText  },
-	{ "[moderator]",        "[/moderator]", pbtModerator, pbstText  },
-	{ "[q]",                "[/q]",         pbtQuote,     pbstText  },
-	{ "[t]",                "[/t]",         pbtTable,     pbstText  },
-};
-//----------------------------------------------------------------------------------------------
 
 AQuotedString AParser::parseQuote (const QString& line)
 {
@@ -145,6 +72,77 @@ AQuotedStringList AParser::parseQuotes (const QString& source)
 
 AParsedBlockList AParser::parseBlocks (const QString& source)
 {
+	/*!
+	 * \brief Описатель "монолитного" тэга для парсера сообщений
+	 */
+	typedef struct AStrongTag
+	{
+		const char*         OpenPart;  /*!< \brief Открывающая часть */
+		const char*         ClosePart; /*!< \brief Закрывающая часть */
+		AParsedBlockType    Type;      /*!< \brief Тип тэга-блока    */
+		AParsedBlockSubType SubType;   /*!< \brief Подтип тэга-блока */
+	} AStrongTag;
+
+	// Список "монолитных" тэгов для парсера сообщений
+	const AStrongTag strong_tags [] =
+	{
+		// тэги кода
+		{ "[code]",             "[/code]",      pbtCode,      pbstSourceCode },
+		{ "[asm]",              "[/asm]",       pbtAssembler, pbstSourceCode },
+		{ "[ccode]",            "[/ccode]",     pbtC,         pbstSourceCode },
+		{ "[c]",                "[/c]",         pbtC,         pbstSourceCode },
+		{ "[cpp]",              "[/cpp]",       pbtCPP,       pbstSourceCode },
+		{ "[vc]",               "[/vc]",        pbtCPP,       pbstSourceCode },
+		{ "[c#]",               "[/c#]",        pbtCSharp,    pbstSourceCode },
+		{ "[csharp]",           "[/csharp]",    pbtCSharp,    pbstSourceCode },
+		{ "[cs]",               "[/cs]",        pbtCSharp,    pbstSourceCode },
+		{ "[msil]",             "[/msil]",      pbtMSIL,      pbstSourceCode },
+		{ "[midl]",             "[/midl]",      pbtIDL,       pbstSourceCode },
+		{ "[pascal]",           "[/pascal]",    pbtPascal,    pbstSourceCode },
+		{ "[vb]",               "[/vb]",        pbtBasic,     pbstSourceCode },
+		{ "[sql]",              "[/sql]",       pbtSQL,       pbstSourceCode },
+		{ "[perl]",             "[/perl]",      pbtPerl,      pbstSourceCode },
+		{ "[php]",              "[/php]",       pbtPHP,       pbstSourceCode },
+		{ "[java]",             "[/java]",      pbtJava,      pbstSourceCode },
+		{ "[xml]",              "[/xml]",       pbtXML,       pbstSourceCode },
+		{ "[lisp]",             "[/lisp]",      pbtLisp,      pbstSourceCode },
+		{ "[haskell]",          "[/haskell]",   pbtHaskell,   pbstSourceCode },
+		{ "[ruby]",             "[/ruby]",      pbtRuby,      pbstSourceCode },
+		{ "[nemerle]",          "[/nemerle]",   pbtNemerle,   pbstSourceCode },
+		{ "[python]",           "[/python]",    pbtPython,    pbstSourceCode },
+
+		// http://www.rsdn.ru/forum/message/3227340.1.aspx
+		{ "[code=]",            "[/code]",      pbtCode,      pbstSourceCode },
+		{ "[code=assembler]",   "[/code]",      pbtAssembler, pbstSourceCode },
+		{ "[code=c]",           "[/code]",      pbtC,         pbstSourceCode },
+		{ "[code=csharp]",      "[/code]",      pbtCSharp,    pbstSourceCode },
+		{ "[code=erlang]",      "[/code]",      pbtErlang,    pbstSourceCode },
+		{ "[code=haskell]",     "[/code]",      pbtHaskell,   pbstSourceCode },
+		{ "[code=idl]",         "[/code]",      pbtIDL,       pbstSourceCode },
+		{ "[code=java]",        "[/code]",      pbtJava,      pbstSourceCode },
+		{ "[code=lisp]",        "[/code]",      pbtLisp,      pbstSourceCode },
+		{ "[code=msil]",        "[/code]",      pbtMSIL,      pbstSourceCode },
+		{ "[code=ocaml]",       "[/code]",      pbtOCaml,     pbstSourceCode },
+		{ "[code=pascal]",      "[/code]",      pbtPascal,    pbstSourceCode },
+		{ "[code=perl]",        "[/code]",      pbtPerl,      pbstSourceCode },
+		{ "[code=php]",         "[/code]",      pbtPHP,       pbstSourceCode },
+		{ "[code=prolog]",      "[/code]",      pbtProlog,    pbstSourceCode },
+		{ "[code=python]",      "[/code]",      pbtPython,    pbstSourceCode },
+		{ "[code=ruby]",        "[/code]",      pbtRuby,      pbstSourceCode },
+		{ "[code=sql]",         "[/code]",      pbtSQL,       pbstSourceCode },
+		{ "[code=visualbasic]", "[/code]",      pbtBasic,     pbstSourceCode },
+		{ "[code=xsl]",         "[/code]",      pbtXML,       pbstSourceCode },
+
+		// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
+		{ "[code=cpp]",         "[/code]",      pbtCPP,       pbstSourceCode },
+
+		// тэги, которые не обрабатываются подсветкой кода
+		{ "[tagline]",          "[/tagline]",   pbtTagline,   pbstText  },
+		{ "[moderator]",        "[/moderator]", pbtModerator, pbstText  },
+		{ "[q]",                "[/q]",         pbtQuote,     pbstText  },
+		{ "[t]",                "[/t]",         pbtTable,     pbstText  },
+	};
+
 	AParsedBlockList result;
 
 	// проверка на вхождения тэгов cut - тэг "жадный"
@@ -269,20 +267,20 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			if (search_open_tag == true)
 			{
 				// поиск открывающего тэга
-				for (size_t i = 0; i < sizeof(g_strong_tags) / sizeof(AStrongTag); i++)
-					if (tag == g_strong_tags[i].OpenPart)
+				for (size_t i = 0; i < sizeof(strong_tags) / sizeof(AStrongTag); i++)
+					if (tag == strong_tags[i].OpenPart)
 					{
-						found_tag = &g_strong_tags[i];
+						found_tag = &strong_tags[i];
 						break;
 					}
 			}
 			else
 			{
 				// поиск закрывающего тэга
-				for (size_t i = 0; i < sizeof(g_strong_tags) / sizeof(AStrongTag); i++)
-					if (tag == g_strong_tags[i].ClosePart && g_strong_tags[i].Type == current_block.Type)
+				for (size_t i = 0; i < sizeof(strong_tags) / sizeof(AStrongTag); i++)
+					if (tag == strong_tags[i].ClosePart && strong_tags[i].Type == current_block.Type)
 					{
-						found_tag = &g_strong_tags[i];
+						found_tag = &strong_tags[i];
 						break;
 					}
 			}
