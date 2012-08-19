@@ -311,6 +311,7 @@ void AParser_Test::isURL_test ()
 		{ "YANDEX.RU",           1 },
 		{ "мчс.рф",              1 },
 		{ "МЧС.РФ",              1 },
+		{ "nobody@mail.ru",      1 },
 		{ "здесь",               0 },
 		{ "тут",                 0 },
 		{ "somewhere",           0 },

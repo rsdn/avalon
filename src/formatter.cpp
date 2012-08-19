@@ -400,9 +400,15 @@ QString AFormatter::formatSimpleText (const QString& text)
 	for (size_t i = 0; i < sizeof(replace_map) / sizeof(ASimpleTag); i++)
 		result.replace(QString::fromUtf8(replace_map[i].Source), QString::fromUtf8(replace_map[i].Replace), Qt::CaseInsensitive);
 
-	//
-	// замена url
-	//
+	result = formatHyperlinks(result);
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::formatHyperlinks (const QString& text)
+{
+	QString result = text;
 
 	QRegExp url1("\\[url\\](.+)\\[/url\\]",        Qt::CaseInsensitive, QRegExp::RegExp);
 	QRegExp url2("\\[url=(\\S+)\\](.+)\\[/url\\]", Qt::CaseInsensitive, QRegExp::RegExp);
@@ -421,7 +427,7 @@ QString AFormatter::formatSimpleText (const QString& text)
 		if (lval == 1)
 			html = QString::fromUtf8("<a href='") + lstr + "'>" + lstr + "</a>";
 		else if (lval == 2)
-			html = QString::fromUtf8("<font color='red'><a href='security risk'>") + lstr + "</a></font>";
+			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + lstr + "</font></a>";
 		else // невалидная ссылка
 			html = lstr;
 
@@ -447,9 +453,9 @@ QString AFormatter::formatSimpleText (const QString& text)
 		else if (rval == 1)
 			html = QString::fromUtf8("<a href='") + rstr + "'>" + lstr + "</a>";
 		else if (lval == 2)
-			html = QString::fromUtf8("<font color='red'><a href='security risk'>") + rstr + "</a></font>";
+			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + rstr + "</font></a>";
 		else if (rval == 2)
-			html = QString::fromUtf8("<font color='red'><a href='security risk'>") + lstr + "</a></font>";
+			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + lstr + "</font></a>";
 		else // невалидная ссылка
 			html = rstr + " (" + lstr + ")";
 
@@ -457,6 +463,36 @@ QString AFormatter::formatSimpleText (const QString& text)
 
 		index += std::min(url2.matchedLength(), html.length());
 	}
+
+	// email url
+	QRegExp email("\\[email\\](\\S+)\\[/email\\]", Qt::CaseInsensitive, QRegExp::RegExp);
+
+	email.setMinimal(true);
+
+	index = 0;
+
+	while ((index = email.indexIn(result, index)) != -1)
+	{
+		QString html;
+		QString lstr = email.cap(1);
+		int     lval = AParser::isURL(lstr);
+
+		if (lval == 1)
+			html = QString::fromUtf8("<a href='mailto:") + lstr + "'>" + lstr + "</a>";
+		else if (lval == 2)
+			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + lstr + "</font></a>";
+		else // невалидная ссылка
+			html = lstr;
+
+		result.replace(url1.cap(0), html);
+
+		index += std::min(url1.matchedLength(), html.length());
+	}
+
+	// msdn url
+	QRegExp msdn("\\[msdn\\](\\S+)\\[/msdn\\]", Qt::CaseInsensitive, QRegExp::RegExp);
+	msdn.setMinimal(true);
+	data.replace(msdn, "<a href='http://search.msdn.microsoft.com/Default.aspx?brand=Msdn&query=\\1'>\\1</a>");
 
 	return result;
 }

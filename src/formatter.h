@@ -60,6 +60,13 @@ class AFormatter
 		static QString formatSimpleText (const QString& text);
 
 		/*!
+		 * \brief Форматирование гиперссылок в блоке текста
+		 * \param text Текст
+		 * \return Строка html для вставки
+		 */
+		static QString formatHyperlinks (const QString& text);
+
+		/*!
 		 * \brief Создание аббриветауры ника из полного имени
 		 * \param nick Ник
 		 * \return 1-3 символа
