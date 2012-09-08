@@ -569,9 +569,9 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		else // невалидная ссылка
 			html = lstr;
 
-		result.replace(url1.cap(0), html);
+		result.replace(email.cap(0), html);
 
-		index += std::min(url1.matchedLength(), html.length());
+		index += std::min(email.matchedLength(), html.length());
 	}
 
 	// msdn url
