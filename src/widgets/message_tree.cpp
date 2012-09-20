@@ -1518,7 +1518,7 @@ void AMessageTree::processUrl (const QString& url)
 		// проверка на то, что URL является ссылкой на сообщение RSDN
 		// TODO: дополнить регэксп на ссылку вида http://rsdn.ru/forum/Message.aspx?mid=3900833&only=1
 		// пример встречается по ссылке http://www.rsdn.ru/forum/unix/3901241.1.aspx
-		QRegExp rsdn_url("^(http://){0,1}((www|gzip)\\.){0,1}rsdn.ru/forum/.+/(\\d+)\\.(1|flat|aspx)", Qt::CaseInsensitive);
+		QRegExp rsdn_url("^(http://){0,1}((www|gzip)\\.){0,1}rsdn.ru/forum/.+/(\\d+)(\\.(1|flat|aspx)){0,1}", Qt::CaseInsensitive);
 
 		if (rsdn_url.indexIn(external_url) == -1)
 			QDesktopServices::openUrl(external_url);
