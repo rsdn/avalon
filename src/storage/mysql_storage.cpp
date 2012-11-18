@@ -49,7 +49,34 @@ bool AMySQLStorage::ping ()
 
 bool AMySQLStorage::createDatabase ()
 {
-	return returnError(QString::fromUtf8("Метод не реализован"));
+	QFile file(":dev/avalon.mysql.sql");
+
+	if (file.open(QIODevice::ReadOnly) == false)
+		return returnError(QString::fromUtf8("Ошибка открытия ресурса"));
+
+	QString schema = QString::fromUtf8(file.readAll().data());
+
+	file.close();
+
+	QStringList statements = schema.split(';', QString::SkipEmptyParts);
+
+	for (int i = 0; i < statements.count(); i++)
+	{
+		QString sql = statements.at(i).trimmed();
+
+		if (sql.length() == 0)
+			continue;
+
+		std::auto_ptr<AQuery> query_create(createQuery(sql));
+
+		if (query_create.get() == NULL)
+			return returnError(AMySQLDatabase::getLastError());
+
+		if (query_create->exec() == false)
+			return returnError(query_create->getLastError());
+	}
+
+	return returnSuccess();
 }
 //----------------------------------------------------------------------------------------------
 
