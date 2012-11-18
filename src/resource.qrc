@@ -152,6 +152,7 @@
 
 		<file>icons/Main-Logo.icns</file>
 
+		<file>sql/avalon.mysql.sql</file>
 		<file>sql/avalon.sqlite.sql</file>
 
 	</qresource>

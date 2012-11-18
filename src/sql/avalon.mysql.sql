@@ -4,12 +4,6 @@
 #
 ###
 
-SET NAMES utf8;
-
-CREATE DATABASE IF NOT EXISTS `avalon` DEFAULT CHARACTER SET utf8;
-
-USE `avalon`;
-
 CREATE TABLE `broken`
 (
 	`id_message` INT        NOT NULL COMMENT 'id топика/сообщения',
@@ -111,7 +105,7 @@ CREATE TABLE `moderate`
 	`id_forum`   INT      NOT NULL COMMENT 'id форума',
 	`created`    DATETIME NOT NULL COMMENT 'дата',
 
-	PRIMARY KEY (`id_message`,`id_user`)
+	PRIMARY KEY (`id_message`, `id_user`)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='таблица бомбочек';
 
@@ -138,7 +132,8 @@ CREATE TABLE `rating`
 	`rate`        INT        NOT NULL COMMENT 'оценка',
 	`rate_date`   DATETIME   NOT NULL COMMENT 'дата',
 	`rate_type`   TINYINT(1) NOT NULL COMMENT 'тип оценки (0 - смайл, 1 - +/-, 2 - балл)',
-	PRIMARY KEY (`id_message`,`id_user`, `rate_type`)
+
+	PRIMARY KEY (`id_message`, `id_user`, `rate_type`)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='таблица рейтинга';
 
