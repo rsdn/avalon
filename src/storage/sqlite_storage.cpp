@@ -49,7 +49,7 @@ bool ASQLiteStorage::ping ()
 
 bool ASQLiteStorage::createDatabase ()
 {
-	QFile file(":dev/avalon.sqlite.sql");
+	QFile file(":sql/avalon.sqlite.sql");
 
 	if (file.open(QIODevice::ReadOnly) == false)
 		return returnError(QString::fromUtf8("Ошибка открытия ресурса"));

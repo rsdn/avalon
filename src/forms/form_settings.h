@@ -32,6 +32,16 @@ class FormSettings : public FormSettingsUI
 		 */
 		void restore ();
 
+		/*!
+		 * \brief Создание базы SQLite
+		 */
+		void createSQLiteDatabase();
+
+		/*!
+		 * \brief Создание базы MySQL
+		 */
+		void createMySQLDatabase();
+
 	private slots:
 
 		/*!

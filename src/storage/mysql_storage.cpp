@@ -49,7 +49,7 @@ bool AMySQLStorage::ping ()
 
 bool AMySQLStorage::createDatabase ()
 {
-	QFile file(":dev/avalon.mysql.sql");
+	QFile file(":sql/avalon.mysql.sql");
 
 	if (file.open(QIODevice::ReadOnly) == false)
 		return returnError(QString::fromUtf8("Ошибка открытия ресурса"));

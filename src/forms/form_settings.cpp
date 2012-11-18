@@ -53,7 +53,51 @@ void FormSettings::button_database_create_clicked ()
 {
 	QSettings settings;
 
-	QString old_value = settings.value("sqlite/file", QDir::homePath() + "/avalon/avalon.db").toString();
+	if (m_combo_database_type->currentText() == "SQLite")
+	{
+		// предыдущие настройки
+		QString old_type  = settings.value("storage/type", "SQLite").toString();
+		QString old_value = settings.value("sqlite/file", QDir::homePath() + "/avalon/avalon.db").toString();
+
+		// создание базы
+		createSQLiteDatabase();
+
+		// восстановление настроек на случай отмены
+		settings.setValue("storage/type", old_type);
+		settings.setValue("sqlite/file",  old_value);
+	}
+	else
+	{
+		// предыдущие настройки
+		QString old_type     = settings.value("storage/type", "MySQL").toString();
+#ifdef Q_WS_WIN
+		QString old_host     = settings.value("mysql/host", "127.0.0.1").toString();
+		QString old_port     = settings.value("mysql/port", "3306").toString();
+#else
+		QString old_host     = settings.value("mysql/host", "localhost").toString();
+		QString old_port     = settings.value("mysql/port", "/tmp/mysql.sock").toString();
+#endif
+		QString old_name     = settings.value("mysql/name",     "avalon").toString();
+		QString old_login    = settings.value("mysql/login",    "root").toString();
+		QString old_password = settings.value("mysql/password", "").toString();
+
+		// создание базы
+		createMySQLDatabase();
+
+		// восстановление настроек на случай отмены
+		settings.setValue("storage/type",   old_type);
+		settings.setValue("mysql/host",     old_host);
+		settings.setValue("mysql/port",     old_port);
+		settings.setValue("mysql/name",     old_name);
+		settings.setValue("mysql/login",    old_login);
+		settings.setValue("mysql/password", old_password);
+	}
+}
+//----------------------------------------------------------------------------------------------
+
+void FormSettings::createSQLiteDatabase ()
+{
+	QSettings settings;
 
 	QString new_value = QFileDialog::getSaveFileName(this, QString::fromUtf8("Имя файла данных"), m_text_database_file->text());
 
@@ -67,14 +111,14 @@ void FormSettings::button_database_create_clicked ()
 			}
 
 		// хранилище будет получать настройки из файла настроек
-		settings.setValue("sqlite/file", new_value);
+		settings.setValue("storage/type", "SQLite");
+		settings.setValue("sqlite/file",  new_value);
 
 		// получение хранилища
 		std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
 
 		if (storage.get() == NULL)
 		{
-			settings.setValue("sqlite/file", old_value);
 			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Не выбрано хранилище данных"));
 			return;
 		}
@@ -82,17 +126,47 @@ void FormSettings::button_database_create_clicked ()
 		// создание базы
 		if (storage->createDatabase() == false)
 		{
-			settings.setValue("sqlite/file", old_value);
 			storage->showError(this);
 			return;
 		}
 
-		// в настройках пока сохранено старое значение на случай нажатия отмены
-		settings.setValue("sqlite/file", old_value);
+		QMessageBox::information(this, QString::fromUtf8("Создание базы данных"), QString::fromUtf8("База данных успешно создана"));
 
 		// замена текста на имя файла вновь созданной базы
 		m_text_database_file->setText(new_value);
 	}
+}
+//----------------------------------------------------------------------------------------------
+
+void FormSettings::createMySQLDatabase ()
+{
+	QSettings settings;
+
+	// новые настройки
+	settings.setValue("storage/type",   "MySQL");
+	settings.setValue("mysql/host",     m_text_database_host->text());
+	settings.setValue("mysql/port",     m_text_database_port->text());
+	settings.setValue("mysql/name",     m_text_database_name->text());
+	settings.setValue("mysql/login",    m_text_database_login->text());
+	settings.setValue("mysql/password", m_text_database_password->text());
+
+	// получение хранилища
+	std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
+
+	if (storage.get() == NULL)
+	{
+		QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Не выбрано хранилище данных"));
+		return;
+	}
+
+	// создание базы
+	if (storage->createDatabase() == false)
+	{
+		storage->showError(this);
+		return;
+	}
+
+	QMessageBox::information(this, QString::fromUtf8("Создание базы данных"), QString::fromUtf8("База данных успешно создана"));
 }
 //----------------------------------------------------------------------------------------------
 
@@ -126,7 +200,6 @@ void FormSettings::combo_database_type_current_index_changed (const QString& tex
 	m_text_database_password->setEnabled(e);
 	m_text_database_file->setEnabled(!e);
 	m_button_database_file->setEnabled(!e);
-	m_button_database_create->setEnabled(!e);
 }
 //----------------------------------------------------------------------------------------------
 

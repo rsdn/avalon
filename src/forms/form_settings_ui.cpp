@@ -253,11 +253,13 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_layout_database_file->addWidget(m_text_database_file);
 
 	m_button_database_file = new QPushButton(this);
+	m_button_database_file->setToolTip(QString::fromUtf8("выбрать базу"));
 	m_button_database_file->setIcon(QIcon(":/icons/open16.png"));
 	m_button_database_file->setMaximumSize(m_text_database_file->height(), m_text_database_file->height());
 	m_layout_database_file->addWidget(m_button_database_file);
 
 	m_button_database_create = new QPushButton(this);
+	m_button_database_create->setToolTip(QString::fromUtf8("создать базу"));
 	m_button_database_create->setIcon(QIcon(":/icons/new16.png"));
 	m_button_database_create->setMaximumSize(m_text_database_file->height(), m_text_database_file->height());
 	m_layout_database_file->addWidget(m_button_database_create);
