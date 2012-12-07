@@ -43,7 +43,7 @@ void AMessageView::setMessage (const AMessageInfo& message, bool special, bool r
 	QString body;
 
 	// загрузка рейтингов (если требуется)
-	if (special == false)
+	if (rated == true)
 	{
 		// "тихий" контроль ошибок, т.к. не страшно, если пузомерка не загрузится
 		std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
