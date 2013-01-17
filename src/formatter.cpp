@@ -385,14 +385,14 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 			if (string.QuoteLevel != 0)
 			{
 				if (string.QuoteLevel % 3 == 0)
-					result += pad + "<p class='quote_blue'>" + line + "</p>\n";
+					result += pad + "<p class='quote_blue'> " + line + " </p>\n";
 				else if (string.QuoteLevel % 2 == 0)
-					result += pad + "<p class='quote_red'>" + line + "</p>\n";
+					result += pad + "<p class='quote_red'> " + line + " </p>\n";
 				else
-					result += pad + "<p class='quote_green'>" + line + "</p>\n";
+					result += pad + "<p class='quote_green'> " + line + " </p>\n";
 			}
 			else
-				result += pad + "<p class='quote_black'>" + line + "</p>\n";
+				result += pad + "<p class='quote_black'> " + line + " </p>\n";
 
 			last_quote_level = string.QuoteLevel;
 		}
@@ -603,7 +603,7 @@ QString AFormatter::formatHyperlinks (const QString& text)
 
 		if (lval == 1)
 		{
-			html = QString::fromUtf8("<a href='") + lstr + "'>" + lstr + "</a>";
+			html = QString::fromUtf8("<a href='") + lstr + "'>" + QUrl::fromPercentEncoding(lstr.toUtf8()) + "</a>";
 			result.replace(lstr, html);
 			index += std::min(url3.matchedLength(), html.length());
 		}
