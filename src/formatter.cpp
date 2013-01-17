@@ -7,12 +7,21 @@ QString AFormatter::headHTML ()
 {
 	QString path = QCoreApplication::applicationDirPath();
 
+	QString custom_css;
+	if (QFileInfo(path + "/avalon.css").exists() == true)
+#ifdef Q_WS_WIN
+		custom_css = "	<link rel='stylesheet' href='file:///" + path + "/avalon.css' type='text/css' media='screen' />\n";
+#else
+		custom_css = "	<link rel='stylesheet' href='file://" + path + "/avalon.css' type='text/css' media='screen' />\n";
+#endif
+
 	QString result =
 		"<!DOCTYPE html>\n"
 		"<html xmlns='http://www.w3.org/1999/xhtml'>\n"
 		"<head>\n"
 		"	<meta charset='utf-8' />\n"
 		"	<link rel='stylesheet' href='qrc:/style.css' type='text/css' media='screen' />\n"
+		+ custom_css +
 #ifdef Q_WS_WIN
 		"	<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css'>\n"
 		"	<script src='file:///" + path + "/highlight/highlight.pack.js'></script>\n"
