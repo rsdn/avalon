@@ -37,6 +37,51 @@ class AFormatter
 	private:
 
 		/*!
+		 * \brief Блок заголовочного html / head / body
+		 * \return Строка html для вставки
+		 */
+		static QString headHTML ();
+
+		/*!
+		 * \brief Блок темы сообщения
+		 * \param id ID сообщения
+		 * \param special Флаг того, что сообщение в спец-форуме
+		 * \param subject Тема сообщения
+		 * \return Строка html для вставки
+		 */
+		static QString subjectHTML (int id, bool special, const QString subject);
+
+		/*!
+		 * \brief Блок возможности выставлять оценки
+		 * \param special Флаг того, что сообщение в спец-форуме
+		 * \param rated Флаг того, что на форуме разрешены оценки
+		 * \return Строка html для вставки
+		 */
+		static QString rateHTML (bool special, bool rated);
+
+		/*!
+		 * \brief Блок информации об авторе сообщения
+		 * \param id ID пользователя
+		 * \param nick Ник пользователя
+		 * \return Строка html для вставки
+		 */
+		static QString authorHTML (int id, const QString nick);
+
+		/*!
+		 * \brief Блок поставленных оценок
+		 * \param id ID сообщения
+		 * \param rating_list Список оценок
+		 * \return Строка html для вставки
+		 */
+		static QString ratingHTML (int id, const AMessageRatingList* rating_list);
+
+		/*!
+		 * \brief Блок подвала html
+		 * \return Строка html для вставки
+		 */
+		static QString footerHTML ();
+
+		/*!
 		 * \brief Форматирование блока текста
 		 * \param block Описатель блока
 		 * \return Строка html для вставки

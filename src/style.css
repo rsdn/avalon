@@ -1,0 +1,191 @@
+* {
+	margin  : 0;
+	padding : 0;
+}
+
+body {
+	font  : 10pt Courier-New;
+	width : 100%;
+}
+
+#message {
+	width : 100%;
+}
+
+#header {
+	width      : 100%;
+	height     : 24px;
+	background : #E6F2E6;
+}
+
+#title {
+}
+
+#move_to_thread
+{
+	float       : left;
+	margin-top  : 4px;
+	margin-left : 4px;
+}
+
+#subject {
+	float           : left;
+	font-size       : 14px;
+	font-weight     : bold;
+	margin-top      : 3px;
+	margin-left     : 5px;
+	cursor          : pointer;
+	color           : black;
+	text-decoration : none;
+}
+
+#rate {
+	float        : right;
+	margin-right : 4px;
+	margin-top   : 4px;
+}
+
+#rate_plus_1 {
+	margin-right : 5px;
+}
+
+#rate_1 {
+}
+
+#rate_2 {
+}
+
+#rate_3 {
+}
+
+#rate_cross {
+	margin-left  : 5px;
+}
+
+#rate_smile {
+	margin-left  : 5px;
+	margin-right : 5px;
+}
+
+#rate_plus {
+}
+
+#rate_minus {
+}
+
+#moderate {
+	margin-left : 5px;
+}
+
+#info {
+	background   : #FFFFF6;
+	margin-left  : 5px;
+	margin-right : 5px;
+}
+
+.info_left {
+	float       : left;
+	width       : 70px;
+	font-weight : bold;
+}
+
+.info_right {
+	float : left;
+}
+
+.info_right #text {
+	margin-bottom : 3px;
+}
+
+#rating {
+	cursor          : pointer;
+	color           : black;
+	text-decoration : none;
+}
+
+#rating_plus_1 {
+}
+
+#rating_1 {
+}
+
+#rating_2 {
+}
+
+#rating_3 {
+}
+
+#rating_smile {
+}
+
+#rating_plus {
+}
+
+#rating_minus {
+}
+
+#text {
+	margin-left  : 5px;
+	margin-right : 5px;
+}
+
+#text p {
+	margin-top : 10px;
+}
+
+#text p.quote_black {
+}
+
+#text p.quote_blue {
+	color : darkblue;
+}
+
+#text p.quote_red {
+	color : darkred;
+}
+
+#text p.quote_green {
+	color : darkgreen;
+}
+
+#text blockquote {
+	margin-top       : 10px;
+	background-color : #FFFFE7;
+}
+
+#text .moderator {
+	background : none repeat scroll 0 0 #FFCCCC;
+	border-top : 1px solid #FF0000;
+	color      : #7F0000;
+	margin-top : 10px;
+}
+
+#text .moderator p {
+	margin : 2px;
+}
+
+#text .tagline {
+	background  : none repeat scroll 0 0 #F6F6F6;
+	border-top  : 1px solid #DDDDDD;
+	margin-top  : 10px;
+}
+
+#text .tagline p {
+	margin : 2px;
+}
+
+#text pre {
+	font       : 10pt Courier-New;
+	margin-top : 10px;
+}
+
+#text table {
+	text-align : center;
+}
+
+#footer {
+	margin-top : 5px;
+	width      : 100%;
+	height     : 20px;
+	background : #E6F2E6;
+}

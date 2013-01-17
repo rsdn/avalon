@@ -3,6 +3,183 @@
 #include "global.h"
 //----------------------------------------------------------------------------------------------
 
+QString AFormatter::headHTML ()
+{
+	QString path = QCoreApplication::applicationDirPath();
+
+	QString result =
+		"<!DOCTYPE html>\n"
+		"<html xmlns='http://www.w3.org/1999/xhtml'>\n"
+		"<head>\n"
+		"	<meta charset='utf-8' />\n"
+		"	<link rel='stylesheet' href='qrc:/style.css' type='text/css' media='screen' />\n"
+#ifdef Q_WS_WIN
+		"	<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css'>\n"
+		"	<script src='file:///" + path + "/highlight/highlight.pack.js'></script>\n"
+#else
+		"	<link rel='stylesheet' title='Magula' href='file://" + path + "/highlight/styles/magula.css'>\n"
+		"	<script src='file://" + path + "/highlight/highlight.pack.js'></script>\n"
+#endif
+		"	<script>hljs.tabReplace = '    '; hljs.initHighlightingOnLoad();</script>\n"
+		"</head>\n"
+		"<body>\n";
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::subjectHTML (int id, bool special, const QString subject)
+{
+	QString pad = "			";
+	QString result = pad + "<div id='title'>\n";
+
+	if (special == false)
+	{
+		result +=
+			pad + "	<a id='move_to_thread' href='http://www.rsdn.ru/forum/message/" + QString::number(id) + QString::fromUtf8(".aspx'><img src='qrc:/icons/show_topic.png' title='показать положение в теме' /></a>\n") +
+			pad + "	<a id='subject' href='http://www.rsdn.ru/forum/message/" + QString::number(id) + ".1.aspx'>" + subject + "</a>\n";
+	}
+	else
+		result += pad + "<p id='subject'>" + subject + "</p>\n";
+
+	result += pad + "</div>\n";
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::rateHTML (bool special, bool rated)
+{
+	QString pad = "				";
+	QString result = pad + "<div id='rate'>\n";
+
+	if (rated == true)
+	{
+		result +=
+			pad + QString::fromUtf8("<a id='rate_plus_1' href='avalon:rate_plus_1'><img src='qrc:/icons/rate_plus_1.png' title='+1' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_1' href='avalon:rate_1'><img src='qrc:/icons/rate_1.png' title='интересно' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_2' href='avalon:rate_2'><img src='qrc:/icons/rate_2.png' title='спасибо' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_3' href='avalon:rate_3'><img src='qrc:/icons/rate_3.png' title='супер' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_cross' href='avalon:rate_cross'><img src='qrc:/icons/rate_cross.png' title='удалить оценку' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_smile' href='avalon:rate_smile'><img src='qrc:/icons/rate_smile.png' title='смешно' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_plus' href='avalon:rate_plus'><img src='qrc:/icons/rate_plus.png' title='согласен' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_minus' href='avalon:rate_minus'><img src='qrc:/icons/rate_minus.png' title='не согласен' /></a>\n");
+	}
+
+	if (special == false)
+		result += pad + QString::fromUtf8("<a id='moderate' href='avalon:moderate'><img src='qrc:/icons/moderate.png' title='модерирование' /></a>\n");
+
+	result += pad + "</div>\n";
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::authorHTML (int id, const QString nick)
+{
+	QString pad = "			";
+	QString result;
+
+	if (id == 0 || id == -1)
+		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'>") + nick + "</div><br />\n";
+	else
+		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'><a href='http://www.rsdn.ru/Users/") + QString::number(id) + ".aspx'>" + nick + "</a></div><br />\n";
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::ratingHTML (int id, const AMessageRatingList* rating_list)
+{
+	if (rating_list == NULL || rating_list->count() == 0)
+		return "";
+
+	QString result = "";
+
+	/* "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2 */
+	int rate_plus_one = 0;
+	int rate_one      = 0;
+	int rate_two      = 0;
+	int rate_three    = 0;
+	int rate_plus     = 0;
+	int rate_minus    = 0;
+	int rate_smile    = 0;
+
+	for (int i = 0; i < rating_list->count(); i++)
+	{
+		AMessageRating info = rating_list->at(i);
+
+		int rate = info.Rate;
+
+		if (rate == 1)
+			rate_one++;
+		else if (rate == 2)
+			rate_two++;
+		else if (rate == 3)
+			rate_three++;
+		else if (rate == 0)
+			rate_minus++;
+		else if (rate == -2)
+			rate_smile++;
+		else if (rate == -3)
+			rate_plus_one++;
+		else if (rate == -4)
+			rate_plus++;
+	}
+
+	// может оказаться, что есть всего одна оценка и она не входит в диапазон допустимых - получится пустое пространство
+	if (rate_plus_one > 0 || rate_one > 0 || rate_two > 0 || rate_three > 0 || rate_plus > 0 || rate_minus > 0 || rate_smile > 0)
+	{
+		QString pad = "			";
+
+		result +=
+			pad + "<div class='info_left'><a id='rating' href='http://www.rsdn.ru/forum/RateList.aspx?mid=" + QString::number(id) + QString::fromUtf8("'>Оценки</a>:</div>\n") +
+			pad + "<div class='info_right'>\n";
+
+		if (rate_smile > 0)
+			result += pad + QString::fromUtf8("	<img id='rating_plus_1' src='qrc:/icons/rate_smile.png' title='смешно' />") + QString::number(rate_smile) + "\n";
+		if (rate_plus > 0)
+			result += pad + QString::fromUtf8("	<img id='rating_1' src='qrc:/icons/rate_plus.png' title='согласен' />") + QString::number(rate_plus) + "\n";
+		if (rate_minus > 0)
+			result += pad + QString::fromUtf8("	<img id='rating_2' src='qrc:/icons/rate_minus.png' title='не согласен' />") + QString::number(rate_minus) + "\n";
+		if (rate_plus_one > 0)
+			result += pad + QString::fromUtf8("	<img id='rating_3' src='qrc:/icons/rate_plus_1.png' title='+1' />") + QString::number(rate_plus_one) + "\n";
+		if (rate_one > 0)
+			result += pad + QString::fromUtf8("	<img id='rating_smile' src='qrc:/icons/rate_1.png' title='интересно' />") + QString::number(rate_one) + "\n";
+		if (rate_two > 0)
+			result += pad + QString::fromUtf8("	<img id='rating_plus' src='qrc:/icons/rate_2.png' title='спасибо' />") + QString::number(rate_two) + "\n";
+		if (rate_three > 0)
+			result += pad + QString::fromUtf8("	<img id='rating_minus' src='qrc:/icons/rate_3.png' title='супер' />") + QString::number(rate_three) + "\n";
+
+		result += pad + "</div><br />\n";
+	}
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::footerHTML ()
+{
+	QString result =
+		"	<div id='footer'></div>\n"
+
+		// Web Of Trust (experemental)
+		// http://www.mywot.com/en/blog/adding-ratings-to-your-website
+		// http://www.mywot.com/wiki/API
+		"	<script type='text/javascript'>\n"
+		"		var wot_rating_options = {\n"
+		"			exclude: /^(.+\\.){0,1}(rsdn\\.ru|yandex\\.ru|google\\.com|youtube\\.com|github\\.com|wikipedia\\.org)$/i\n"
+		"		};\n"
+		"	</script>\n"
+		"	<script type='text/javascript' src='http://api.mywot.com/widgets/ratings.js'></script>\n"
+
+		"</body>\n"
+		"</html>\n";
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
 QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bool rated, const AMessageRatingList* rating_list)
 {
 	// парсинг сообщения
@@ -15,168 +192,47 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 	subject.replace("<", "&lt;");
 	subject.replace(">", "&gt;");
 
-	//
-	// формирование html
-	//
+	// шапка html
+	QString result = headHTML() +
+	"	<div id='message'>\n"
+	"		<div id='header'>\n";
 
-	QString result;
-
-	result += "<html>";
-	result += "<head>";
-	result += "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
-
-	// подключение highlight.js
-	QString path = QCoreApplication::applicationDirPath();
-
-	#if QT_VERSION >= 0x040500
-	result += "<style type='text/css'>pre { font-family: 'Courier New', courier; font-size: 11pt; }</style>";
-	#endif
-
-	#ifdef Q_WS_WIN
-		result += "<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css'>";
-		result += "<script src='file:///" + path + "/highlight/highlight.pack.js'></script>";
-	#else
-		result += "<link rel='stylesheet' title='Magula' href='file://" + path + "/highlight/styles/magula.css'>";
-		result += "<script src='file://" + path + "/highlight/highlight.pack.js'></script>";
-	#endif
-
-	result += "<script>hljs.tabReplace = '    '; hljs.initHighlightingOnLoad();</script>";
-	result += "<style type='text/css'>table { font-size: 11pt; }</style>";
-	result += "</head>";
-
-	// тело html
-	result += "<body topmargin='0' leftmargin='0' rightmargin='0' bottommargin='0'>";
-	result += "<table width='100%' cellpadding='1' cellspacing='0' border='0'>";
-	result += "<tr style='background-color: #E6F2E6' valign='center'>";
-
-	// тема сообщения + ссылка на сообщение на сайте
-	result += "<td><a href='http://www.rsdn.ru/forum/message/" + QString::number(message.ID) + ".aspx'>" + QString::fromUtf8("<img src='qrc:/icons/show_topic.png' title='показать положение в теме' alt='показать положение в теме'>") + "</a><b>&nbsp;";
-
-	if (message.ID != 0 && special == false)
-		result += "<a style='color: black; text-decoration: none;' href='http://www.rsdn.ru/forum/message/" + QString::number(message.ID) + ".1.aspx'>" + subject + "</a>";
-	else
-		result += subject;
-
-	result += "</b></td>";
+	// заголовок
+	result += subjectHTML(message.ID, special, message.Subject);
 
 	// иконки для выставления оценок
-	result += "<td align='right'>";
+	result += rateHTML(special, rated);
 
-	if (rated == true)
-	{
-		result += "<a href='avalon:rate_plus_1'><img src='qrc:/icons/rate_plus_1.png' title='+1' alt='+1'></a>";
-		result += "&nbsp;&nbsp;";
-		result += "<a href='avalon:rate_1'>" + QString::fromUtf8("<img src='qrc:/icons/rate_1.png' title='интересно' alt='интересно'>") + "</a>";
-		result += "<a href='avalon:rate_2'>" + QString::fromUtf8("<img src='qrc:/icons/rate_2.png' title='спасибо' alt='спасибо'>") + "</a>";
-		result += "<a href='avalon:rate_3'>" + QString::fromUtf8("<img src='qrc:/icons/rate_3.png' title='супер' alt='супер'>") + "</a>";
-		result += "&nbsp;&nbsp;";
-		result += "<a href='avalon:rate_cross'>" + QString::fromUtf8("<img src='qrc:/icons/rate_cross.png' title='удалить оценку' alt='удалить оценку'>") + "</a>";
-		result += "&nbsp;&nbsp;";
-		result += "<a href='avalon:rate_smile'>" + QString::fromUtf8("<img src='qrc:/icons/rate_smile.png' title='смешно' alt='смешно'>") + "</a>";
-		result += "&nbsp;&nbsp;";
-		result += "<a href='avalon:rate_plus'>" + QString::fromUtf8("<img src='qrc:/icons/rate_plus.png' title='согласен' alt='согласен'>") + "</a>";
-		result += "<a href='avalon:rate_minus'>" + QString::fromUtf8("<img src='qrc:/icons/rate_minus.png' title='не согласен' alt='не согласен'>") + "</a>";
-		result += "&nbsp;&nbsp;";
-	}
+	// закрытие div.id = header
+	result +=
+	"		</div>\n"
+	"		<div id='info'>\n";
 
-	if (special == false)
-		result += "<a href='avalon:moderate'>" + QString::fromUtf8("<img src='qrc:/icons/moderate.png' title='модерирование' alt='модерирование'>") + "</a>";
+	// автор сообщения + ссылка на профиль
+	result += authorHTML(message.IDUser, message.UserNick.length() > 0 ? message.UserNick : QString::fromUtf8("Аноним"));
 
-	result += "&nbsp;&nbsp;";
-	result += "</td></tr>";
+	// дата сообщения
+	result += QString::fromUtf8("			<div class='info_left'>Дата:</div><div class='info_right'>") + message.MessageDate.toString("dd.MM.yyyy HH:mm") + "</div><br />\n";
 
-	// имя пользователя + ссылка на профиль
-	if (message.IDUser == 0 || message.IDUser == -1)
-	{
-		if (message.UserNick.length() > 0)
-			result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;" + QString::fromUtf8("От:") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>" + message.UserNick + "</td></tr>";
-		else
-			result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;" + QString::fromUtf8("От:") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>" + QString::fromUtf8("Аноним") + "</td></tr>";
-	}
-	else
-		result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;" + QString::fromUtf8("От:") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><a href='http://www.rsdn.ru/Users/" + QString::number(message.IDUser) + ".aspx'>" + message.UserNick + "</a></td></tr>";
+	// рейтинг сообщения
+	result += ratingHTML(message.ID, rating_list);
 
-	result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;" + QString::fromUtf8("Дата:") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>" + message.MessageDate.toString("dd.MM.yyyy HH:mm") + "</td></tr>";
-
-	// формирование строки рейтинга сообщения
-	if (rating_list != NULL && rating_list->count() > 0)
-	{
-		/* "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2 */
-		int rate_plus_one = 0;
-		int rate_one      = 0;
-		int rate_two      = 0;
-		int rate_three    = 0;
-		int rate_plus     = 0;
-		int rate_minus    = 0;
-		int rate_smile    = 0;
-
-		for (int i = 0; i < rating_list->count(); i++)
-		{
-			AMessageRating info = rating_list->at(i);
-
-			int rate = info.Rate;
-
-			if (rate == 1)
-				rate_one++;
-			else if (rate == 2)
-				rate_two++;
-			else if (rate == 3)
-				rate_three++;
-			else if (rate == 0)
-				rate_minus++;
-			else if (rate == -2)
-				rate_smile++;
-			else if (rate == -3)
-				rate_plus_one++;
-			else if (rate == -4)
-				rate_plus++;
-		}
-
-		// может оказаться, что есть всего одна оценка и она не входит в диапазон допустимых - получится пустое пространство
-		if (rate_plus_one > 0 || rate_one > 0 || rate_two > 0 || rate_three > 0 || rate_plus > 0 || rate_minus > 0 || rate_smile > 0)
-		{
-			result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;<a style='color: black; text-decoration: none;' href='http://www.rsdn.ru/forum/RateList.aspx?mid=" + QString::number(message.ID) + QString::fromUtf8("'>Оценки</a>:") + "&nbsp;&nbsp;</b>";
-
-			if (rate_smile > 0)
-				result += QString::fromUtf8("<img src='qrc:/icons/rate_smile.png' align='top' title='смешно' alt='смешно'>&nbsp;") + QString::number(rate_smile) + "&nbsp;&nbsp;";
-			if (rate_plus > 0)
-				result += QString::fromUtf8("<img src='qrc:/icons/rate_plus.png' align='top' title='согласен' alt='согласен'>&nbsp;") + QString::number(rate_plus) + "&nbsp;&nbsp;";
-			if (rate_minus > 0)
-				result += QString::fromUtf8("<img src='qrc:/icons/rate_minus.png' align='top' title='не согласен' alt='не согласен'>&nbsp;") + QString::number(rate_minus) + "&nbsp;&nbsp;";
-			if (rate_plus_one > 0)
-				result += QString::fromUtf8("<img src='qrc:/icons/rate_plus_1.png' align='top' title='+1' alt='+1'>&nbsp;") + QString::number(rate_plus_one) + "&nbsp;&nbsp;";
-			if (rate_one > 0)
-				result += QString::fromUtf8("<img src='qrc:/icons/rate_1.png' align='top' title='интересно' alt='интересно'>&nbsp;") + QString::number(rate_one) + "&nbsp;&nbsp;";
-			if (rate_two > 0)
-				result += QString::fromUtf8("<img src='qrc:/icons/rate_2.png' align='top' title='спасибо' alt='спасибо'>&nbsp;") + QString::number(rate_two) + "&nbsp;&nbsp;";
-			if (rate_three > 0)
-				result += QString::fromUtf8("<img src='qrc:/icons/rate_3.png' align='top' title='супер' alt='супер'>&nbsp;") + QString::number(rate_three) + "&nbsp;&nbsp;";
-
-			result += "</td></tr>";
-		}
-	}
-
-	result += "<tr><td colspan='2'><table width='99%' align='center'><tr><td><br />";
+	// закрытие div.id = info
+	result += "		</div>\n";
 
 	// формирование тела сообщения
+	result += "		<div id='text'>\n";
+
 	for (int i = 0; i < list.count(); i++)
         result += formatParsedBlock(list.at(i));
 
+	result += "		</div>\n";
+
+	// закрытие div.id = message
+	result += "	</div>\n";
+
 	// хвост html
-	result += "</td></tr></table></td></tr>";
-	result += "<tr style='background-color: #E6F2E6'><td colspan='2'><b>&nbsp;</b></td></tr>";
-
-	result += "</table>";
-	result += "</body>";
-	result += "</html>";
-
-	// Web Of Trust (experemental)
-	// http://www.mywot.com/en/blog/adding-ratings-to-your-website
-	// http://www.mywot.com/wiki/API
-	result += "<script type='text/javascript'>var wot_rating_options = {";
-	result += "exclude: /^(.+\\.){0,1}(rsdn\\.ru|yandex\\.ru|google\\.com|youtube\\.com|github\\.com|wikipedia\\.org)$/i";
-	result += "};</script>";
-	result += "<script type='text/javascript' src='http://api.mywot.com/widgets/ratings.js'></script>";
+	result += footerHTML();
 
 	return result;
 }
@@ -184,40 +240,40 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 
 QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 {
+	QString pad = "			";
 	QString result;
 
 	if (block.Type == pbtText)
 	{
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "<br />";
 	}
 
 	else if (block.Type == pbtQuote)
 	{
-		result += "<table style='background-color: #FFFFE0;' width='98%' align='center'><tr><td>";
+		result += pad + "<blockquote>\n";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "</td></tr></table><br />";
+		result += pad + "</blockquote>\n";
 	}
 
 	else if (block.Type == pbtModerator)
 	{
-		result += "<table style='background-color: #FFC0C0;' width='100%'><tr><td>";
+		result += pad + "<div class='moderator'>\n";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "</td></tr></table>";
+		result += pad + "</div>\n";
 	}
 
 	else if (block.Type == pbtTagline)
 	{
-		result += "<font color='#A52A2A' size=-1>";
+		result += pad + "<div class='tagline'>\n";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "</font><br />";
+		result += pad + "</div>\n";
 	}
 
 	else if (block.Type == pbtTable)
 	{
-		result += "<table align='center'>";
+		result += pad + "<table>\n";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "</table><br />";
+		result += pad + "</table>\n";
 	}
 
 	else if (block.Type == pbtCut)
@@ -282,15 +338,14 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 			map++;
 		}
 
-		result += "<table width='98%' align='center'><tr><td><pre>";
-
 		if (code_class.length() > 0)
-			result += "<code class='" + code_class + "'>";
+			result += pad + "<pre><code class='" + code_class + "'>";
 		else
-			result += "<code>";
+			result += pad + "<pre><code>";
 
-		result += formatQuotedStringList(block.Strings, block.Type, block.SubType) + "</code>";
-		result += "</pre></tr></td></table>";
+		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
+
+		result += "</code></pre>\n";
 	}
 
 	return result;
@@ -303,36 +358,42 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 
 	int last_quote_level = -1;
 
-	for (int i = 0; i < list.count(); i++)
+	int count = list.count();
+
+	for (int i = 0; i < count; i++)
 	{
 		AQuotedString string = list.at(i);
 
-		QString line = string.QuoteText + " " + string.Data;
+		QString line = string.Data;
+
+		if (string.QuoteText.length() > 0)
+			line = string.QuoteText + " " + line;
 
 		if (sub_type != pbstSourceCode)
 		{
-			// дополнительная пустая строка между квотами разного уровня, если она не была вставлена автором сообщения
-			if (i != 0 && string.QuoteLevel != last_quote_level && list.at(i - 1).Data.length() != 0)
-				result += "<br>";
+			QString pad = "			";
 
 			if (string.QuoteLevel != 0)
 			{
 				if (string.QuoteLevel % 3 == 0)
-					result += "<font color=darkblue>" + line + "</font>";
+					result += pad + "<p class='quote_blue'>" + line + "</p>\n";
 				else if (string.QuoteLevel % 2 == 0)
-					result += "<font color=darkred>" + line + "</font>";
+					result += pad + "<p class='quote_red'>" + line + "</p>\n";
 				else
-					result += "<font color=darkgreen>" + line + "</font>";
+					result += pad + "<p class='quote_green'>" + line + "</p>\n";
 			}
 			else
-				result += line;
-
-			result += "<br>";
+				result += pad + "<p class='quote_black'>" + line + "</p>\n";
 
 			last_quote_level = string.QuoteLevel;
 		}
 		else
-			result += line + "<br>";
+		{
+			if (i != count - 1)
+				result += line + "\n";
+			else
+				result += line;
+		}
 	}
 
 	if (sub_type != pbstSourceCode)
@@ -426,9 +487,9 @@ QString AFormatter::formatSimpleText (const QString& text)
 		int     lval = AParser::isURL(lstr);
 
 		if (lval == 1)
-			html = QString::fromUtf8("<p align='center'><img src='") + lstr + "'></p>";
+			html = "<center><img src='" + lstr + "'></center>";
 		else if (lval == 2)
-			html = QString::fromUtf8("<font color='red'>") + lstr + "</font>";
+			html = lstr;
 		else // невалидная ссылка
 			html = lstr;
 
@@ -449,12 +510,14 @@ QString AFormatter::formatSimpleText (const QString& text)
 	list2.setMinimal(true);
 	list3.setMinimal(true);
 
-	result.replace(list1, "<ol type='1' start='1' style='margin-top:0; margin-bottom:0;'>\\1</ol>");
-	result.replace(list2, "<ol type='a' style='margin-top:0; margin-bottom:0;'>\\1</ol>");
-	result.replace(list3, "<ul style='margin-top:0; margin-bottom:0;'>\\1</ul>");
+	result.replace(list1, "<ol type='1' start='1'>\\1</ol>");
+	result.replace(list2, "<ol type='a'>\\1</ol>");
+	result.replace(list3, "<ul>\\1</ul>");
 
 	// гиперссылки
 	result = formatHyperlinks(result);
+
+	result = "			" + result;
 
 	return result;
 }
@@ -481,7 +544,7 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		if (lval == 1)
 			html = QString::fromUtf8("<a href='") + lstr + "'>" + lstr + "</a>";
 		else if (lval == 2)
-			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + lstr + "</font></a>";
+			html = lstr;
 		else // невалидная ссылка
 			html = lstr;
 
@@ -503,13 +566,13 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		int rval = AParser::isURL(rstr);
 
 		if (lval == 1)
-			html = QString::fromUtf8("<a href='") + lstr + "'>" + rstr + "</a>";
+			html = "<a href='" + lstr + "'>" + rstr + "</a>";
 		else if (rval == 1)
-			html = QString::fromUtf8("<a href='") + rstr + "'>" + lstr + "</a>";
+			html = "<a href='" + rstr + "'>" + lstr + "</a>";
 		else if (lval == 2)
-			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + rstr + "</font></a>";
+			html = rstr;
 		else if (rval == 2)
-			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + lstr + "</font></a>";
+			html = lstr;
 		else // невалидная ссылка
 			html = rstr + " (" + lstr + ")";
 
@@ -555,7 +618,7 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		if (lval == 1)
 			html = QString::fromUtf8("<a href='mailto:") + lstr + "'>" + lstr + "</a>";
 		else if (lval == 2)
-			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + lstr + "</font></a>";
+			html = lstr;
 		else // невалидная ссылка
 			html = lstr;
 

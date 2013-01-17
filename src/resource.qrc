@@ -155,5 +155,7 @@
 		<file>sql/avalon.mysql.sql</file>
 		<file>sql/avalon.sqlite.sql</file>
 
+		<file>style.css</file>
+
 	</qresource>
 </RCC>
