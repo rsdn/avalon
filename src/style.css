@@ -128,6 +128,30 @@ body {
 	margin-right : 5px;
 }
 
+#text h1 {
+	color : #4580A0;
+}
+
+#text h2 {
+	color : #4580A0;
+}
+
+#text h3 {
+	color : #4580A0;
+}
+
+#text h4 {
+	color : #4580A0;
+}
+
+#text h5 {
+	color : #4580A0;
+}
+
+#text h6 {
+	color : #4580A0;
+}
+
 #text p {
 	margin-top : 10px;
 }
@@ -147,9 +171,38 @@ body {
 	color : darkgreen;
 }
 
+#text span.alert {
+	color : red;
+}
+
 #text blockquote {
 	margin-top       : 10px;
 	background-color : #FFFFE7;
+}
+
+#text pre {
+	font       : 10pt Courier-New;
+	margin-top : 10px;
+}
+
+#text table {
+	margin : 5px;
+}
+
+#text table tbody th {
+	background-color : #D4D4D4;
+}
+
+#text table tbody td {
+	background-color : #F4F4F4;
+}
+
+#text table tbody td ol {
+	margin-left : 50px;
+}
+
+#text table tbody td ul {
+	margin-left : 50px;
 }
 
 #text .moderator {
@@ -171,15 +224,6 @@ body {
 
 #text .tagline p {
 	margin : 2px;
-}
-
-#text pre {
-	font       : 10pt Courier-New;
-	margin-top : 10px;
-}
-
-#text table {
-	text-align : center;
 }
 
 #footer {

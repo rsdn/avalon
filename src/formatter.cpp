@@ -23,10 +23,10 @@ QString AFormatter::headHTML ()
 		"	<link rel='stylesheet' href='qrc:/style.css' type='text/css' media='screen' />\n"
 		+ custom_css +
 #ifdef Q_WS_WIN
-		"	<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css'>\n"
+		"	<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css' />\n"
 		"	<script src='file:///" + path + "/highlight/highlight.pack.js'></script>\n"
 #else
-		"	<link rel='stylesheet' title='Magula' href='file://" + path + "/highlight/styles/magula.css'>\n"
+		"	<link rel='stylesheet' title='Magula' href='file://" + path + "/highlight/styles/magula.css' />\n"
 		"	<script src='file://" + path + "/highlight/highlight.pack.js'></script>\n"
 #endif
 		"	<script>hljs.tabReplace = '    '; hljs.initHighlightingOnLoad();</script>\n"
@@ -280,9 +280,9 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 
 	else if (block.Type == pbtTable)
 	{
-		result += pad + "<table>\n";
+		result += pad + "<table><tbody>\n";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += pad + "</table>\n";
+		result += pad + "</tbody></table>\n";
 	}
 
 	else if (block.Type == pbtCut)
@@ -361,7 +361,7 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 }
 //----------------------------------------------------------------------------------------------
 
-QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType /*type*/, AParsedBlockSubType sub_type)
+QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType type, AParsedBlockSubType sub_type)
 {
 	QString result;
 
@@ -378,7 +378,7 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 		if (string.QuoteText.length() > 0)
 			line = string.QuoteText + " " + line;
 
-		if (sub_type != pbstSourceCode)
+		if (type != pbtTable && sub_type != pbstSourceCode)
 		{
 			QString pad = "			";
 
@@ -438,9 +438,9 @@ QString AFormatter::formatSimpleText (const QString& text)
 		{ "[/tr]",     "</tr>"     },
 		{ "[td]",      "<td>"      },
 		{ "[/td]",     "</td>"     },
-		{ "[th]",      "<td align='center' style='background-color: #DCDCDC;'>" },
-		{ "[/th]",     "</td>"     },
-		{ "[hr]",      "<hr>"      },
+		{ "[th]",      "<th>"      },
+		{ "[/th]",     "</th>"     },
+		{ "[hr]",      "<hr />"    },
 		{ "[h1]",      "<h1>"      },
 		{ "[/h1]",     "</h1>"     },
 		{ "[h2]",      "<h2>"      },
@@ -453,25 +453,25 @@ QString AFormatter::formatSimpleText (const QString& text)
 		{ "[/h5]",     "</h5>"     },
 		{ "[h6]",      "<h6>"      },
 		{ "[/h6]",     "</h6>"     },
-		{ "[*]",       "<li />"    },
-		{ ":)))",      "<img src='qrc:/smiles/sideways.png'>"   },
-		{ ":))",       "<img src='qrc:/smiles/biggrin.png'>"    },
-		{ ":)",        "<img src='qrc:/smiles/smile.png'>"      },
-		{ ":(",        "<img src='qrc:/smiles/sad.png'>"        },
-		{ ";)",        "<img src='qrc:/smiles/wink.png'>"       },
-		{ ":-\\",      "<img src='qrc:/smiles/pouty.png'>"      },
-		{ ":???:",     "<img src='qrc:/smiles/wacko.png'>"      },
-		{ ":no:",      "<img src='qrc:/smiles/stop.png'>"       },
-		{ ":up:",      "<img src='qrc:/smiles/thumbs_up.png'>"  },
-		{ ":down:",    "<img src='qrc:/smiles/thumb_down.png'>" },
-		{ ":super:",   "<img src='qrc:/smiles/cool.png'>"       },
-		{ ":shuffle:", "<img src='qrc:/smiles/blush.png'>"      },
-		{ ":wow:",     "<img src='qrc:/smiles/shock.png'>"      },
-		{ ":crash:",   "<img src='qrc:/smiles/angry.png'>"      },
-		{ ":user:",    "<img src='qrc:/smiles/music.png'>"      },
-		{ ":maniac:",  "<img src='qrc:/smiles/devil.png'>"      },
-		{ ":xz:",      "<img src='qrc:/smiles/wrong.png'>"      },
-		{ ":beer:",    "<img src='qrc:/smiles/beer.png'>"       }
+		{ "[*]",       "<li>"      },
+		{ ":)))",      "<img src='qrc:/smiles/sideways.png'> /"   },
+		{ ":))",       "<img src='qrc:/smiles/biggrin.png' />"    },
+		{ ":)",        "<img src='qrc:/smiles/smile.png' />"      },
+		{ ":(",        "<img src='qrc:/smiles/sad.png' />"        },
+		{ ";)",        "<img src='qrc:/smiles/wink.png' />"       },
+		{ ":-\\",      "<img src='qrc:/smiles/pouty.png' />"      },
+		{ ":???:",     "<img src='qrc:/smiles/wacko.png' />"      },
+		{ ":no:",      "<img src='qrc:/smiles/stop.png' />"       },
+		{ ":up:",      "<img src='qrc:/smiles/thumbs_up.png' />"  },
+		{ ":down:",    "<img src='qrc:/smiles/thumb_down.png' />" },
+		{ ":super:",   "<img src='qrc:/smiles/cool.png' />"       },
+		{ ":shuffle:", "<img src='qrc:/smiles/blush.png' />"      },
+		{ ":wow:",     "<img src='qrc:/smiles/shock.png' />"      },
+		{ ":crash:",   "<img src='qrc:/smiles/angry.png' />"      },
+		{ ":user:",    "<img src='qrc:/smiles/music.png' />"      },
+		{ ":maniac:",  "<img src='qrc:/smiles/devil.png' />"      },
+		{ ":xz:",      "<img src='qrc:/smiles/wrong.png' />"      },
+		{ ":beer:",    "<img src='qrc:/smiles/beer.png' />"       }
 	};
 
 	QString result = text;
@@ -497,8 +497,8 @@ QString AFormatter::formatSimpleText (const QString& text)
 
 		if (lval == 1)
 			html = "<center><img src='" + lstr + "'></center>";
-		else if (lval == 2)
-			html = lstr;
+		else if (lval == 2) // опасная ссылка
+			html = "<span class='alert'>" + lstr + "</span>";
 		else // невалидная ссылка
 			html = lstr;
 
@@ -552,8 +552,8 @@ QString AFormatter::formatHyperlinks (const QString& text)
 
 		if (lval == 1)
 			html = QString::fromUtf8("<a href='") + lstr + "'>" + lstr + "</a>";
-		else if (lval == 2)
-			html = lstr;
+		else if (lval == 2) // опасная ссылка
+			html = "<span class='alert'>" + lstr + "</span>";
 		else // невалидная ссылка
 			html = lstr;
 
@@ -579,9 +579,9 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		else if (rval == 1)
 			html = "<a href='" + rstr + "'>" + lstr + "</a>";
 		else if (lval == 2)
-			html = rstr;
+			html = "<span class='alert'>" + rstr + "</span>";
 		else if (rval == 2)
-			html = lstr;
+			html = "<span class='alert'>" + lstr + "</span>";
 		else // невалидная ссылка
 			html = rstr + " (" + lstr + ")";
 
