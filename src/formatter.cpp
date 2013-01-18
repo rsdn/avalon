@@ -674,6 +674,32 @@ QString AFormatter::normalizeBody (const QString& body, const QString& nick)
 	url1.setMinimal(true);
 	data.replace(url1, "[url=bad%20link]\\2[/url]");
 
+	// удаление тэга цитирования
+	QRegExp q1("(^|[^\\[])\\[q\\]", Qt::CaseInsensitive);
+	q1.setMinimal(true);
+	data.replace(q1, "\\1");
+
+	QRegExp q2("(^|[^\\[])\\[/q\\]", Qt::CaseInsensitive);
+	q2.setMinimal(true);
+	data.replace(q2, "\\1");
+
+	// удаление таблиц из цитирования
+	QRegExp table("(^|[^\\[])\\[t\\](.+)\\[/t\\]", Qt::CaseInsensitive);
+	table.setMinimal(true);
+	data.replace(table, "\\1");
+
+	// удаление тэгов [h1]..[h6] из цитирования
+	for (int i = 1; i < 7; i++)
+	{
+		QRegExp h1("(^|[^\\[])\\[h" + QString::number(i) + "\\]", Qt::CaseInsensitive);
+		h1.setMinimal(true);
+		data.replace(h1, "\\1");
+
+		QRegExp h2("(^|[^\\[])\\[/h" + QString::number(i) + "\\]", Qt::CaseInsensitive);
+		h2.setMinimal(true);
+		data.replace(h2, "\\1");
+	}
+
 	data = data.trimmed();
 
 	// разбиение
