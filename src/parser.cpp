@@ -253,7 +253,8 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			}
 
 			// получение тэга
-			QString tag = data.mid(pos1, pos2 - pos1 + 1).toLower();
+			QString tag  = data.mid(pos1, pos2 - pos1 + 1);
+			QString ltag = tag.toLower();
 
 			current_quote.Data += data.mid(0, pos1);
 			data.remove(0, pos2 + 1);
@@ -276,7 +277,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			{
 				// поиск открывающего тэга
 				for (size_t i = 0; i < sizeof(strong_tags) / sizeof(AStrongTag); i++)
-					if (tag == strong_tags[i].OpenPart)
+					if (ltag == strong_tags[i].OpenPart)
 					{
 						found_tag = &strong_tags[i];
 						break;
@@ -286,7 +287,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			{
 				// поиск закрывающего тэга
 				for (size_t i = 0; i < sizeof(strong_tags) / sizeof(AStrongTag); i++)
-					if (tag == strong_tags[i].ClosePart && strong_tags[i].Type == current_block.Type)
+					if (ltag == strong_tags[i].ClosePart && strong_tags[i].Type == current_block.Type)
 					{
 						found_tag = &strong_tags[i];
 						break;
@@ -322,12 +323,20 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			// найден простой немонолитный тэг
 			if (found_tag == NULL)
 			{
-				if (tag == "[strike]")
-					tag = "[s]";
-				else if (tag == "[/strike]")
-					tag = "[/s]";
+				// двойной тэг перечеркивания - приводим к одному
+				if (ltag == "[strike]")
+					ltag = "[s]";
+				else if (ltag == "[/strike]")
+					ltag = "[/s]";
 
-				current_quote.Data += tag;
+				// специальный случай ссылки - содержимое ссылки не должно менять регистр
+				if (ltag.indexOf("[url=") == 0)
+				{
+					ltag = tag;
+					ltag.replace(0, 5, "[url=");
+				}
+
+				current_quote.Data += ltag;
 
 				// условие выполнится, когда строка заканчивается немонолитным тэгом
 				if (data.length() == 0)
