@@ -42,6 +42,15 @@ ACharMapItem g_charmap_math [] =
 	{"→",   "функция"}
 };
 //----------------------------------------------------------------------------------------------
+/*!
+ * \brief Прочие символы
+ */
+ACharMapItem g_charmap_other [] =
+{
+	{"™", "trademark"}, {"©", "copyright"}, {"®", "registered"}
+};
+
+//----------------------------------------------------------------------------------------------
 
 FormMessageUI::FormMessageUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint
 #if QT_VERSION >= 0x040500
@@ -234,6 +243,23 @@ FormMessageUI::FormMessageUI (QWidget* parent) : QDialog (parent, Qt::WindowTitl
 	{
 		QString symbol = QString::fromUtf8(g_charmap_math[i].Symbol);
 		QString name   = QString::fromUtf8(g_charmap_math[i].Name);
+
+		QAction* action;
+
+		if (name.length() != 0)
+			action = submenu_char->addAction(symbol + " (" + name + ")");
+		else
+			action = submenu_char->addAction(symbol);
+
+		action->setToolTip(symbol);
+	}
+
+	submenu_char = m_menu_char->addMenu(QString::fromUtf8("Прочее"));
+
+	for (size_t i = 0; i < sizeof(g_charmap_other) / sizeof(ACharMapItem); i++)
+	{
+		QString symbol = QString::fromUtf8(g_charmap_other[i].Symbol);
+		QString name   = QString::fromUtf8(g_charmap_other[i].Name);
 
 		QAction* action;
 
