@@ -1007,7 +1007,7 @@ void AFormMain::checkUpdate ()
 	//
 
 	QString header = "";
-	header += "GET /rsdn/avalon/master/update.txt HTTP/1.1\r\n";
+	header += "GET /rsdn/avalon/1.0/update.txt HTTP/1.1\r\n";
 	header += "Host: raw.github.com\r\n";
 	header += "Connection: close\r\n";
 	header += "User-Agent: " + getAgentString() + "\r\n";
