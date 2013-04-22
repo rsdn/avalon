@@ -9,11 +9,11 @@
 /*!
  * \brief Номер билда
  */
-#define AVALON_BUILD 432
+#define AVALON_BUILD 433
 
 /*!
  * \brief Дата билда
  */
-#define AVALON_DATE "2012-08-10T20:15:00+0400"
+#define AVALON_DATE "2013-04-22T23:25:00+0400"
 
 #endif

@@ -1,3 +1,3 @@
 os=linux;arch=i386;build=428;url=https://github.com/downloads/rsdn/avalon/avalon_i386_b428.gz;
-os=linux;arch=x64;build=432;url=https://github.com/downloads/rsdn/avalon/avalon_x64_b432.gz;
-os=windows;arch=i386;build=432;base_build=3;base_url=https://github.com/downloads/rsdn/avalon/avalon_win32_base_3.zip;url=https://github.com/downloads/rsdn/avalon/avalon_win32_b432.zip;
+os=linux;arch=x64;build=433;url=http://yadi.sk/d/N4onxUXm4Gb03;
+os=windows;arch=i386;build=433;base_build=4;base_url=http://yadi.sk/d/Mp4saKmR4GaQn;url=https://github.com/downloads/rsdn/avalon/avalon_win32_b432.zip;
