@@ -8,7 +8,7 @@ SET PROJECT_NAME=avalon
 REM **************************
 REM * исполняемый файл qmake *
 REM **************************
-SET QT_QMAKE=C:\Qt\Desktop\Qt\4.8.1\mingw\bin\qmake.exe
+SET QT_QMAKE=C:\Qt\4.8.4\bin\qmake.exe
 
 REM **************************************************
 REM * путь к подключаемым файлам и библиотеке aspell *
@@ -28,7 +28,7 @@ REM *******************************
 REM * создание проекта и makefile *
 REM *******************************
 cd ../../
-%QT_QMAKE% -project -recursive -Wall -nopwd -o %PROJECT_NAME%.pro "CONFIG += release" "QT += network sql webkit" "INCLUDEPATH += %ASPELL_INC% %ZLIB_INC%" "LIBS += %ASPELL_LIB% %ZLIB_LIB%" "RC_FILE += resource.rc" src
+%QT_QMAKE% -project -recursive -Wall -nopwd -o %PROJECT_NAME%.pro "CONFIG += release" "QT += network sql webkit" "INCLUDEPATH += %ASPELL_INC% %ZLIB_INC% src" "LIBS += %ASPELL_LIB% %ZLIB_LIB%" "RC_FILE += src/resource.rc" src
 %QT_QMAKE% %PROJECT_NAME%.pro
 
 REM ******************************************

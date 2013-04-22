@@ -11,6 +11,10 @@ Makefile
 Makefile.Debug
 Makefile.Release
 
+# файлы, генерируемые qmake под windows
+object_script.avalon.Debug
+object_script.avalon.Release
+
 # подсветка синтаксиса (см. http://softwaremaniacs.org/soft/highlight/)
 highlight
 
