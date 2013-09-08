@@ -151,7 +151,7 @@ bool AMySQLDatabase::rollback ()
 AQuery* AMySQLDatabase::createQuery (const QString& sql, bool prepared)
 {
 	if (checkDatabase() == false)
-		return false;
+		return NULL;
 
 	AQuery* query = 0;
 

@@ -365,8 +365,6 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 {
 	QString result;
 
-	int last_quote_level = -1;
-
 	int count = list.count();
 
 	for (int i = 0; i < count; i++)
@@ -393,8 +391,6 @@ QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, APars
 			}
 			else
 				result += pad + "<p class='quote_black'> " + line + " </p>\n";
-
-			last_quote_level = string.QuoteLevel;
 		}
 		else
 		{
