@@ -615,7 +615,7 @@ void FormMessageUI::menu_code_asm_triggered ()
 void FormMessageUI::menu_code_ccode_triggered ()
 {
 	QTextCursor cursor = m_text_source->textCursor();
-	cursor.insertText((QString)"[]" + cursor.selectedText() + "[/]");
+	cursor.insertText((QString)"[ccode]" + cursor.selectedText() + "[/ccode]");
 	cursor.clearSelection();
 }
 //----------------------------------------------------------------------------------------------
