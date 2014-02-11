@@ -1016,7 +1016,7 @@ void AFormMain::checkUpdate ()
 	header += "Accept-Encoding: gzip\r\n";
 	#endif
 
-	std::auto_ptr<FormRequest> form(new FormRequest(this, "raw.github.com", 443, header, "", true));
+	std::auto_ptr<FormRequest> form(new FormRequest(this, "raw.github.com", 443, header, ""));
 
 	if (form->exec() != QDialog::Accepted)
 		return;

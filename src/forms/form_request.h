@@ -33,9 +33,8 @@ class FormRequest :
 		 * \param port Номер порта
 		 * \param header Заголовок HTTP
 		 * \param data POST данные для HTTP
-		 * \param https Флаг необходимости установки HTTPS соединения
 		 */
-		FormRequest  (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data, bool https = false);
+		FormRequest  (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data);
 
 		~FormRequest ();
 

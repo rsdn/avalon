@@ -12,8 +12,10 @@ FormRequest::~FormRequest ()
 }
 //----------------------------------------------------------------------------------------------
 
-FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data, bool https) : FormRequestUI (parent), IProgress ()
+FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data) : FormRequestUI (parent), IProgress ()
 {
+	bool https = (port == 443 ? true : false);
+
 	m_hack = 0;
 
 	QNetworkProxy proxy = defaultProxy();
