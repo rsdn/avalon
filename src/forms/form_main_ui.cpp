@@ -58,6 +58,7 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 	// меню "Сервис"
 	m_menu_service_synchronize = m_menu_service->addAction(QString::fromUtf8("Синхронизировать"));
 	m_menu_service_synchronize->setIcon(QIcon(":/icons/synchronize16.png"));
+	m_menu_service_synchronize->setShortcut(QString("CTRL+I"));
 
 	m_menu_service_download = m_menu_service->addAction(QString::fromUtf8("Загрузить сообщение / ветку"));
 	m_menu_service_download->setIcon(QIcon(":/icons/download16.png"));
