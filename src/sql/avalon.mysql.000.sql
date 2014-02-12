@@ -35,7 +35,7 @@ REPLACE INTO `version`
 VALUES
 (
 	'version',
-	'v1.0rc2, patch avalon.000.sql'
+	'v1.0, patch avalon.000.sql'
 );
 
 ###
