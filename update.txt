@@ -1,3 +1,3 @@
 os=linux;arch=i386;build=;;
 os=linux;arch=x64;build=434;url=http://yadi.sk/d/n1KzqvFzHk75K;
-os=windows;arch=i386;build=433;base_build=4;base_url=http://yadi.sk/d/Mp4saKmR4GaQn;url=http://yadi.sk/d/62So4u4I4Gduh;
+os=windows;arch=i386;build=434;base_build=4;base_url=http://yadi.sk/d/Mp4saKmR4GaQn;url=http://yadi.sk/d/l2GVGSSGHkAam;
