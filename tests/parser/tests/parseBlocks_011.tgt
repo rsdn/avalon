@@ -1,0 +1,34 @@
+AParsedBlockList
+(
+	[0] = AParsedBlock
+	(
+		Type    = pbtText
+		SubType = pbstText
+		Strings = AQuotedStringList
+		(
+			[0] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = [code]
+			)
+		)
+	)
+	[1] = AParsedBlock
+	(
+		Type    = pbtC
+		SubType = pbstSourceCode
+		Strings = AQuotedStringList
+		(
+			[0] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = тест блока
+			)
+			[1] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = без закрытия тэга
+			)
+		)
+	)
+)

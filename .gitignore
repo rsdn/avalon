@@ -5,14 +5,18 @@ avalon
 debug/*
 release/*
 
-# файлы, генерируемые qmake (см. dev/build.*)
+# файлы, генерируемые qmake
 avalon.pro
 Makefile
 Makefile.Debug
 Makefile.Release
 
+# файлы, генерируемые qmake под windows
+object_script.avalon.Debug
+object_script.avalon.Release
+
 # подсветка синтаксиса (см. http://softwaremaniacs.org/soft/highlight/)
 highlight
 
 # документация, генерируемая doxygen
-dev/doxygen/html/*
+doxygen/html/*

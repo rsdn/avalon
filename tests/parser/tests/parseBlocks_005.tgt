@@ -1,0 +1,21 @@
+AParsedBlockList
+(
+	[0] = AParsedBlock
+	(
+		Type    = pbtText
+		SubType = pbstText
+		Strings = AQuotedStringList
+		(
+			[0] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = Многострочный тест
+			)
+			[1] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = без квот
+			)
+		)
+	)
+)

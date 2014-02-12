@@ -1,0 +1,60 @@
+AParsedBlockList
+(
+	[0] = AParsedBlock
+	(
+		Type      = pbtCut
+		SubType   = pbstBlock
+		Title     = Развернуть 1
+		SubBlocks = AParsedBlockList
+		(
+			[0] = AParsedBlock
+			(
+				Type    = pbtText
+				SubType = pbstText
+				Strings = AQuotedStringList
+				(
+					[0] = AQuotedString
+					(
+						QuoteLevel = 0
+						Data       = Начало вырезанного блока 1
+					)
+				)
+			)
+			[1] = AParsedBlock
+			(
+				Type      = pbtCut
+				SubType   = pbstBlock
+				Title     = Развернуть 2
+				SubBlocks = AParsedBlockList
+				(
+					[0] = AParsedBlock
+					(
+						Type    = pbtText
+						SubType = pbstText
+						Strings = AQuotedStringList
+						(
+							[0] = AQuotedString
+							(
+								QuoteLevel = 0
+								Data       = Вырезанный блок 2
+							)
+						)
+					)
+				)
+			)
+			[2] = AParsedBlock
+			(
+				Type    = pbtText
+				SubType = pbstText
+				Strings = AQuotedStringList
+				(
+					[0] = AQuotedString
+					(
+						QuoteLevel = 0
+						Data       = Окончание вырезанного блока 1
+					)
+				)
+			)
+		)
+	)
+)

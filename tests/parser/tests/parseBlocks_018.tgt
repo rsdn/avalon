@@ -1,0 +1,51 @@
+AParsedBlockList
+(
+	[0] = AParsedBlock
+	(
+		Type    = pbtText
+		SubType = pbstText
+		Strings = AQuotedStringList
+		(
+			[0] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = Это текст с
+			)
+		)
+	)
+	[1] = AParsedBlock
+	(
+		Type      = pbtCut
+		SubType   = pbstBlock
+		Title     = развернуть
+		SubBlocks = AParsedBlockList
+		(
+			[0] = AParsedBlock
+			(
+				Type    = pbtText
+				SubType = pbstText
+				Strings = AQuotedStringList
+				(
+					[0] = AQuotedString
+					(
+						QuoteLevel = 0
+						Data       = закрытием тэга врезки
+					)
+				)
+			)
+		)
+	)
+	[2] = AParsedBlock
+	(
+		Type    = pbtText
+		SubType = pbstText
+		Strings = AQuotedStringList
+		(
+			[0] = AQuotedString
+			(
+				QuoteLevel = 0
+				Data       = на той же строке
+			)
+		)
+	)
+)

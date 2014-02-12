@@ -1,0 +1,161 @@
+<RCC>
+	<qresource prefix="">
+
+		<file>icons/main.png</file>
+
+		<file>icons/childunread.png</file>
+		<file>icons/messageread.png</file>
+		<file>icons/messageunread.png</file>
+		<file>icons/myunread.png</file>
+
+		<file>icons/exit16.png</file>
+		<file>icons/markallasread16.png</file>
+		<file>icons/markpatrialasread16.png</file>
+		<file>icons/markallasunread16.png</file>
+		<file>icons/markpatrialasunread16.png</file>
+		<file>icons/help16.png</file>
+		<file>icons/update16.png</file>
+		<file>icons/unsubscribe16.png</file>
+		<file>icons/copy16.png</file>
+		<file>icons/open16.png</file>
+		<file>icons/storage16.png</file>
+		<file>icons/nextunreadarticle16.png</file>
+		<file>icons/nextunreadthread16.png</file>
+		<file>icons/nextunreadforum16.png</file>
+
+		<file>icons/forward24.png</file>
+		<file>icons/backward24.png</file>
+		<file>icons/draft24.png</file>
+		<file>icons/nextunreadarticle24.png</file>
+		<file>icons/nextunreadthread24.png</file>
+		<file>icons/nextunreadforum24.png</file>
+
+		<file>icons/rate_plus_1.png</file>
+		<file>icons/rate_1.png</file>
+		<file>icons/rate_2.png</file>
+		<file>icons/rate_3.png</file>
+		<file>icons/rate_cross.png</file>
+		<file>icons/rate_smile.png</file>
+		<file>icons/rate_plus.png</file>
+		<file>icons/rate_minus.png</file>
+
+		<file>icons/moderate.png</file>
+
+		<file>icons/delete16.png</file>
+		<file>icons/delete24.png</file>
+
+		<file>icons/smile24.png</file>
+		<file>icons/bold24.png</file>
+		<file>icons/italic24.png</file>
+		<file>icons/quote24.png</file>
+		<file>icons/hyperlink24.png</file>
+		<file>icons/image24.png</file>
+		<file>icons/code24.png</file>
+		<file>icons/char24.png</file>
+
+		<file>smiles/beer.png</file>
+		<file>smiles/biggrin.png</file>
+		<file>smiles/wacko.png</file>
+		<file>smiles/angry.png</file>
+		<file>smiles/thumb_down.png</file>
+		<file>smiles/sad.png</file>
+		<file>smiles/sideways.png</file>
+		<file>smiles/devil.png</file>
+		<file>smiles/stop.png</file>
+		<file>smiles/blush.png</file>
+		<file>smiles/smile.png</file>
+		<file>smiles/pouty.png</file>
+		<file>smiles/thumbs_up.png</file>
+		<file>smiles/cool.png</file>
+		<file>smiles/music.png</file>
+		<file>smiles/wink.png</file>
+		<file>smiles/shock.png</file>
+		<file>smiles/wrong.png</file>
+
+		<file>icons/show_topic.png</file>
+
+		<file>icons/yandex.ico</file>
+		<file>icons/slovari.yandex.ico</file>
+		<file>icons/google.ico</file>
+		<file>icons/rsdn16.png</file>
+		<file>icons/wikipedia.ico</file>
+		<file>icons/google.translate.ico</file>
+
+		<file>icons/new16.png</file>
+		<file>icons/new22.png</file>
+		<file>icons/new24.png</file>
+		<file>icons/new32.png</file>
+		<file>icons/new48.png</file>
+		<file>icons/new64.png</file>
+		<file>icons/new128.png</file>
+
+		<file>icons/settings16.png</file>
+		<file>icons/settings22.png</file>
+		<file>icons/settings24.png</file>
+		<file>icons/settings32.png</file>
+		<file>icons/settings48.png</file>
+		<file>icons/settings64.png</file>
+		<file>icons/settings128.png</file>
+
+		<file>icons/date16.png</file>
+		<file>icons/date22.png</file>
+		<file>icons/date24.png</file>
+		<file>icons/date32.png</file>
+		<file>icons/date48.png</file>
+		<file>icons/date64.png</file>
+		<file>icons/date128.png</file>
+
+		<file>icons/synchronize16.png</file>
+		<file>icons/synchronize24.png</file>
+		<file>icons/synchronize32.png</file>
+		<file>icons/synchronize48.png</file>
+		<file>icons/synchronize256.png</file>
+
+		<file>icons/viewsource16.png</file>
+		<file>icons/viewsource22.png</file>
+		<file>icons/viewsource32.png</file>
+		<file>icons/viewsource48.png</file>
+		<file>icons/viewsource64.png</file>
+
+		<file>icons/reply16.png</file>
+		<file>icons/reply22.png</file>
+		<file>icons/reply32.png</file>
+		<file>icons/reply48.png</file>
+
+		<file>icons/edit16.png</file>
+		<file>icons/edit22.png</file>
+		<file>icons/edit32.png</file>
+		<file>icons/edit48.png</file>
+		<file>icons/edit64.png</file>
+
+		<file>icons/subscribe16.png</file>
+		<file>icons/subscribe22.png</file>
+		<file>icons/subscribe32.png</file>
+		<file>icons/subscribe48.png</file>
+		<file>icons/subscribe64.png</file>
+
+		<file>icons/compress16.png</file>
+		<file>icons/compress24.png</file>
+		<file>icons/compress32.png</file>
+		<file>icons/compress48.png</file>
+		<file>icons/compress256.png</file>
+
+		<file>icons/download16.png</file>
+		<file>icons/download22.png</file>
+		<file>icons/download24.png</file>
+		<file>icons/download32.png</file>
+		<file>icons/download48.png</file>
+		<file>icons/download64.png</file>
+		<file>icons/download128.png</file>
+
+		<file>translations/qt_ru_RU.qm</file>
+
+		<file>icons/Main-Logo.icns</file>
+
+		<file>sql/avalon.mysql.sql</file>
+		<file>sql/avalon.sqlite.sql</file>
+
+		<file>style.css</file>
+
+	</qresource>
+</RCC>
