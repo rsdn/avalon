@@ -157,13 +157,7 @@ void AWebView::menu_rsdn_triggered ()
 {
 	QString selected = page()->selectedText();
 
-	// в связи с тем, что криворукий поиск от siteMETA использует cp1251 percent encoding в запросе
-	// вместо utf8 percent encoding, как это реализовано в нормальных поисковых машинах,
-	// необходимо перекодировать запрос и сформировать понятный браузерам URL
-	QTextCodec* codec = QTextCodec::codecForName("Windows-1251");
-	QByteArray selected1251 = codec->fromUnicode(selected);
-
-	QUrl url = QUrl::fromEncoded(((QString)"http://img.meta.ua/rsdnsearch/?mode=rank&group=N&q=" + selected1251.toPercentEncoding().constData()).toLatin1());
+	QString url = (QString)"http://rsdn.ru/rsdnsearch?text=" + selected;
 
 	QDesktopServices::openUrl(url);
 }
