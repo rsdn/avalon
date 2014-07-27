@@ -952,7 +952,7 @@ bool AMySQLStorage::getMessageQuery (ADataQuery& query)
 	sql += "FROM\n";
 	sql += "	`broken`\n";
 	sql += "WHERE\n";
-	sql += "	`is_topic` = false\n";
+	sql += "	`is_topic` = false";
 
 	std::auto_ptr<AQuery> query_broken_message_select(createQuery(sql, false));
 
@@ -981,7 +981,7 @@ bool AMySQLStorage::getMessageQuery (ADataQuery& query)
 	sql += "FROM\n";
 	sql += "	`broken`\n";
 	sql += "WHERE\n";
-	sql += "	`is_topic` = true\n";
+	sql += "	`is_topic` = true";
 
 	std::auto_ptr<AQuery> query_broken_topic_select(createQuery(sql, false));
 
@@ -4608,7 +4608,9 @@ bool AMySQLStorage::hasBroken (bool& result)
 	sql += "SELECT\n";
 	sql += "	COUNT(*)\n";
 	sql += "FROM\n";
-	sql += "	`broken`";
+	sql += "	`broken`\n";
+	sql += "LIMIT\n";
+	sql += "	1";
 
 	std::auto_ptr<AQuery> query_select(createQuery(sql, false));
 
@@ -4619,7 +4621,7 @@ bool AMySQLStorage::hasBroken (bool& result)
 		return returnError(query_select->getLastError());
 
 	while (query_select->next())
-		result = query_select->value(0).toInt();
+		result = (query_select->value(0).toInt() > 0);
 
 	return returnSuccess();
 }
