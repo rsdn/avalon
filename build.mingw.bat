@@ -27,12 +27,11 @@ SET ZLIB_INC=C:\projects\zlib\include
 REM *******************************
 REM * создание проекта и makefile *
 REM *******************************
-cd ../../
 %QT_QMAKE% -project -recursive -Wall -nopwd -o %PROJECT_NAME%.pro "CONFIG += release" "QT += network sql webkit" "INCLUDEPATH += %ASPELL_INC% %ZLIB_INC% src" "LIBS += %ASPELL_LIB% %ZLIB_LIB%" "RC_FILE += src/resource.rc" src
 %QT_QMAKE% %PROJECT_NAME%.pro
 
 REM ******************************************
 REM * сборка (консоль должна быть запущена в *
-REM * Visual Studio 2005 Command Prompt)     *
+REM * Qt Command Prompt)                     *
 REM ******************************************
-nmake.exe
+mingw32-make.exe
