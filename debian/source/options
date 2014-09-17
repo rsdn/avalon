@@ -11,4 +11,3 @@ tar-ignore = update.txt
 tar-ignore = src/resource.rc
 tar-ignore = src/icons/avalon.icns
 tar-ignore = src/icons/main.ico
-tar-ignore = src/sql/avalon.mysql.000.sql
