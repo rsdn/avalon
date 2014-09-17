@@ -57,7 +57,11 @@ void FormSettings::button_database_create_clicked ()
 	{
 		// предыдущие настройки
 		QString old_type  = settings.value("storage/type", "SQLite").toString();
-		QString old_value = settings.value("sqlite/file", QDir::homePath() + "/avalon/avalon.db").toString();
+#ifndef AVALON_PACKAGE
+		QString old_value = settings.value("sqlite/file", QDir::homePath() + "/avalon.db").toString();
+#else
+		QString old_value = settings.value("sqlite/file", QDir::homePath() + "/.avalon" + "/avalon.db").toString();
+#endif
 
 		// создание базы
 		createSQLiteDatabase();
@@ -325,7 +329,11 @@ void FormSettings::restore ()
 	m_text_database_login->setText    (settings.value("mysql/login",    "root"  ).toString());
 	m_text_database_password->setText (settings.value("mysql/password", ""      ).toString());
 
-	m_text_database_file->setText(settings.value("sqlite/file", QDir::homePath() + "/avalon/avalon.db").toString());
+#ifndef AVALON_PACKAGE
+	m_text_database_file->setText(settings.value("sqlite/file", QDir::homePath() + "/avalon.db").toString());
+#else
+	m_text_database_file->setText(settings.value("sqlite/file", QDir::homePath() + "/.avalon" + "/avalon.db").toString());
+#endif
 
 	combo_database_type_current_index_changed(m_combo_database_type->currentText());
 

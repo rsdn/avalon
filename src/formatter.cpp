@@ -5,7 +5,11 @@
 
 QString AFormatter::headHTML ()
 {
+#ifndef AVALON_PACKAGE
 	QString path = QCoreApplication::applicationDirPath();
+#else
+	QString path = QDir::homePath() + "/.avalon";
+#endif
 
 	QString custom_css;
 	if (QFileInfo(path + "/avalon.css").exists() == true)
