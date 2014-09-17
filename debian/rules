@@ -10,7 +10,6 @@ override_dh_auto_clean:
 	rm -f avalon
 
 override_dh_auto_build:
-	sed -i -e '/Main-Logo.icns/d' src/resource.qrc
 	qmake -project -recursive -Wall -nopwd -o avalon.pro \
 		"CONFIG += debug_and_release" \
 		"QT += network sql webkit" \
