@@ -14,8 +14,8 @@ qmake -project -recursive -Wall -nopwd -o ${PROJECT_NAME}.pro \
     "CONFIG += debug_and_release" \
     "QT += network sql webkit" \
     "LIBS += -laspell -lz" \
-    "ICON = icons/Main-Logo.icns" \
     "macx { QMAKE_CXX = clang }" \
+    "macx { ICON = icons/avalon.icns }" \
     src
 
 # создание make-файлов

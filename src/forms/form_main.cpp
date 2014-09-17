@@ -67,7 +67,11 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 	connect(m_menu_q_wikipedia_url,      SIGNAL(triggered()), this, SLOT(menu_q_wikipedia_url_triggered()));
 	connect(m_menu_q_google_url,         SIGNAL(triggered()), this, SLOT(menu_q_google_url_triggered()));
 	connect(m_menu_q_rsdn_url,           SIGNAL(triggered()), this, SLOT(menu_q_rsdn_url_triggered()));
+
+#ifndef AVALON_PACKAGE
 	connect(m_menu_q_update,             SIGNAL(triggered()), this, SLOT(menu_q_update_triggered()));
+#endif
+
 	connect(m_menu_q_about,              SIGNAL(triggered()), this, SLOT(menu_q_about_triggered()));
 
 	//
@@ -994,12 +998,15 @@ int AFormMain::synchronizeInterval ()
 }
 //----------------------------------------------------------------------------------------------
 
+#ifndef AVALON_PACKAGE
 void AFormMain::menu_q_update_triggered ()
 {
 	checkUpdate();
 }
+#endif   // AVALON_PACKAGE
 //----------------------------------------------------------------------------------------------
 
+#ifndef AVALON_PACKAGE
 void AFormMain::checkUpdate ()
 {
 	//
@@ -1111,4 +1118,5 @@ void AFormMain::checkUpdate ()
 
 	QMessageBox::warning(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("В манифесте обновлений отсутствует информация для вашей конфигурации!"));
 }
+#endif   // AVALON_PACKAGE
 //----------------------------------------------------------------------------------------------

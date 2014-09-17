@@ -132,6 +132,7 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 
 	m_menu_q->addSeparator();
 
+#ifndef AVALON_PACKAGE
 	m_menu_q_update = m_menu_q->addAction(QString::fromUtf8("Обновление"));
 	m_menu_q_update->setIcon(QIcon(":/icons/update16.png"));
 
@@ -144,6 +145,8 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 #else
 	m_menu_q_update->setVisible(false);
 #endif
+
+#endif   // AVALON_PACKAGE
 
 	m_menu_q_about = m_menu_q->addAction(QString::fromUtf8("О программе"));
 	m_menu_q_about->setIcon(QIcon(":/icons/help16.png"));

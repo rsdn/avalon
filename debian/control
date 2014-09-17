@@ -1,0 +1,16 @@
+Source: avalon
+Section: news
+Priority: optional
+Maintainer: Anton Batenev <antonbatenev@yandex.ru>
+Build-Depends: debhelper (>= 8), libqt4-dev (>= 4.4), zlib1g-dev, libaspell-dev
+Standards-Version: 3.9.5
+Vcs-Git: https://github.com/rsdn/avalon.git
+Vcs-Browser: https://github.com/rsdn/avalon
+Homepage: https://github.com/rsdn/avalon
+
+Package: avalon
+Architecture: any
+Suggests: graphviz
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: RSDN offline client
+ Offile client for Russian Software Developer Network

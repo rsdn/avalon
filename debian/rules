@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+override_dh_auto_clean:
+	if [ -f Makefile ]; then make clean; fi
+	rm -f Makefile
+	rm -f Makefile.Debug
+	rm -f Makefile.Release
+	rm -f avalon.pro
+	rm -f avalon
+
+override_dh_auto_build:
+	sed -i -e '/Main-Logo.icns/d' src/resource.qrc
+	qmake -project -recursive -Wall -nopwd -o avalon.pro \
+		"CONFIG += debug_and_release" \
+		"QT += network sql webkit" \
+		"LIBS += -laspell -lz" \
+		"DEFINES += AVALON_PACKAGE" \
+		"QMAKE_CPPFLAGS *= $(shell dpkg-buildflags --get CPPFLAGS)" \
+		"QMAKE_CFLAGS   *= $(shell dpkg-buildflags --get CFLAGS)" \
+		"QMAKE_CXXFLAGS *= $(shell dpkg-buildflags --get CXXFLAGS)" \
+		"QMAKE_LFLAGS   *= $(shell dpkg-buildflags --get LDFLAGS)" \
+		src
+	qmake avalon.pro
+	make
+
+%:
+	dh $@

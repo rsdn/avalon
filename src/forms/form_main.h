@@ -40,10 +40,12 @@ class AFormMain :
 		 */
 		int synchronizeInterval ();
 
+#ifndef AVALON_PACKAGE
 		/*!
 		 * \brief Проверка наличия обновлений
 		 */
 		void checkUpdate ();
+#endif
 
 	private slots:
 
@@ -100,7 +102,9 @@ class AFormMain :
 		void menu_q_wikipedia_url_triggered  (); /*!< \brief ? / Перейти на Википедию      */
 		void menu_q_google_url_triggered     (); /*!< \brief ? / Перейти на Google         */
 		void menu_q_rsdn_url_triggered       (); /*!< \brief ? / Перейти на RSDN           */
+#ifndef AVALON_PACKAGE
 		void menu_q_update_triggered         (); /*!< \brief ? / Обновление                */
+#endif
 		void menu_q_about_triggered          (); /*!< \brief ? / О программе               */
 
 		//

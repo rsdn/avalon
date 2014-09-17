@@ -76,7 +76,9 @@ class AFormMainUI : public QMainWindow
 		QAction*        m_menu_q_wikipedia_url;                /*!< \brief ? / URL Википедия       */
 		QAction*        m_menu_q_google_url;                   /*!< \brief ? / URL Google          */
 		QAction*        m_menu_q_rsdn_url;                     /*!< \brief ? / URL RSDN            */
+#ifndef AVALON_PACKAGE
 		QAction*        m_menu_q_update;                       /*!< \brief ? / Проверка обновлений */
+#endif
 		QAction*        m_menu_q_about;                        /*!< \brief ? / О программе         */
 
 		/*!

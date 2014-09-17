@@ -1,0 +1,15 @@
+compression = "bzip2"
+compression-level = 9
+tar-ignore = .git
+tar-ignore = .gitignore
+tar-ignore = build
+tar-ignore = debug
+tar-ignore = doxygen
+tar-ignore = highlight
+tar-ignore = release
+tar-ignore = tests
+tar-ignore = update.txt
+tar-ignore = src/resource.rc
+tar-ignore = src/icons/avalon.icns
+tar-ignore = src/icons/main.ico
+tar-ignore = src/sql/avalon.mysql.000.sql

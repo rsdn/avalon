@@ -1,0 +1,7 @@
+?package(avalon): \
+needs="X11" \
+section="Applications/Network/Communication" \
+title="Avalon" \
+hints="RSDN offline client" \
+icon="/usr/share/pixmaps/avalon.xpm" \
+command="/usr/bin/avalon"
