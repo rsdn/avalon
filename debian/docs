@@ -1,1 +1,3 @@
 README.md
+src/sql/avalon.mysql.sql
+src/sql/avalon.sqlite.sql
