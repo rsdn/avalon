@@ -4,7 +4,6 @@ tar-ignore = .git
 tar-ignore = .gitignore
 tar-ignore = build
 tar-ignore = debug
-tar-ignore = doxygen
 tar-ignore = highlight
 tar-ignore = release
 tar-ignore = tests
