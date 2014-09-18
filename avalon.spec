@@ -45,9 +45,9 @@ make
 
 %install
 install -d %{buildroot}%{_bindir}
-install -d %{buildroot}%{_desktopdir}
+install -d %{buildroot}%{_datadir}/applications
 install -m755 avalon %{buildroot}%{_bindir}/avalon
-install -m644 avalon.desktop %{buildroot}%{_desktopdir}/avalon.desktop
+install -m644 avalon.desktop %{buildroot}%{_datadir}/applications/avalon.desktop
 
 
 %clean
@@ -58,7 +58,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc README.md src/sql/avalon.mysql.sql src/sql/avalon.sqlite.sql
 %{_bindir}/avalon
-%{_desktopdir}/avalon.desktop
+%{_datadir}/applications/avalon.desktop
 
 
 %changelog
