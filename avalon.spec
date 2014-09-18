@@ -1,6 +1,6 @@
 Name:          avalon
-Version:       1.0.436
-Release:       2
+Version:       1.0.437
+Release:       1
 Summary:       RSDN offline client
 Group:         Applications/Internet
 License:       BSD-2-clause
@@ -15,18 +15,17 @@ BuildRequires: libQtWebKit-devel
 BuildRequires: qtwebkit-devel
 %endif
 
+%define qmake qmake
+%if 0%{?fedora}
+%define qmake qmake-qt4
+%endif
+
 Source0:       https://build.opensuse.org/source/home:antonbatenev:avalon/avalon/avalon_%{version}.tar.bz2
 BuildRoot:     %{_tmppath}/%{name}-%{version}-build
 
 
 %description
 Offile client for Russian Software Developer Network
-
-
-%define qmake qmake
-%if 0%{?fedora}
-%define qmake qmake-qt4
-%endif
 
 
 %prep
@@ -46,7 +45,9 @@ make
 
 %install
 install -d %{buildroot}%{_bindir}
+install -d %{buildroot}%{_desktopdir}
 install -m755 avalon %{buildroot}%{_bindir}/avalon
+install -m644 avalon.desktop %{buildroot}%{_desktopdir}/avalon.desktop
 
 
 %clean
@@ -57,8 +58,9 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc README.md src/sql/avalon.mysql.sql src/sql/avalon.sqlite.sql
 %{_bindir}/avalon
+%{_desktopdir}/avalon.desktop
 
 
 %changelog
-* Thu Sep 18 2014 Anton Batenev <antonbatenev@yandex.ru> 1.0.436-1
+* Fri Sep 19 2014 Anton Batenev <antonbatenev@yandex.ru> 1.0.437-1
 - Initial RPM release

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Avalon
+Comment=RSDN offline client
+Categories=Network;Qt;Feed;
+Exec=avalon
+Icon=avalon
+Terminal=false

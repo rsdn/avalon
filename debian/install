@@ -1,2 +1,3 @@
 avalon			/usr/bin
+avalon.desktop		/usr/share/applications
 src/icons/avalon.xpm	/usr/share/pixmaps
