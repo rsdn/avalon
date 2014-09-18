@@ -45,8 +45,11 @@ make
 
 %install
 install -d %{buildroot}%{_bindir}
+install -d %{buildroot}%{_datadir}/pixmaps
 install -d %{buildroot}%{_datadir}/applications
+
 install -m755 avalon %{buildroot}%{_bindir}/avalon
+install -m644 src/icons/avalon.xpm %{buildroot}%{_datadir}/pixmaps/avalon.xpm
 install -m644 avalon.desktop %{buildroot}%{_datadir}/applications/avalon.desktop
 
 
@@ -58,6 +61,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc README.md src/sql/avalon.mysql.sql src/sql/avalon.sqlite.sql
 %{_bindir}/avalon
+%{_datadir}/pixmaps/avalon.xpm
 %{_datadir}/applications/avalon.desktop
 
 

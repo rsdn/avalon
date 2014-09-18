@@ -1,9 +1,10 @@
 [Desktop Entry]
-Type=Application
 Version=1.0
+Encoding=UTF-8
+Type=Application
+Categories=Network;Feed;Internet;News;Qt;
 Name=Avalon
-Comment=RSDN offline client
-Categories=Network;Qt;Feed;
+GenericName=RSDN offline client
 Exec=avalon
 Icon=avalon
 Terminal=false
