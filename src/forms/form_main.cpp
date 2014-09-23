@@ -144,7 +144,7 @@ void AFormMain::menu_service_synchronize_triggered ()
 	// основные настройки
 	QSettings settings;
 
-	QString rsdn_host = settings.value("rsdn/host", "www.rsdn.ru").toString();
+	QString rsdn_host = settings.value("rsdn/host", "rsdn.ru").toString();
 	int     rsdn_port = settings.value("rsdn/port", "80").toInt();
 
 	// получение хранилища
@@ -667,7 +667,7 @@ void AFormMain::menu_q_google_url_triggered ()
 
 void AFormMain::menu_q_rsdn_url_triggered ()
 {
-	QDesktopServices::openUrl(QString("http://www.rsdn.ru"));
+	QDesktopServices::openUrl(QString("http://rsdn.ru"));
 }
 //----------------------------------------------------------------------------------------------
 

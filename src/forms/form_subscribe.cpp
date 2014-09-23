@@ -186,7 +186,7 @@ void FormSubscribe::button_refresh_clicked ()
 	// получение текста запроса
 	QSettings settings;
 
-	QString rsdn_host = settings.value("rsdn/host", "www.rsdn.ru").toString();
+	QString rsdn_host = settings.value("rsdn/host", "rsdn.ru").toString();
 	int     rsdn_port = settings.value("rsdn/port", "80").toInt();
 
 	QString header;

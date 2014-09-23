@@ -111,7 +111,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 		{ "[nemerle]",          "[/nemerle]",   pbtNemerle,   pbstSourceCode },
 		{ "[python]",           "[/python]",    pbtPython,    pbstSourceCode },
 
-		// http://www.rsdn.ru/forum/message/3227340.1.aspx
+		// http://rsdn.ru/forum/message/3227340.1.aspx
 		{ "[code=]",            "[/code]",      pbtCode,      pbstSourceCode },
 		{ "[code=assembler]",   "[/code]",      pbtAssembler, pbstSourceCode },
 		{ "[code=c]",           "[/code]",      pbtC,         pbstSourceCode },
@@ -133,7 +133,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 		{ "[code=visualbasic]", "[/code]",      pbtBasic,     pbstSourceCode },
 		{ "[code=xsl]",         "[/code]",      pbtXML,       pbstSourceCode },
 
-		// http://www.rsdn.ru/forum/cpp/3482377.1.aspx
+		// http://rsdn.ru/forum/cpp/3482377.1.aspx
 		{ "[code=cpp]",         "[/code]",      pbtCPP,       pbstSourceCode },
 
 		// тэги, которые не обрабатываются подсветкой кода
