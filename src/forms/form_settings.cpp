@@ -270,9 +270,9 @@ void FormSettings::restore ()
 	//
 
 	m_text_rsdn_host->setText     (settings.value("rsdn/host",     "rsdn.ru").toString());
-	m_text_rsdn_port->setText     (settings.value("rsdn/port",     "443"        ).toString());
-	m_text_rsdn_login->setText    (settings.value("rsdn/login",    ""           ).toString());
-	m_text_rsdn_password->setText (settings.value("rsdn/password", ""           ).toString());
+	m_text_rsdn_port->setText     (settings.value("rsdn/port",     "443"    ).toString());
+	m_text_rsdn_login->setText    (settings.value("rsdn/login",    ""       ).toString());
+	m_text_rsdn_password->setText (settings.value("rsdn/password", ""       ).toString());
 
 	bool use_proxy = settings.value("proxy/enabled", false).toInt();
 
