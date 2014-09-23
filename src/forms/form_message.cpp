@@ -31,7 +31,7 @@ FormMessage::FormMessage (QWidget* parent, bool is_reply, const AMessageInfoGUI&
 	// получение информации о форуме сообщения
 	// работает "по тихому", т.к. если возникнет ошибка, то это не сильно принципиально
 	// и можно продолжать нормальную работу, а не пугать пользователя
-	// http://rsdn.ru/forum/message/3315591.1.aspx
+	// http://rsdn.ru/forum/janus/3315591.1
 
 	std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
 
