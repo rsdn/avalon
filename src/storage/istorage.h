@@ -264,7 +264,7 @@ class IAStorage : public ADatabaseError
 		/*!
 		 * \brief Возвращает список всех модерилок к отправке со связанными сообщениями.
 		 * Индексы в списках сообщений и рейтингов соответствуют.
-		 * \param message_list Список оцененых сообщений.
+		 * \param message_list Список модерируемых сообщений.
 		 * \param moderate_list Список модерилок.
 		 */
 		virtual bool getModerate2SendList (AMessageInfoList& message_list, AModerate2SendList& moderate_list) = 0;

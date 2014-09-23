@@ -852,7 +852,7 @@ void AMessageTree::selection_changed ()
 	}
 
 	// отображение сообщения
-	bool special = m_current_forum.ID == SPECIAL_ID_FORUM_MESSAGE2SEND || m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS || m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND;
+	bool special = m_current_forum.ID == SPECIAL_ID_FORUM_MESSAGE2SEND || m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS;
 	bool rated   = m_current_forum.Rated;
 
 	if (rated == true && info->IDUser == AGlobal::getInstance()->Me.ID)
