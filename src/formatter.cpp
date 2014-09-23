@@ -96,7 +96,7 @@ QString AFormatter::authorHTML (int id, const QString nick)
 	if (id == 0 || id == -1)
 		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'>") + nick + "</div><br />\n";
 	else
-		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'><a href='http://rsdn.ru/Users/") + QString::number(id) + ".aspx'>" + nick + "</a></div><br />\n";
+		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'><a href='http://rsdn.ru/account/info/") + QString::number(id) + "'>" + nick + "</a></div><br />\n";
 
 	return result;
 }
