@@ -1,17 +1,20 @@
 Name:          avalon
-Version:       1.0.437
+Version:       1.0.438
 Release:       1
 Summary:       RSDN offline client
 Group:         Applications/Internet
 License:       BSD-2-clause
 URL:           https://github.com/rsdn/avalon
+Requires:      libqt4 >= 4.4, aspell, zlib
 BuildRequires: libqt4-devel >= 4.4, aspell-devel, zlib-devel
 
 %if 0%{?suse_version}
+Requires:      libQtWebKit4
 BuildRequires: libQtWebKit-devel
 %endif
 
 %if 0%{?fedora}
+Requires:      qtwebkit
 BuildRequires: qtwebkit-devel
 %endif
 
@@ -66,5 +69,5 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Fri Sep 19 2014 Anton Batenev <antonbatenev@yandex.ru> 1.0.437-1
+* Wed Sep 24 2014 Anton Batenev <antonbatenev@yandex.ru> 1.0.438-1
 - Initial RPM release
