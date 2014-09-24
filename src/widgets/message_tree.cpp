@@ -852,13 +852,37 @@ void AMessageTree::selection_changed ()
 	}
 
 	// отображение сообщения
-	bool special = m_current_forum.ID == SPECIAL_ID_FORUM_MESSAGE2SEND || m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS;
-	bool rated   = m_current_forum.Rated;
+	if (m_current_forum.IDGroup != SPECIAL_ID_GROUP)
+		m_message_view->setMessage(*info, &m_current_forum);
+	else if (m_current_forum.ID == SPECIAL_ID_FORUM_RATING2SEND   ||
+	         m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
+	         m_current_forum.ID == SPECIAL_ID_FORUM_MY_MESSAGES   ||
+	         m_current_forum.ID == SPECIAL_ID_FORUM_ANSWERS_TO_ME)
+	{
+		// в спец-форумах типа "Ответы мне" короткое имя форума
+		// для формирования ссылки на сообщение неизвестно - получаем из хранилища
 
-	if (rated == true && info->IDUser == AGlobal::getInstance()->Me.ID)
-		rated = false;
+		// получение хранилища
+		std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
 
-	m_message_view->setMessage(*info, special, rated);
+		if (storage.get() == NULL)
+		{
+			QMessageBox::critical(m_parent, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Не выбрано хранилище данных"));
+			return;
+		}
+
+		// получение информации о форуме сообщения
+		AForumInfo forum;
+		if (storage->getForumInfo(info->IDForum, forum) == false)
+		{
+			storage->showError(m_parent);
+			return;
+		}
+
+		m_message_view->setMessage(*info, &forum);
+	}
+	else
+		m_message_view->setMessage(*info);
 
 	// взвод таймера для пометки как прочитанного
 	if (info->IsRead == false)

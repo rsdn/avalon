@@ -51,7 +51,7 @@ class AMessageView :
 	private:
 
 		void clear ();
-		void setMessage (const AMessageInfo& message, bool special = false, bool rated = false);
+		void setMessage (const AMessageInfo& message, const AForumInfo* forum = NULL);
 
 	private slots:
 

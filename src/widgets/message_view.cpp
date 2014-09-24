@@ -1,5 +1,6 @@
 #include "message_view.h"
 //----------------------------------------------------------------------------------------------
+#include "global.h"
 #include "formatter.h"
 #include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
@@ -38,12 +39,14 @@ void AMessageView::setMessageTree (IMessageTree* itf)
 }
 //----------------------------------------------------------------------------------------------
 
-void AMessageView::setMessage (const AMessageInfo& message, bool special, bool rated)
+void AMessageView::setMessage (const AMessageInfo& message, const AForumInfo* forum)
 {
+	Q_ASSERT(forum != NULL && forum->IDGroup == SPECIAL_ID_GROUP);
+
 	QString body;
 
 	// загрузка рейтингов (если требуется)
-	if (rated == true)
+	if (forum != NULL && forum->Rated == true && message.IDUser != AGlobal::getInstance()->Me.ID)
 	{
 		// "тихий" контроль ошибок, т.к. не страшно, если пузомерка не загрузится
 		std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
@@ -53,15 +56,15 @@ void AMessageView::setMessage (const AMessageInfo& message, bool special, bool r
 			AMessageRatingList list;
 
 			if (storage->getMessageRatingList(message.ID, list) != false)
-				body = AFormatter::formatMessage(message, special, rated, (list.count() > 0 ? &list : NULL));
+				body = AFormatter::formatMessage(message, forum, true, (list.count() > 0 ? &list : NULL));
 			else
-				body = AFormatter::formatMessage(message, special, rated);
+				body = AFormatter::formatMessage(message, forum, true);
 		}
 		else
-			body = AFormatter::formatMessage(message, special, rated);
+			body = AFormatter::formatMessage(message, forum, true);
 	}
 	else
-		body = AFormatter::formatMessage(message, special, rated);
+		body = AFormatter::formatMessage(message, forum);
 
 	View->setHtml(body);
 }

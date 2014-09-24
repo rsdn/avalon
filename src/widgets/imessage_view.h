@@ -23,10 +23,9 @@ class IMessageView
 		/*!
 		 * \brief Отобразить сообщение
 		 * \param message Дескриптор сообщения
-		 * \param special Флаг того, что это сообщение на отправку
-		 * \param rated Флаг того, что сообщение может быть оценено
+		 * \param forum Дескриптор форума (не спец-форума)
 		 */
-		virtual void setMessage (const AMessageInfo& message, bool special = false, bool rated = false) = 0;
+		virtual void setMessage (const AMessageInfo& message, const AForumInfo* forum = NULL) = 0;
 };
 
 #endif

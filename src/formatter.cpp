@@ -41,19 +41,19 @@ QString AFormatter::headHTML ()
 }
 //----------------------------------------------------------------------------------------------
 
-QString AFormatter::subjectHTML (int id, bool special, const QString subject)
+QString AFormatter::subjectHTML (const AMessageInfo& message, const AForumInfo* forum)
 {
-	QString pad = "			";
+	QString pad    = "			";
 	QString result = pad + "<div id='title'>\n";
 
-	if (special == false)
+	if (forum != NULL)
 	{
 		result +=
-			pad + "	<a id='move_to_thread' href='http://rsdn.ru/forum/message/" + QString::number(id) + QString::fromUtf8("'><img src='qrc:/icons/show_topic.png' title='показать положение в теме' /></a>\n") +
-			pad + "	<a id='subject' href='http://rsdn.ru/forum/message/" + QString::number(id) + ".1'>" + subject + "</a>\n";
+			pad + "	<a id='move_to_thread' href='http://rsdn.ru/forum/" + forum->ShortName + "/" + QString::number(message.ID) + QString::fromUtf8("'><img src='qrc:/icons/show_topic.png' title='показать положение в теме' /></a>\n") +
+			pad + "	<a id='subject' href='http://rsdn.ru/forum/" + forum->ShortName + "/" + QString::number(message.ID) + ".1'>" + message.Subject + "</a>\n";
 	}
 	else
-		result += pad + "<p id='subject'>" + subject + "</p>\n";
+		result += pad + "<p id='subject'>" + message.Subject + "</p>\n";
 
 	result += pad + "</div>\n";
 
@@ -61,7 +61,7 @@ QString AFormatter::subjectHTML (int id, bool special, const QString subject)
 }
 //----------------------------------------------------------------------------------------------
 
-QString AFormatter::rateHTML (bool special, bool rated)
+QString AFormatter::rateHTML (bool rated, bool moderated)
 {
 	QString pad = "				";
 	QString result = pad + "<div id='rate'>\n";
@@ -79,7 +79,7 @@ QString AFormatter::rateHTML (bool special, bool rated)
 			pad + QString::fromUtf8("<a id='rate_minus' href='avalon:rate_minus'><img src='qrc:/icons/rate_minus.png' title='не согласен' /></a>\n");
 	}
 
-	if (special == false)
+	if (moderated == true)
 		result += pad + QString::fromUtf8("<a id='moderate' href='avalon:moderate'><img src='qrc:/icons/moderate.png' title='модерирование' /></a>\n");
 
 	result += pad + "</div>\n";
@@ -193,8 +193,10 @@ QString AFormatter::footerHTML ()
 }
 //----------------------------------------------------------------------------------------------
 
-QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bool rated, const AMessageRatingList* rating_list)
+QString AFormatter::formatMessage (const AMessageInfo& message, const AForumInfo* forum, bool rated, const AMessageRatingList* rating_list)
 {
+	Q_ASSERT(forum != NULL && forum->IDGroup == SPECIAL_ID_GROUP);
+
 	// парсинг сообщения
 	AParsedBlockList list = AParser::parseBlocks(message.Message);
 
@@ -211,10 +213,10 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 	"		<div id='header'>\n";
 
 	// заголовок
-	result += subjectHTML(message.ID, special, message.Subject);
+	result += subjectHTML(message, forum);
 
 	// иконки для выставления оценок
-	result += rateHTML(special, rated);
+	result += rateHTML(rated, forum != NULL);
 
 	// закрытие div.id = header
 	result +=

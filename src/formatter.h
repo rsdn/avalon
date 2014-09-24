@@ -19,12 +19,12 @@ class AFormatter
 		/*!
 		 * \brief Форматтер HTML сообщения из текстового
 		 * \param message Дескриптор сообщения
-		 * \param special Флаг спец-форума
+		 * \param forum Дескриптор форума сообщения (не спец-форума)
 		 * \param rated Флаг того, что форум оценивается
 		 * \param rating_list Список рейтингов (если есть)
 		 * \return Строка с HTML кодом для отображения
 		 */
-		static QString formatMessage (const AMessageInfo& message, bool special = false, bool rated = false, const AMessageRatingList* rating_list = NULL);
+		static QString formatMessage (const AMessageInfo& message, const AForumInfo* forum = NULL, bool rated = false, const AMessageRatingList* rating_list = NULL);
 
 		/*!
 		 * \brief Нормализация тела сообщения - выправление криворукого квотинга, ссылок, приветствий
@@ -44,20 +44,19 @@ class AFormatter
 
 		/*!
 		 * \brief Блок темы сообщения
-		 * \param id ID сообщения
-		 * \param special Флаг того, что сообщение в спец-форуме
-		 * \param subject Тема сообщения
+		 * \param message Дескриптор сообщения
+		 * \param forum Дескриптор форума
 		 * \return Строка html для вставки
 		 */
-		static QString subjectHTML (int id, bool special, const QString subject);
+		static QString subjectHTML (const AMessageInfo& message, const AForumInfo* forum = NULL);
 
 		/*!
 		 * \brief Блок возможности выставлять оценки
-		 * \param special Флаг того, что сообщение в спец-форуме
-		 * \param rated Флаг того, что на форуме разрешены оценки
+		 * \param rated Флаг генерации блока для выставления оценок
+		 * \param moderated Флаг генерации блока для модерилок
 		 * \return Строка html для вставки
 		 */
-		static QString rateHTML (bool special, bool rated);
+		static QString rateHTML (bool rated, bool moderated);
 
 		/*!
 		 * \brief Блок информации об авторе сообщения
