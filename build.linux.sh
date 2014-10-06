@@ -6,7 +6,9 @@ set -e
 PROJECT_NAME="avalon"
 
 # очистка
-make clean
+if [ -f "Makefile" ]; then
+	make clean
+fi
 
 # создание pro-файла
 qmake -project -recursive -Wall -nopwd -o ${PROJECT_NAME}.pro \
