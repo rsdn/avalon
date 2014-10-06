@@ -1672,7 +1672,7 @@ void AMessageTree::gotoNextUnreadArticle (QTreeWidgetItem* current_item)
 	bool loopback = false;
 
 	// есть выделение или найден топик с непрочитанными сообщениями
-	while (true)
+	while (info != NULL)
 	{
 		if (info->HasUnreadChild == true && info->IsChildLoaded == false)
 			item->setExpanded(true);
