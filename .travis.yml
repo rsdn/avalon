@@ -1,8 +1,23 @@
 language: cpp
+
 compiler:
     - gcc
-    - clang
+
 install:
     - sudo apt-get -y install libqt4-dev libqtwebkit-dev zlib1g-dev libaspell-dev
+
 script:
     - ./build.linux.sh
+
+env:
+    global:
+        - secure: "Zv8INB/fGwVKZzqzTPEDvsrZ+Eihi2moFOLkYvVfg2kfD9jnhZCIpSdwgzmBIHvuY793GpiBysoR/GyKlQ5hf82mOhAwfDnpFkV9GfNMaRQaK9wsAQS9CYo6j8dHSkSi/9zZXNhrwBGfxYxGxjLALozgJcMt7NMfF3e1ZNiCTtc="
+
+addons:
+    coverity_scan:
+        project:
+            name: "rsdn/avalon"
+            description: "Build submitted via Travis CI"
+            build_command_prepend: true
+            build_command: ./build.linux.sh
+            branch_pattern: master

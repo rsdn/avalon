@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -e
 
 # имя проекта
 PROJECT_NAME="avalon"
@@ -6,15 +8,8 @@ PROJECT_NAME="avalon"
 # очистка
 make clean
 
-# выбор компилятора
-QMAKE_OPTS=""
-if [ -n "${TRAVIS}" -a -n "${CC}" ]; then
-	QMAKE_OPTS="${QMAKE_OPTS} QMAKE_CC=\"${CC}\""
-	QMAKE_OPTS="${QMAKE_OPTS} QMAKE_CXX=\"${CC}\""
-fi
-
 # создание pro-файла
-qmake -project -recursive -Wall -nopwd -o ${PROJECT_NAME}.pro ${QMAKE_OPTS} \
+qmake -project -recursive -Wall -nopwd -o ${PROJECT_NAME}.pro \
     "CONFIG += debug_and_release" \
     "QT += network sql webkit" \
     "LIBS += -laspell -lz" \
