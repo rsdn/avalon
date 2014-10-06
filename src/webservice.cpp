@@ -793,13 +793,13 @@ QString AWebservice::postChangeCommit_WebserviceParse (const QString& data, ACom
 
 	QString moderate_exception_info = getNextBlock(&moderate_exceptions, "<ModerateExceptionInfo>", "</ModerateExceptionInfo>", seed);
 
-	while (rating_exception_info.length())
+	while (moderate_exception_info.length())
 	{
 		ACommitExceptionInfo info;
 
-		info.Exception = getTextBetween(&moderate_exception_info, "<exception>",     "</exception>");
-		info.ID        = getTextBetween(&moderate_exception_info, "<localRatingId>", "</localRatingId>").toInt();
-		info.Info      = getTextBetween(&moderate_exception_info, "<info>",          "</info>");
+		info.Exception = getTextBetween(&moderate_exception_info, "<ExceptionMessage>", "</ExceptionMessage>");
+		info.ID        = getTextBetween(&moderate_exception_info, "<LocalModerateId>",  "</LocalModerateId>").toInt();
+		info.Info      = getTextBetween(&moderate_exception_info, "<Info>",             "</Info>");
 
 		commit_info.MessagesExceptions.append(info);
 
