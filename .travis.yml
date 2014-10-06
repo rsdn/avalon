@@ -1,0 +1,8 @@
+language: cpp
+compiler:
+    - gcc
+    - clang
+install:
+    - sudo apt-get -y install libqt4-dev libqtwebkit-dev zlib1g-dev libaspell-dev
+script:
+    - ./build.linux.sh
