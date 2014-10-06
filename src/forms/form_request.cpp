@@ -3,6 +3,9 @@
 
 FormRequest::FormRequest (QWidget* parent) : FormRequestUI (parent), IProgress ()
 {
+	m_hack    = 0;
+	m_to_send = 0;
+
 	connect(m_button_cancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 //----------------------------------------------------------------------------------------------
