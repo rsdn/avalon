@@ -18,6 +18,7 @@ addons:
         project:
             name: "rsdn/avalon"
             description: "Build submitted via Travis CI"
-            build_command_prepend: true
-            build_command: ./build.linux.sh
-            branch_pattern: master
+        notification_email: antonbatenev@yandex.ru
+        build_command_prepend: true
+        build_command: ./build.linux.sh
+        branch_pattern: master
