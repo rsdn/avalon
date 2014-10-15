@@ -9,6 +9,20 @@
 #include "sysheaders.h"
 
 /*!
+ * \brief Cабклассинг QWebPage для установки User-Agent ресурсов, загружаемых из сообщений
+ */
+class AWebPage : public QWebPage
+{
+	public:
+
+		AWebPage(QObject* parent = NULL) : QWebPage(parent) {}
+
+	protected:
+
+		QString userAgentForUrl (const QUrl& /*url*/) const { return getAgentString(); }
+};
+
+/*!
  * \brief Cабклассинг QWebView для установки дефолтного поведения
  */
 class AWebView : public QWebView

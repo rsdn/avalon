@@ -5,6 +5,8 @@ AWebView::AWebView (QWidget* parent) : QWebView (parent)
 {
 	LinkHovered = false;
 
+	setPage(new AWebPage(this));
+
 	page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
 	pageAction(QWebPage::OpenLink)->setVisible(false);

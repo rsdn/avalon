@@ -687,7 +687,7 @@ void AFormMain::menu_q_about_triggered ()
 		"</ul>"
 	);
 
-	QMessageBox::about(this, getAgentString(), text);
+	QMessageBox::about(this, "avalon/" + getVersionString(), text);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -1015,7 +1015,7 @@ void AFormMain::checkUpdate ()
 
 	QString header = "";
 	header += "GET /rsdn/avalon/master/update.txt HTTP/1.1\r\n";
-	header += "Host: raw.github.com\r\n";
+	header += "Host: raw.githubusercontent.com\r\n";
 	header += "Connection: close\r\n";
 	header += "User-Agent: " + getAgentString() + "\r\n";
 
