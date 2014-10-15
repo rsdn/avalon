@@ -1,1 +1,0 @@
-os=windows;arch=i386;build=435;base_build=4;base_url=http://yadi.sk/d/Mp4saKmR4GaQn;url=https://yadi.sk/d/otHXFQAXY2CzC;

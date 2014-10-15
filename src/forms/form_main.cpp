@@ -63,16 +63,11 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 	// меню "?"
 	//
 
-	connect(m_menu_q_yandex_url,         SIGNAL(triggered()), this, SLOT(menu_q_yandex_url_triggered()));
-	connect(m_menu_q_wikipedia_url,      SIGNAL(triggered()), this, SLOT(menu_q_wikipedia_url_triggered()));
-	connect(m_menu_q_google_url,         SIGNAL(triggered()), this, SLOT(menu_q_google_url_triggered()));
-	connect(m_menu_q_rsdn_url,           SIGNAL(triggered()), this, SLOT(menu_q_rsdn_url_triggered()));
-
-#ifndef AVALON_PACKAGE
-	connect(m_menu_q_update,             SIGNAL(triggered()), this, SLOT(menu_q_update_triggered()));
-#endif
-
-	connect(m_menu_q_about,              SIGNAL(triggered()), this, SLOT(menu_q_about_triggered()));
+	connect(m_menu_q_yandex_url,    SIGNAL(triggered()), this, SLOT(menu_q_yandex_url_triggered()));
+	connect(m_menu_q_wikipedia_url, SIGNAL(triggered()), this, SLOT(menu_q_wikipedia_url_triggered()));
+	connect(m_menu_q_google_url,    SIGNAL(triggered()), this, SLOT(menu_q_google_url_triggered()));
+	connect(m_menu_q_rsdn_url,      SIGNAL(triggered()), this, SLOT(menu_q_rsdn_url_triggered()));
+	connect(m_menu_q_about,         SIGNAL(triggered()), this, SLOT(menu_q_about_triggered()));
 
 	//
 	// тулбар
@@ -996,127 +991,4 @@ int AFormMain::synchronizeInterval ()
 {
 	return QSettings().value("ui/synchronize_interval", "0").toUInt() * 1000 * 60;
 }
-//----------------------------------------------------------------------------------------------
-
-#ifndef AVALON_PACKAGE
-void AFormMain::menu_q_update_triggered ()
-{
-	checkUpdate();
-}
-#endif   // AVALON_PACKAGE
-//----------------------------------------------------------------------------------------------
-
-#ifndef AVALON_PACKAGE
-void AFormMain::checkUpdate ()
-{
-	//
-	// получение манифеста
-	//
-
-	QString header = "";
-	header += "GET /rsdn/avalon/master/update.txt HTTP/1.1\r\n";
-	header += "Host: raw.githubusercontent.com\r\n";
-	header += "Connection: close\r\n";
-	header += "User-Agent: " + getAgentString() + "\r\n";
-
-	#ifdef AVALON_USE_ZLIB
-	header += "Accept-Encoding: gzip\r\n";
-	#endif
-
-	std::auto_ptr<FormRequest> form(new FormRequest(this, "raw.github.com", 443, header, ""));
-
-	if (form->exec() != QDialog::Accepted)
-		return;
-
-	bool error;
-	QString answer = form->getResponse(error);
-
-	if (error == true)
-	{
-		QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), answer);
-		return;
-	}
-
-	//
-	// разбор конфига
-	//
-
-	QStringList lines = answer.split("\n", QString::SkipEmptyParts);
-
-	for (int i = 0; i < lines.count(); i++)
-	{
-		QHash<QString, QString> values;
-
-		QStringList sections = lines[i].split(";", QString::SkipEmptyParts);
-
-		for (int j = 0; j < sections.count(); j++)
-		{
-			QStringList keyvalue = sections[j].split("=");
-
-			if (keyvalue.count() == 2)
-				values[keyvalue[0]] = keyvalue[1];
-		}
-
-		// проверка ОС
-		#ifdef Q_WS_WIN
-		if (values["os"] != "windows")
-			continue;
-		#endif
-
-		#ifdef Q_WS_MAC
-		if (values["os"] != "macos")
-			continue;
-		#endif
-
-		#ifdef Q_WS_X11
-		if (values["os"] != "linux")
-			continue;
-		#endif
-
-		// проверка архитектуры
-		if (values["arch"] != "noarch")
-		{
-			if (QSysInfo::WordSize == 32 && values["arch"] != "i386")
-				continue;
-			else if (QSysInfo::WordSize == 64 && values["arch"] != "x64")
-				continue;
-		}
-
-		// проверка версии
-		bool ok = false;
-		int current_build  = getBuildNumber();
-		int manifest_build = values["build"].toUInt(&ok);
-
-		if (ok == false)
-		{
-			QMessageBox::warning(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Манифест имеет неверную информацию о номере билда!"));
-			return;
-		}
-
-		if (current_build == manifest_build)
-		{
-			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Вы имеете самый последний билд программы!"));
-			return;
-		}
-		else if (current_build > manifest_build)
-		{
-			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Ваш билд программы более новый! Пожалуйста, обновите бинарный файл на <a href='https://github.com/rsdn/avalon/wiki/Скачать'>странице загрузки</a>."));
-			return;
-		}
-
-		QString msg = "";
-		msg += QString::fromUtf8("Обнаружен новый билд программы!\n");
-		msg += QString::fromUtf8("Ваш билд: ") + QString::number(current_build) + "\n";
-		msg += QString::fromUtf8("Новый билд: ") + QString::number(manifest_build) + "\n";
-		msg += QString::fromUtf8("Перейти на страницу загрузки нового билда?");
-
-		if (QMessageBox::question(this, QString::fromUtf8("Внимание!"), msg, QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
-			QDesktopServices::openUrl(values["url"]);
-
-		return;
-	}
-
-	QMessageBox::warning(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("В манифесте обновлений отсутствует информация для вашей конфигурации!"));
-}
-#endif   // AVALON_PACKAGE
 //----------------------------------------------------------------------------------------------
