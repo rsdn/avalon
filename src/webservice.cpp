@@ -299,7 +299,7 @@ QString AWebservice::getUserList_WebserviceParse (const QString& data, AUserInfo
 
 	// проверка ошибок получения версий строк
 	// подавлять ошибки сбросом в значение по умолчанию ("AAAAAAAAAAA=") оказалось неправильно
-	// подробнее см. http://rsdn.ru/forum/janus/3449147.1
+	// подробнее см. https://rsdn.ru/forum/janus/3449147.1
 	if (row_version.length() == 0)
 		return QString::fromUtf8("В ответе вебсервиса не найдено поле <lastRowVersion>");
 
@@ -501,7 +501,7 @@ QString AWebservice::getMessageList_WebserviceParse (const QString& data, ADataL
 
 	// проверка ошибок получения версий строк
 	// подавлять ошибки сбросом в значение по умолчанию ("AAAAAAAAAAA=") оказалось неправильно
-	// подробнее см. http://rsdn.ru/forum/janus/3449147.1
+	// подробнее см. https://rsdn.ru/forum/janus/3449147.1
 	// выбрасывать ошибку (r253) тоже оказалось неправильно - для некоторых форумов не приходят ни рейтинги ни модерилки
 	if (lastRatingRowVersion.length() != 0)
 		row_version.Rating = lastRatingRowVersion;

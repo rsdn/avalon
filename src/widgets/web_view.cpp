@@ -107,7 +107,7 @@ void AWebView::menu_wikipedia_triggered ()
 {
 	QString selected = page()->selectedText();
 
-	QString url = (QString)"http://ru.wikipedia.org/wiki/" + selected;
+	QString url = (QString)"https://ru.wikipedia.org/wiki/" + selected;
 
 	QDesktopServices::openUrl(url);
 }
@@ -127,7 +127,7 @@ void AWebView::menu_google_triggered ()
 {
 	QString selected = page()->selectedText();
 
-	QString url = (QString)"http://www.google.ru/search?hl=ru&q=" + selected;
+	QString url = (QString)"https://www.google.ru/search?hl=ru&q=" + selected;
 
 	QDesktopServices::openUrl(url);
 }
@@ -143,13 +143,13 @@ void AWebView::menu_google_translate_triggered ()
 	for (int i = 0; i < selected.length(); i++)
 		if (selected[i].unicode() < 128)
 			is_english++;
-
+qDebug() << is_english << selected.length() / 2;
 	QString url;
 
 	if (is_english >= selected.length() / 2)
-		url = (QString)"http://translate.google.com/#ru|en|" + selected;
+		url = (QString)"https://translate.google.com/#auto/ru/" + selected;
 	else
-		url = (QString)"http://translate.google.com/#auto|ru|" + selected;
+		url = (QString)"https://translate.google.com/#ru/en/" + selected;
 
 	QDesktopServices::openUrl(url);
 }
@@ -159,7 +159,7 @@ void AWebView::menu_rsdn_triggered ()
 {
 	QString selected = page()->selectedText();
 
-	QString url = (QString)"http://rsdn.ru/rsdnsearch?text=" + selected;
+	QString url = (QString)"https://rsdn.ru/rsdnsearch?text=" + selected;
 
 	QDesktopServices::openUrl(url);
 }

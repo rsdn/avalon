@@ -111,7 +111,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 		{ "[nemerle]",          "[/nemerle]",   pbtNemerle,   pbstSourceCode },
 		{ "[python]",           "[/python]",    pbtPython,    pbstSourceCode },
 
-		// http://rsdn.ru/forum/rsdn/3227340.1
+		// https://rsdn.ru/forum/rsdn/3227340.1
 		{ "[code=]",            "[/code]",      pbtCode,      pbstSourceCode },
 		{ "[code=assembler]",   "[/code]",      pbtAssembler, pbstSourceCode },
 		{ "[code=c]",           "[/code]",      pbtC,         pbstSourceCode },
@@ -133,7 +133,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 		{ "[code=visualbasic]", "[/code]",      pbtBasic,     pbstSourceCode },
 		{ "[code=xsl]",         "[/code]",      pbtXML,       pbstSourceCode },
 
-		// http://rsdn.ru/forum/cpp/3482377.1
+		// https://rsdn.ru/forum/cpp/3482377.1
 		{ "[code=cpp]",         "[/code]",      pbtCPP,       pbstSourceCode },
 
 		// тэги, которые не обрабатываются подсветкой кода
@@ -295,7 +295,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			}
 
 			// найден монолитный тэг, однако, требуется проверить, что он где-то закрывается
-			// подробнее поведение в тесте на сайте: http://rsdn.ru/forum/test/4212824.1
+			// подробнее поведение в тесте на сайте: https://rsdn.ru/forum/test/4212824.1
 			if (found_tag != NULL && search_open_tag == true)
 			{
 				QString close_part = found_tag->ClosePart;

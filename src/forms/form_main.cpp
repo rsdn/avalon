@@ -73,10 +73,10 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 	// тулбар
 	//
 
-	connect(m_tool_bar_synchronize,  SIGNAL(triggered()), this, SLOT(menu_service_synchronize_triggered()));
-	connect(m_tool_bar_new_message,  SIGNAL(triggered()), this, SLOT(menu_service_new_message_triggered()));
-	connect(m_tool_bar_backward,     SIGNAL(triggered()), this, SLOT(tool_bar_backward_triggered()));
-	connect(m_tool_bar_forward,      SIGNAL(triggered()), this, SLOT(tool_bar_forward_triggered()));
+	connect(m_tool_bar_synchronize, SIGNAL(triggered()), this, SLOT(menu_service_synchronize_triggered()));
+	connect(m_tool_bar_new_message, SIGNAL(triggered()), this, SLOT(menu_service_new_message_triggered()));
+	connect(m_tool_bar_backward,    SIGNAL(triggered()), this, SLOT(tool_bar_backward_triggered()));
+	connect(m_tool_bar_forward,     SIGNAL(triggered()), this, SLOT(tool_bar_forward_triggered()));
 
 	// интерфейсы
 	m_forum_tree->setMainForm(this);
@@ -650,26 +650,26 @@ void AFormMain::menu_q_yandex_url_triggered ()
 
 void AFormMain::menu_q_wikipedia_url_triggered ()
 {
-	QDesktopServices::openUrl(QString("http://ru.wikipedia.org"));
+	QDesktopServices::openUrl(QString("https://ru.wikipedia.org"));
 }
 //----------------------------------------------------------------------------------------------
 
 void AFormMain::menu_q_google_url_triggered ()
 {
-	QDesktopServices::openUrl(QString("http://www.google.ru"));
+	QDesktopServices::openUrl(QString("https://www.google.ru"));
 }
 //----------------------------------------------------------------------------------------------
 
 void AFormMain::menu_q_rsdn_url_triggered ()
 {
-	QDesktopServices::openUrl(QString("http://rsdn.ru"));
+	QDesktopServices::openUrl(QString("https://rsdn.ru"));
 }
 //----------------------------------------------------------------------------------------------
 
 void AFormMain::menu_q_about_triggered ()
 {
 	QString text = QString::fromUtf8(
-		"<b>avalon</b> - кросс-платформенный клиент для чтения форумов <a href='http://rsdn.ru'>rsdn</a> аналогичный проекту <a href='http://rsdn.ru/projects/janus/article/article.xml'>janus</a> команды rsdn под windows.<br/><br/>"
+		"<b>avalon</b> - кросс-платформенный клиент для чтения форумов <a href='https://rsdn.ru'>rsdn</a> аналогичный проекту <a href='https://rsdn.ru/projects/janus/article/article.xml'>janus</a> команды rsdn под windows.<br/><br/>"
 		"<b>домашняя страница</b>: <a href='https://github.com/rsdn/avalon'>https://github.com/rsdn/avalon</a><br/><br/>"
 		"<b>разработчики</b>:"
 		"<ul>"
