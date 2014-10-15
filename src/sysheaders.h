@@ -43,6 +43,7 @@
 #include <QTextCodec>
 #include <QTcpSocket>
 #include <QSslSocket>
+#include <QSslCipher>
 #include <QTranslator>
 #include <QStringList>
 #include <QTreeWidget>
@@ -67,6 +68,7 @@
 #include <QTemporaryFile>
 #include <QCalendarWidget>
 #include <QDesktopServices>
+#include <QSslConfiguration>
 
 //
 // системные заголовочные файлы

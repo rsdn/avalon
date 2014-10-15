@@ -66,6 +66,11 @@ class FormRequest :
 		QHttp m_http;
 
 		/*!
+		 * \brief Наименование протокола (HTTP/HTTPS)
+		 */
+		QString m_proto;
+
+		/*!
 		 * \brief Байт к отправке
 		 */
 		int m_to_send;

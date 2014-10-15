@@ -17,32 +17,26 @@ FormRequest::~FormRequest ()
 
 FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data) : FormRequestUI (parent), IProgress ()
 {
+	m_hack    = 0;
+	m_to_send = 0;
+
 	bool https = (port == 443 ? true : false);
 
-	m_hack = 0;
-
-	QNetworkProxy proxy = defaultProxy();
-
-	QNetworkProxy::ProxyType proxy_type = proxy.type();
-
-	if (proxy_type == QNetworkProxy::HttpCachingProxy)
-		m_http.setProxy(proxy);
-	else if (proxy_type == QNetworkProxy::Socks5Proxy || proxy_type == QNetworkProxy::HttpProxy)
+	QTcpSocket* socket = NULL;
+	if (https == true)
 	{
-		// transparent proxy, QHttp bug workaround
-		if (https == false)
-		{
-			QTcpSocket* socket = new QTcpSocket(this);
-			socket->setProxy(proxy);
-			m_http.setSocket(socket);
-		}
-		else
-		{
-			QSslSocket* socket = new QSslSocket(this);
-			socket->setProxy(proxy);
-			m_http.setSocket(socket);
-		}
+		m_proto = "HTTPS";
+		socket  = new QSslSocket(this);
 	}
+	else
+	{
+		m_proto = "HTTP";
+		socket  = new QTcpSocket(this);
+	}
+
+	socket->setProxy(defaultProxy());
+
+	m_http.setSocket(socket);
 
 	m_http.setHost(host, (https == false ? QHttp::ConnectionModeHttp : QHttp::ConnectionModeHttps), port);
 
@@ -201,26 +195,26 @@ QString FormRequest::formatPrettyBytes (qint64 size)
 {
 	char buf[64];
 
-        if (size < (qint64)1024)
-        {
-                sprintf(buf, "%0d bytes", (int)size);
-                return QString::fromUtf8(buf);
-        }
-        else if (size < (qint64)1024 * 1024)
-        {
-                sprintf(buf, "%0.2f KB", (double)size / 1024);
-                return QString::fromUtf8(buf);
-        }
-        else if (size < (qint64)1024 * 1024 * 1024)
-        {
-                sprintf(buf, "%0.2f MB", (double)size / 1024 / 1024);
-                return QString::fromUtf8(buf);
-        }
-        else
-        {
-                sprintf(buf, "%0.2f GB", (double)size / 1024 / 1024 / 1024);
-                return QString::fromUtf8(buf);
-        }
+	if (size < (qint64)1024)
+	{
+		sprintf(buf, "%0d bytes", (int)size);
+		return QString::fromUtf8(buf);
+	}
+	else if (size < (qint64)1024 * 1024)
+	{
+		sprintf(buf, "%0.2f KB", (double)size / 1024);
+		return QString::fromUtf8(buf);
+	}
+	else if (size < (qint64)1024 * 1024 * 1024)
+	{
+		sprintf(buf, "%0.2f MB", (double)size / 1024 / 1024);
+		return QString::fromUtf8(buf);
+	}
+	else
+	{
+		sprintf(buf, "%0.2f GB", (double)size / 1024 / 1024 / 1024);
+		return QString::fromUtf8(buf);
+	}
 }
 //----------------------------------------------------------------------------------------------
 
@@ -228,9 +222,9 @@ void FormRequest::process_data_read_progress (int done, int total)
 {
 	// при включенном сжатии, размер данных неопределен
 	if (total != 0)
-		setWindowTitle(QString::fromUtf8("HTTP - чтение ") + formatPrettyBytes(done) + "/" + formatPrettyBytes(total));
+		setWindowTitle(m_proto + QString::fromUtf8(" - чтение ") + formatPrettyBytes(done) + "/" + formatPrettyBytes(total));
 	else
-		setWindowTitle(QString::fromUtf8("HTTP - чтение ") + formatPrettyBytes(done));
+		setWindowTitle(m_proto + QString::fromUtf8(" - чтение ") + formatPrettyBytes(done));
 
 	m_progress_bar->setMaximum(total);
 	m_progress_bar->setValue(done);
@@ -239,7 +233,7 @@ void FormRequest::process_data_read_progress (int done, int total)
 
 void FormRequest::process_data_send_progress (int done, int total)
 {
-	setWindowTitle(QString::fromUtf8("HTTP - отправка ") + formatPrettyBytes(done) + "/" + formatPrettyBytes(total));
+	setWindowTitle(m_proto + QString::fromUtf8(" - отправка ") + formatPrettyBytes(done) + "/" + formatPrettyBytes(total));
 
 	m_progress_bar->setMaximum(total);
 	m_progress_bar->setValue(done);
@@ -288,63 +282,37 @@ void FormRequest::process_request_finished (int /*id*/, bool error)
 
 void FormRequest::process_state_changed (int state)
 {
+	setWindowTitle(m_proto);
+
 	switch (state)
 	{
 		case QHttp::Unconnected:
-
-			setWindowTitle("HTTP");
-
 			new QListWidgetItem(QString::fromUtf8("Нет соединения"), m_list_progress);
-
 			break;
 
 		case QHttp::HostLookup:
-
-			setWindowTitle("HTTP");
-
 			new QListWidgetItem(QString::fromUtf8("Поиск хоста"), m_list_progress);
-
 			break;
 
 		case QHttp::Connecting:
-
-			setWindowTitle("HTTP");
-
 			new QListWidgetItem(QString::fromUtf8("Соединение"), m_list_progress);
-
 			break;
 
 		case QHttp::Sending:
-
-			setWindowTitle("HTTP");
-
 			new QListWidgetItem(QString::fromUtf8("Отправка ") + formatPrettyBytes(m_to_send), m_list_progress);
-
 			break;
 
 		case QHttp::Reading:
-
-			setWindowTitle("HTTP");
-
 			new QListWidgetItem(QString::fromUtf8("Чтение"), m_list_progress);
-
 			break;
 
 		case QHttp::Connected:
-
-			setWindowTitle("HTTP");
-
 			new QListWidgetItem(QString::fromUtf8("Соединение установлено"), m_list_progress);
-
 			break;
 
 		case QHttp::Closing:
-
-			setWindowTitle("HTTP");
-
 			new QListWidgetItem((QString)QString::fromUtf8("Чтение ") + formatPrettyBytes(m_http.lastResponse().toString().length() + m_http.bytesAvailable()), m_list_progress);
 			new QListWidgetItem(QString::fromUtf8("Закрытие соединения"), m_list_progress);
-
 			break;
 	}
 }
