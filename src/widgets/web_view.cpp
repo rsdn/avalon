@@ -143,7 +143,7 @@ void AWebView::menu_google_translate_triggered ()
 	for (int i = 0; i < selected.length(); i++)
 		if (selected[i].unicode() < 128)
 			is_english++;
-qDebug() << is_english << selected.length() / 2;
+
 	QString url;
 
 	if (is_english >= selected.length() / 2)
