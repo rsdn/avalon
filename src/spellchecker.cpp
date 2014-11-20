@@ -291,9 +291,13 @@ bool ASpellChecker::isNativeCase (const QString& text)
 
 QString ASpellChecker::dictFile ()
 {
-	QSettings settings;
+#ifndef AVALON_PACKAGE
+	QString path = QCoreApplication::applicationDirPath();
+#else
+	QString path = QDir::homePath() + "/.avalon";
+#endif
 
-	return settings.value("ui/spellchecker_dict", "avalon.dic").toString();
+	return path + "/avalon.dic";
 }
 //----------------------------------------------------------------------------------------------
 

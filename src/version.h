@@ -9,6 +9,6 @@
 /*!
  * \brief Номер билда
  */
-#define AVALON_BUILD 440
+#define AVALON_BUILD 441
 
 #endif
