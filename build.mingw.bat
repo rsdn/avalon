@@ -8,21 +8,21 @@ SET PROJECT_NAME=avalon
 REM **************************
 REM * исполн€емый файл qmake *
 REM **************************
-SET QT_QMAKE=C:\Qt\4.8.4\bin\qmake.exe
+SET QT_QMAKE=c:\projects\qt\bin\qmake.exe
 
 REM **************************************************
 REM * путь к подключаемым файлам и библиотеке aspell *
 REM * домашн€€ страница: http://aspell.net/win32/    *
 REM **************************************************
-SET ASPELL_INC=C:\projects\aspell\include
-SET ASPELL_LIB=C:\projects\aspell\lib\aspell-15.lib
+SET ASPELL_INC=c:\projects\aspell\include
+SET ASPELL_LIB=c:\projects\aspell\lib\aspell-15.lib
 
 REM *****************************************************************
 REM * путь к подключаемым файлам и библиотеке zlib (статика)        *
 REM * домашн€€ страница: http://www.winimage.com/zLibDll/index.html *
 REM *****************************************************************
-SET ZLIB_LIB=C:\projects\zlib\lib\static32\zlibstat.lib
-SET ZLIB_INC=C:\projects\zlib\include
+SET ZLIB_LIB=c:\projects\zlib\lib\static32\zlibstat.lib
+SET ZLIB_INC=c:\projects\zlib\include
 
 REM *******************************
 REM * создание проекта и makefile *
