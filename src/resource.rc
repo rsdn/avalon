@@ -24,7 +24,7 @@ BEGIN
             VALUE "FileVersion", "1.0.442"
             VALUE "FileDescription", "avalon 1.0"
             VALUE "InternalName", "avalon"
-            VALUE "LegalCopyright", "rsdn © 2008-2014"
+            VALUE "LegalCopyright", "2008-2014, Anton Batenev <antonbatenev@yandex.ru>, RSDN team <https://rsdn.ru>"
             VALUE "OriginalFilename", "avalon.exe"
         END
     END

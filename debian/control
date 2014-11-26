@@ -2,8 +2,8 @@ Source: avalon
 Section: news
 Priority: optional
 Maintainer: Anton Batenev <antonbatenev@yandex.ru>
-Build-Depends: debhelper (>= 7), libqtwebkit-dev | libqt4-dev (>= 4.4), zlib1g-dev, libaspell-dev
-Standards-Version: 3.9.5
+Build-Depends: debhelper (>= 7.0.50~), libqtwebkit-dev | libqt4-dev (>= 4.4), zlib1g-dev, libaspell-dev
+Standards-Version: 3.9.4
 Vcs-Git: https://github.com/rsdn/avalon.git
 Vcs-Browser: https://github.com/rsdn/avalon
 Homepage: https://github.com/rsdn/avalon
