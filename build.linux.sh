@@ -2,6 +2,9 @@
 
 set -e
 
+# версия qt
+export QT_SELECT=4
+
 # имя проекта
 PROJECT_NAME="avalon"
 
