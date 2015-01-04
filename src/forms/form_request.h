@@ -63,7 +63,7 @@ class FormRequest :
 		/*!
 		 * \brief Обработчик HTTP
 		 */
-		QHttp m_http;
+		QNetworkAccessManager m_http;
 
 		/*!
 		 * \brief Наименование протокола (HTTP/HTTPS)
@@ -71,21 +71,26 @@ class FormRequest :
 		QString m_proto;
 
 		/*!
-		 * \brief Байт к отправке
+		 * \brief Текст ошибки запроса (если есть)
 		 */
-		int m_to_send;
+		QString m_error;
 
 		/*!
-		 * \brief Хак, чтобы не отображалось две попытки соединения
+		 * \brief Заголовки ответа
 		 */
-		int m_hack;
+		QString m_header;
+
+		/*!
+		 * \brief Тело ответа
+		 */
+		QString m_body;
 
 		/*!
 		 * \brief Красивое форматирование байт в KB/MB/GB
 		 * \param size Количество байт
 		 * \return Строка с числом и единицей измерения
 		 */
-		QString formatPrettyBytes (qint64 size);
+		static QString formatPrettyBytes (qint64 size);
 
 		/*!
 		 * \brief Обработчик прогресса с пустым статусом
@@ -106,13 +111,10 @@ class FormRequest :
 		// события HTTP обработчика
 		//
 
-		void process_state_changed            (int state);                       /*!< \brief Смена состояния              */
-		void process_data_read_progress       (int done, int total);             /*!< \brief Прогресс чтения данных       */
-		void process_data_send_progress       (int done, int total);             /*!< \brief Прогресс отправки данных     */
-		void process_response_header_received (const QHttpResponseHeader& resp); /*!< \brief Получен заголовок ответа     */
-		void process_request_started          (int id);                          /*!< \brief Начало выполнения запроса    */
-		void process_request_finished         (int id, bool error);              /*!< \brief Окончание выполнения запроса */
-		void process_ssl_errors               (const QList<QSslError> &errors);  /*!< \brief Ошибка SSL                   */
+		void process_finished          (QNetworkReply* reply);              /*!< \brief Обработка завершения запроса */
+		void process_download_progress (qint64 done, qint64 total);         /*!< \brief Прогресс чтения данных       */
+		void process_upload_progress   (qint64 done, qint64 total);         /*!< \brief Прогресс отправки данных     */
+		void process_ssl_errors        (const QList<QSslError> &errors);    /*!< \brief Ошибка SSL                   */
 };
 
 #endif   // _avalon_form_request_h_

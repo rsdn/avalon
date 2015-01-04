@@ -3,9 +3,6 @@
 
 FormRequest::FormRequest (QWidget* parent) : FormRequestUI (parent), IProgress ()
 {
-	m_hack    = 0;
-	m_to_send = 0;
-
 	connect(m_button_cancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 //----------------------------------------------------------------------------------------------
@@ -17,47 +14,60 @@ FormRequest::~FormRequest ()
 
 FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data) : FormRequestUI (parent), IProgress ()
 {
-	m_hack    = 0;
-	m_to_send = 0;
-
-	bool https = (port == 443 ? true : false);
-
-	QTcpSocket* socket = NULL;
-	if (https == true)
-	{
-		m_proto = "HTTPS";
-		socket  = new QSslSocket(this);
-	}
-	else
-	{
-		m_proto = "HTTP";
-		socket  = new QTcpSocket(this);
-	}
-
-	socket->setProxy(defaultProxy());
-
-	m_http.setSocket(socket);
-
-	m_http.setHost(host, (https == false ? QHttp::ConnectionModeHttp : QHttp::ConnectionModeHttps), port);
-
-	QHttpRequestHeader request_header(header);
-	QByteArray         request_data   = data.toUtf8();
-
-	m_to_send = header.length() + request_data.size() + 2 /*\r\n*/;
-
-	connect(&m_http, SIGNAL(stateChanged(int)),          this, SLOT(process_state_changed(int)));
-	connect(&m_http, SIGNAL(dataReadProgress(int, int)), this, SLOT(process_data_read_progress(int, int)));
-	connect(&m_http, SIGNAL(dataSendProgress(int, int)), this, SLOT(process_data_send_progress(int, int)));
-	connect(&m_http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader&)), this, SLOT(process_response_header_received(const QHttpResponseHeader&)));
-	connect(&m_http, SIGNAL(requestStarted(int)),        this, SLOT(process_request_started(int)));
-	connect(&m_http, SIGNAL(requestFinished(int, bool)), this, SLOT(process_request_finished(int, bool)));
-
-	if (https == true)
-		connect(&m_http, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(process_ssl_errors(const QList<QSslError>&)));
-
-	m_http.request(request_header, request_data);
-
 	connect(m_button_cancel, SIGNAL(clicked()), this, SLOT(reject()));
+
+	QStringList hlist = header.split("\r\n");
+	Q_ASSERT(hlist.count() > 0);
+
+	QStringList hpart = hlist[0].split(" ", QString::SkipEmptyParts);
+	Q_ASSERT(hpart.count() == 3);   // POST /ws/janusAT.asmx HTTP/1.1
+
+	QString method = hpart[0].toUpper();
+	QString uri    = hpart[1];
+
+	bool https = false;
+	m_proto = "HTTP";
+
+	if (port == 443)
+	{
+		https   = true;
+		m_proto = "HTTPS";
+		uri = "https://" + host + uri;
+	}
+	else if (port == 80)
+		uri = "http://" + host + uri;
+	else
+		uri = "http://" + host + ":" + QString::number(port) + uri;
+
+	QNetworkRequest request(uri);
+	for (int i = 1; i < hlist.count() - 1; i++)
+	{
+		QString line = hlist[i];
+		int index = line.indexOf(":");
+		Q_ASSERT(index > 0);
+		QString hpart = line.left(index);
+		QString vpart = line.right(line.length() - index - 1);
+		Q_ASSERT(hpart.length() > 0);
+		Q_ASSERT(vpart.length() > 0);
+		request.setRawHeader(hpart.toUtf8(), vpart.trimmed().toUtf8());
+	}
+
+	m_http.setProxy(defaultProxy());
+
+	QNetworkReply* reply = NULL;
+	if (method == "GET")
+		reply = m_http.get(request);
+	if (method == "POST")
+		reply = m_http.post(request, data.toUtf8());
+	Q_ASSERT(reply != NULL);
+
+	connect(&m_http, SIGNAL(finished(QNetworkReply*)), this, SLOT(process_finished(QNetworkReply*)));
+
+	if (https == true)
+		connect(reply, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(process_ssl_errors(const QList<QSslError>&)));
+
+	connect(reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(process_download_progress(qint64, qint64)));
+	connect(reply, SIGNAL(uploadProgress(qint64, qint64)),   this, SLOT(process_upload_progress(qint64, qint64)));
 }
 //----------------------------------------------------------------------------------------------
 
@@ -98,96 +108,14 @@ QNetworkProxy FormRequest::defaultProxy (bool webkit)
 
 QString FormRequest::getResponseHeader ()
 {
-	return m_http.lastResponse().toString();
+	return m_header;
 }
 //----------------------------------------------------------------------------------------------
 
 QString FormRequest::getResponse (bool &error)
 {
-	error = false;
-
-	QByteArray array = m_http.readAll();
-
-#ifndef AVALON_USE_ZLIB
-	return QString::fromUtf8(array.constData());
-#else
-
-	// проверка на то, что ответ вернулся закодированным
-	QHttpResponseHeader header = m_http.lastResponse();
-
-	// надеюсь, что функция hasKey() нечувствительна к регистру и опредилит поле правильно
-	if (header.hasKey("Content-Encoding") != true)
-		return QString::fromUtf8(array.constData());
-
-	// получение типа кодирования (может не совпадать регистр)
-	QString content_encoding = header.value("Content-Encoding").toLower();
-
-	// проверка на тип кодирования
-	if (content_encoding != "gzip" /*&& content_encoding != "deflate"*/)
-		return QString::fromUtf8(array.constData());
-
-	//
-	// ответ пришел закодированным в gzip
-	//
-
-	QTemporaryFile tmp_file;
-
-	if (tmp_file.open() == false)
-	{
-		error = true;
-		return tmp_file.errorString();
-	}
-
-	if (tmp_file.write(array) == -1)
-	{
-		error = true;
-		return tmp_file.errorString();
-	}
-
-	QString tmp_file_name = tmp_file.fileName();
-
-	tmp_file.close();
-
-	array.clear();
-
-	gzFile zip_file = gzopen(tmp_file_name.toUtf8().constData(), "rb");
-
-	if (zip_file == NULL)
-	{
-		error = true;
-
-		// TODO: if errno is zero, the zlib error is Z_MEM_ERROR
-
-		return QString::fromUtf8("Ошибка открытия файла: ") + tmp_file_name;
-	}
-
-	char buffer[1024];
-
-	while (true)
-	{
-		int read = gzread(zip_file, buffer, 1024);
-
-		if (read == -1)
-		{
-			gzclose(zip_file);
-
-			error = true;
-
-			// TODO: gzerror(gzFile file, int *errnum);
-
-			return QString::fromUtf8("Ошибка чтения файла: ") + tmp_file_name;
-		}
-		else if (read == 0)
-			break;
-
-		array.append(QByteArray(buffer, read));
-	}
-
-	gzclose(zip_file);
-
-	return QString::fromUtf8(array.constData());
-
-#endif   // AVALON_USE_ZLIB
+	error = m_error.length() > 0 ? true : false;
+	return (error == true ? m_error : m_body);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -218,7 +146,103 @@ QString FormRequest::formatPrettyBytes (qint64 size)
 }
 //----------------------------------------------------------------------------------------------
 
-void FormRequest::process_data_read_progress (int done, int total)
+void FormRequest::process_finished (QNetworkReply* reply)
+{
+	reply->deleteLater();
+
+	m_error = "";
+	if (reply->error() != QNetworkReply::NoError)
+	{
+		m_error = reply->errorString();
+		new QListWidgetItem(m_error, m_list_progress);
+		return;
+	}
+
+	m_header = "";
+	const QList<QNetworkReply::RawHeaderPair> pairs = reply->rawHeaderPairs();
+	for (int i = 0; i < pairs.count(); i++)
+	{
+		QNetworkReply::RawHeaderPair pair = pairs[i];
+		m_header += QString::fromUtf8(pair.first.constData()) + ": " + QString::fromUtf8(pair.second.constData()) + "\r\n";
+	}
+
+#ifndef AVALON_USE_ZLIB
+	m_body = QString::fromUtf8(reply->readAll());
+#else
+	if (reply->hasRawHeader("Content-Encoding") == true)
+	{
+		QString content_encoding = QString::fromUtf8(reply->rawHeader("Content-Encoding")).toLower();
+		if (content_encoding != "gzip")
+		{
+			m_body = QString::fromUtf8(reply->readAll());
+			accept();
+			return;
+		}
+
+		// ответ пришел закодированным в gzip
+		QByteArray array = reply->readAll();
+
+		QTemporaryFile tmp_file;
+		if (tmp_file.open() == false)
+		{
+			m_error = tmp_file.errorString();
+			return;
+		}
+		if (tmp_file.write(array) == -1)
+		{
+			m_error = tmp_file.errorString();
+			return;
+		}
+
+		QString tmp_file_name = tmp_file.fileName();
+		tmp_file.close();
+		array.clear();
+
+		gzFile zip_file = gzopen(tmp_file_name.toUtf8().constData(), "rb");
+		if (zip_file == NULL)
+		{
+			// TODO: if errno is zero, the zlib error is Z_MEM_ERROR
+			m_error = QString::fromUtf8("Ошибка открытия файла: ") + tmp_file_name;
+			return;
+		}
+
+		char buffer[1024];
+		while (true)
+		{
+			int read = gzread(zip_file, buffer, 1024);
+			if (read == -1)
+			{
+				// TODO: gzerror(gzFile file, int *errnum);
+				gzclose(zip_file);
+				m_error = QString::fromUtf8("Ошибка чтения файла: ") + tmp_file_name;
+				return;
+			}
+			else if (read == 0)
+				break;
+
+			array.append(QByteArray(buffer, read));
+		}
+
+		gzclose(zip_file);
+
+		m_body = QString::fromUtf8(array.constData());
+	}
+	else
+		m_body = QString::fromUtf8(reply->readAll());
+#endif   // AVALON_USE_ZLIB
+
+	accept();
+}
+//----------------------------------------------------------------------------------------------
+
+void FormRequest::process_ssl_errors (const QList<QSslError> &errors)
+{
+	for (int i = 0; i < errors.count(); i++)
+		new QListWidgetItem(errors[i].errorString(), m_list_progress);
+}
+//----------------------------------------------------------------------------------------------
+
+void FormRequest::process_download_progress (qint64 done, qint64 total)
 {
 	// при включенном сжатии, размер данных неопределен
 	if (total != 0)
@@ -231,90 +255,12 @@ void FormRequest::process_data_read_progress (int done, int total)
 }
 //----------------------------------------------------------------------------------------------
 
-void FormRequest::process_data_send_progress (int done, int total)
+void FormRequest::process_upload_progress (qint64 done, qint64 total)
 {
 	setWindowTitle(m_proto + QString::fromUtf8(" - отправка ") + formatPrettyBytes(done) + "/" + formatPrettyBytes(total));
 
 	m_progress_bar->setMaximum(total);
 	m_progress_bar->setValue(done);
-}
-//----------------------------------------------------------------------------------------------
-
-void FormRequest::process_response_header_received (const QHttpResponseHeader& /*resp*/)
-{
-	new QListWidgetItem(QString::fromUtf8("Получен заголовок ответа"), m_list_progress);
-}
-//----------------------------------------------------------------------------------------------
-
-void FormRequest::process_request_started (int /*id*/)
-{
-	if (m_hack > 2)
-		new QListWidgetItem(QString::fromUtf8("Запрос отправлен"), m_list_progress);
-	else
-		m_hack++;
-}
-//----------------------------------------------------------------------------------------------
-
-void FormRequest::process_request_finished (int /*id*/, bool error)
-{
-	if (m_hack > 1 || error == true)
-	{
-		if (error == true)
-			new QListWidgetItem(QString::fromUtf8("Ошибка запроса - ") + m_http.errorString(), m_list_progress);
-		else
-		{
-			int status_code = m_http.lastResponse().statusCode();
-
-			if (status_code == 200)
-			{
-				new QListWidgetItem(QString::fromUtf8("Запрос завершен"), m_list_progress);
-
-				accept();
-			}
-			else if (status_code > 100 && status_code < 511 /* при соединении с SOCKS прокси могу появляться артефакты с кодом состояния якобоы более 5xx */)
-				new QListWidgetItem(QString::fromUtf8("Ошибка запроса - ") + QString::number(m_http.lastResponse().statusCode()) + " - " + m_http.lastResponse().reasonPhrase(), m_list_progress);
-		}
-	}
-	else
-		m_hack++;
-}
-//----------------------------------------------------------------------------------------------
-
-void FormRequest::process_state_changed (int state)
-{
-	setWindowTitle(m_proto);
-
-	switch (state)
-	{
-		case QHttp::Unconnected:
-			new QListWidgetItem(QString::fromUtf8("Нет соединения"), m_list_progress);
-			break;
-
-		case QHttp::HostLookup:
-			new QListWidgetItem(QString::fromUtf8("Поиск хоста"), m_list_progress);
-			break;
-
-		case QHttp::Connecting:
-			new QListWidgetItem(QString::fromUtf8("Соединение"), m_list_progress);
-			break;
-
-		case QHttp::Sending:
-			new QListWidgetItem(QString::fromUtf8("Отправка ") + formatPrettyBytes(m_to_send), m_list_progress);
-			break;
-
-		case QHttp::Reading:
-			new QListWidgetItem(QString::fromUtf8("Чтение"), m_list_progress);
-			break;
-
-		case QHttp::Connected:
-			new QListWidgetItem(QString::fromUtf8("Соединение установлено"), m_list_progress);
-			break;
-
-		case QHttp::Closing:
-			new QListWidgetItem((QString)QString::fromUtf8("Чтение ") + formatPrettyBytes(m_http.lastResponse().toString().length() + m_http.bytesAvailable()), m_list_progress);
-			new QListWidgetItem(QString::fromUtf8("Закрытие соединения"), m_list_progress);
-			break;
-	}
 }
 //----------------------------------------------------------------------------------------------
 
@@ -334,12 +280,5 @@ void FormRequest::onProgress (int percent, const QString& status)
 	m_progress_bar->setValue(percent);
 
 	QCoreApplication::processEvents();
-}
-//----------------------------------------------------------------------------------------------
-
-void FormRequest::process_ssl_errors (const QList<QSslError> &errors)
-{
-	for (int i = 0; i < errors.count(); i++)
-		new QListWidgetItem(QString::fromUtf8("Ошибка запроса - ") + errors[i].errorString(), m_list_progress);
 }
 //----------------------------------------------------------------------------------------------
