@@ -184,18 +184,13 @@ void FormSubscribe::button_ok_clicked ()
 void FormSubscribe::button_refresh_clicked ()
 {
 	// получение текста запроса
-	QSettings settings;
+	QString         data;
+	QNetworkRequest request;
 
-	QString rsdn_host = settings.value("rsdn/host", "rsdn.ru").toString();
-	int     rsdn_port = settings.value("rsdn/port", "80").toInt();
-
-	QString header;
-	QString data;
-
-	AWebservice::getForumList_WebserviceQuery(header, data);
+	AWebservice::getForumList_WebserviceQuery(request, data);
 
 	// запрос к вебсервису
-	FormRequest* form = new FormRequest(this, rsdn_host, rsdn_port, header, data);
+	FormRequest* form = new FormRequest(this, request, data);
 
 	if (form->exec() == QDialog::Accepted)
 	{

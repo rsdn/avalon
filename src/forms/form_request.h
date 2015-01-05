@@ -29,12 +29,10 @@ class FormRequest :
 		/*!
 		 * \brief Конструктор для HTTP запроса с прогрессом
 		 * \param parent Родительский виджет (форма)
-		 * \param host Адрес хоста
-		 * \param port Номер порта
-		 * \param header Заголовок HTTP
+		 * \param request Запрос
 		 * \param data POST данные для HTTP
 		 */
-		FormRequest  (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data);
+		FormRequest  (QWidget* parent, const QNetworkRequest& request, const QString& data);
 
 		~FormRequest ();
 

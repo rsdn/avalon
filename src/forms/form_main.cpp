@@ -136,12 +136,6 @@ void AFormMain::menu_service_synchronize_triggered ()
 
 	m_message_tree->getSelectedPath(restore_path);
 
-	// основные настройки
-	QSettings settings;
-
-	QString rsdn_host = settings.value("rsdn/host", "rsdn.ru").toString();
-	int     rsdn_port = settings.value("rsdn/port", "80").toInt();
-
 	// получение хранилища
 	std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
 
@@ -155,8 +149,8 @@ void AFormMain::menu_service_synchronize_triggered ()
 	// отправка сообщений/модерилок/рейтингов
 	//
 
-	QString header;
-	QString data;
+	QString         data;
+	QNetworkRequest request;
 
 	AMessageInfoList   messages_temp;
 	AMessage2SendList  messages;
@@ -202,15 +196,15 @@ void AFormMain::menu_service_synchronize_triggered ()
 
 	if (messages.count() != 0 || ratings.count() != 0 || moderates.count() != 0)
 	{
-		AWebservice::postChange_WebserviceQuery(header, data, messages, ratings, moderates, NULL);
+		AWebservice::postChange_WebserviceQuery(request, data, messages, ratings, moderates);
 
-		std::auto_ptr<FormRequest> form(new FormRequest(this, rsdn_host, rsdn_port, header, data));
+		std::auto_ptr<FormRequest> form(new FormRequest(this, request, data));
 
 		if (form->exec() == QDialog::Accepted)
 		{
 			QString answer = form->getResponseHeader();
 
-			QString result = AWebservice::postChange_WebserviceParse(answer, cookie, NULL);
+			QString result = AWebservice::postChange_WebserviceParse(answer, cookie);
 
 			if (result.length() > 0)
 			{
@@ -226,9 +220,9 @@ void AFormMain::menu_service_synchronize_triggered ()
 	// коммит данных
 	if (messages.count() != 0 || ratings.count() != 0 || moderates.count() != 0)
 	{
-		AWebservice::postChangeCommit_WebserviceQuery(header, data, cookie, NULL);
+		AWebservice::postChangeCommit_WebserviceQuery(request, data, cookie);
 
-		std::auto_ptr<FormRequest> form(new FormRequest(this, rsdn_host, rsdn_port, header, data));
+		std::auto_ptr<FormRequest> form(new FormRequest(this, request, data));
 
 		if (form->exec() == QDialog::Accepted)
 		{
@@ -245,7 +239,7 @@ void AFormMain::menu_service_synchronize_triggered ()
 			// парсинг ответа
 			ACommitInfo commit_info;
 
-			QString result = AWebservice::postChangeCommit_WebserviceParse(answer, commit_info, NULL);
+			QString result = AWebservice::postChangeCommit_WebserviceParse(answer, commit_info);
 
 			if (result.length() > 0)
 			{
@@ -346,10 +340,10 @@ void AFormMain::menu_service_synchronize_triggered ()
 		user_row_version = row_version.User;
 
 		// получение текста запроса
-		AWebservice::getUserList_WebserviceQuery(header, data, row_version.User, NULL);
+		AWebservice::getUserList_WebserviceQuery(request, data, row_version.User);
 
 		// запрос к вебсервису
-		std::auto_ptr<FormRequest> form(new FormRequest(this, rsdn_host, rsdn_port, header, data));
+		std::auto_ptr<FormRequest> form(new FormRequest(this, request, data));
 
 		if (form->exec() == QDialog::Accepted)
 		{
@@ -366,7 +360,7 @@ void AFormMain::menu_service_synchronize_triggered ()
 			// парсинг ответа
 			AUserInfoList list;
 
-			QString result = AWebservice::getUserList_WebserviceParse(answer, list, row_version.User, NULL);
+			QString result = AWebservice::getUserList_WebserviceParse(answer, list, row_version.User);
 
 			if (result.length() > 0)
 			{
@@ -423,10 +417,10 @@ void AFormMain::menu_service_synchronize_triggered ()
 		}
 
 		// получение текста запроса
-		AWebservice::getMessageList_WebserviceQuery(header, data, row_version, query, NULL);
+		AWebservice::getMessageList_WebserviceQuery(request, data, row_version, query);
 
 		// запрос к вебсервису
-		std::auto_ptr<FormRequest> form(new FormRequest(this, rsdn_host, rsdn_port, header, data));
+		std::auto_ptr<FormRequest> form(new FormRequest(this, request, data));
 
 		if (form->exec() == QDialog::Accepted)
 		{
@@ -442,7 +436,7 @@ void AFormMain::menu_service_synchronize_triggered ()
 			// парсинг ответа
 			ADataList list;
 
-			QString result = AWebservice::getMessageList_WebserviceParse(answer, list, row_version, NULL);
+			QString result = AWebservice::getMessageList_WebserviceParse(answer, list, row_version);
 
 			if (result.length() > 0)
 			{

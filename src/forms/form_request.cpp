@@ -12,62 +12,23 @@ FormRequest::~FormRequest ()
 }
 //----------------------------------------------------------------------------------------------
 
-FormRequest::FormRequest (QWidget* parent, const QString& host, quint16 port, const QString& header, const QString& data) : FormRequestUI (parent), IProgress ()
+FormRequest::FormRequest (QWidget* parent, const QNetworkRequest& request, const QString& data) : FormRequestUI (parent), IProgress ()
 {
 	connect(m_button_cancel, SIGNAL(clicked()), this, SLOT(reject()));
-
-	QStringList hlist = header.split("\r\n");
-	Q_ASSERT(hlist.count() > 0);
-
-	QStringList hpart = hlist[0].split(" ", QString::SkipEmptyParts);
-	Q_ASSERT(hpart.count() == 3);   // POST /ws/janusAT.asmx HTTP/1.1
-
-	QString method = hpart[0].toUpper();
-	QString uri    = hpart[1];
-
-	bool https = false;
-	m_proto = "HTTP";
-
-	if (port == 443)
-	{
-		https   = true;
-		m_proto = "HTTPS";
-		uri = "https://" + host + uri;
-	}
-	else if (port == 80)
-		uri = "http://" + host + uri;
-	else
-		uri = "http://" + host + ":" + QString::number(port) + uri;
-
-	QNetworkRequest request(uri);
-	for (int i = 1; i < hlist.count() - 1; i++)
-	{
-		QString line = hlist[i];
-		int index = line.indexOf(":");
-		Q_ASSERT(index > 0);
-		QString hpart = line.left(index);
-		QString vpart = line.right(line.length() - index - 1);
-		Q_ASSERT(hpart.length() > 0);
-		Q_ASSERT(vpart.length() > 0);
-		request.setRawHeader(hpart.toUtf8(), vpart.trimmed().toUtf8());
-	}
 
 	m_http.setProxy(defaultProxy());
 
 	QNetworkReply* reply = NULL;
-	if (method == "GET")
+	if (data.length() == 0)
 		reply = m_http.get(request);
-	if (method == "POST")
+	else
 		reply = m_http.post(request, data.toUtf8());
-	Q_ASSERT(reply != NULL);
 
 	connect(&m_http, SIGNAL(finished(QNetworkReply*)), this, SLOT(process_finished(QNetworkReply*)));
 
-	if (https == true)
-		connect(reply, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(process_ssl_errors(const QList<QSslError>&)));
-
-	connect(reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(process_download_progress(qint64, qint64)));
-	connect(reply, SIGNAL(uploadProgress(qint64, qint64)),   this, SLOT(process_upload_progress(qint64, qint64)));
+	connect(reply, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(process_ssl_errors(const QList<QSslError>&)));
+	connect(reply, SIGNAL(downloadProgress(qint64, qint64)),   this, SLOT(process_download_progress(qint64, qint64)));
+	connect(reply, SIGNAL(uploadProgress(qint64, qint64)),     this, SLOT(process_upload_progress(qint64, qint64)));
 }
 //----------------------------------------------------------------------------------------------
 

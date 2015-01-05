@@ -1,5 +1,5 @@
 #include "webservice.h"
-
+//----------------------------------------------------------------------------------------------
 /*!
  * \brief Возвращает текст между from-to не включая их из строки source
  * \param source Указатель на исходную строку
@@ -21,7 +21,7 @@ QString getTextBetween (const QString* source, const QString& from, const QStrin
 
 	return source->mid(idx1 + from.length(), idx2 - idx1 - from.length());
 }
-
+//----------------------------------------------------------------------------------------------
 /*!
  * \brief Итерация по блокам from-to со сдвигом смещения
  * \param source Указатель на исходную строку
@@ -48,7 +48,7 @@ QString getNextBlock (const QString* source, const QString& from, const QString&
 
 	return result;
 }
-
+//----------------------------------------------------------------------------------------------
 /*!
  * \brief Преобразование строки в дату/время (требуется в связи с отсчетом времени с начала эпохи UNIX)
  * \param value Строковое значение даты
@@ -61,7 +61,7 @@ QDateTime getDateTimeFromString (const QString& value)
 
 	return QDateTime::fromString(value, Qt::ISODate);
 }
-
+//----------------------------------------------------------------------------------------------
 /*!
  * \brief Преобразование строки в булево значение
  * \param value Строковое значение флага
@@ -76,18 +76,32 @@ bool getBooleanFromString (const QString& value)
 
 	return true;
 }
-
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::getForumList_WebserviceQuery (QString& header, QString& data, IProgress* progress)
+void AWebservice::defaultRequest(QNetworkRequest& request, const QString& proto, const QString& action, qint64 length)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
+	request.setUrl(proto.toLower() + "://rsdn.ru/ws/janusAT.asmx");
 
+	request.setRawHeader("Host",           "rsdn.ru");
+	request.setRawHeader("Connection",     "close");
+	request.setRawHeader("User-Agent",     getAgentString().toUtf8());
+	request.setRawHeader("Content-Type",   "text/xml; charset=utf-8");
+	request.setRawHeader("Content-Length", QString::number(length).toUtf8());
+	request.setRawHeader("SOAPAction",     (QString("\"http://rsdn.ru/Janus/") + action + "\"").toUtf8());
+
+#ifdef AVALON_USE_ZLIB
+	request.setRawHeader("Accept-Encoding", "gzip");
+#endif
+}
+//----------------------------------------------------------------------------------------------
+
+void AWebservice::getForumList_WebserviceQuery (QNetworkRequest& request, QString& data)
+{
 	QSettings settings;
 
 	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
 	QString rsdn_password = settings.value("rsdn/password", "").toString();
+	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
 
 	data = "";
 	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
@@ -103,27 +117,12 @@ void AWebservice::getForumList_WebserviceQuery (QString& header, QString& data, 
 	data += "  </soap:Body>\r\n";
 	data += "</soap:Envelope>\r\n";
 
-	header = "";
-	header += "POST /ws/janusAT.asmx HTTP/1.1\r\n";
-	header += "Host: rsdn.ru\r\n";
-	header += "Connection: close\r\n";
-
-	#ifdef AVALON_USE_ZLIB
-	header += "Accept-Encoding: gzip\r\n";
-	#endif
-
-	header += "User-Agent: " + getAgentString() + "\r\n";
-	header += "Content-Type: text/xml; charset=utf-8\r\n";
-	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
-	header += "SOAPAction: \"http://rsdn.ru/Janus/GetForumList\"\r\n";
+	defaultRequest(request, rsdn_proto, "GetForumList", data.toUtf8().size());
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::getForumList_WebserviceParse (const QString& data, AForumGroupInfoList& list, IProgress* progress)
+void AWebservice::getForumList_WebserviceParse (const QString& data, AForumGroupInfoList& list)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
-
 	list.clear();
 
 	//
@@ -221,15 +220,13 @@ void AWebservice::getForumList_WebserviceParse (const QString& data, AForumGroup
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::getUserList_WebserviceQuery (QString& header, QString& data, const QString& row_version, IProgress* progress)
+void AWebservice::getUserList_WebserviceQuery (QNetworkRequest& request, QString& data, const QString& row_version)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
-
 	QSettings settings;
 
 	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
 	QString rsdn_password = settings.value("rsdn/password", "").toString();
+	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
 
 	data = "";
 	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
@@ -246,27 +243,12 @@ void AWebservice::getUserList_WebserviceQuery (QString& header, QString& data, c
 	data += "  </soap:Body>\r\n";
 	data += "</soap:Envelope>\r\n";
 
-	header = "";
-	header += "POST /ws/janusAT.asmx HTTP/1.1\r\n";
-	header += "Host: rsdn.ru\r\n";
-	header += "Connection: close\r\n";
-
-	#ifdef AVALON_USE_ZLIB
-	header += "Accept-Encoding: gzip\r\n";
-	#endif
-
-	header += "User-Agent: " + getAgentString() + "\r\n";
-	header += "Content-Type: text/xml; charset=utf-8\r\n";
-	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
-	header += "SOAPAction: \"http://rsdn.ru/Janus/GetNewUsers\"\r\n";
+	defaultRequest(request, rsdn_proto, "GetNewUsers", data.toUtf8().size());
 }
 //----------------------------------------------------------------------------------------------
 
-QString AWebservice::getUserList_WebserviceParse (const QString& data, AUserInfoList& list, QString& row_version, IProgress* progress)
+QString AWebservice::getUserList_WebserviceParse (const QString& data, AUserInfoList& list, QString& row_version)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
-
 	list.clear();
 
 	row_version = "";
@@ -307,15 +289,13 @@ QString AWebservice::getUserList_WebserviceParse (const QString& data, AUserInfo
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::getMessageList_WebserviceQuery (QString& header, QString& data, const ARowVersion& row_version, const ADataQuery& query, IProgress* progress)
+void AWebservice::getMessageList_WebserviceQuery (QNetworkRequest& request, QString& data, const ARowVersion& row_version, const ADataQuery& query)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
-
 	QSettings settings;
 
 	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
 	QString rsdn_password = settings.value("rsdn/password", "").toString();
+	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
 
 	data = "";
 	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
@@ -382,27 +362,12 @@ void AWebservice::getMessageList_WebserviceQuery (QString& header, QString& data
 	data += "  </soap:Body>\r\n";
 	data += "</soap:Envelope>\r\n";
 
-	header = "";
-	header += "POST /ws/janusAT.asmx HTTP/1.1\r\n";
-	header += "Host: rsdn.ru\r\n";
-	header += "Connection: close\r\n";
-
-	#ifdef AVALON_USE_ZLIB
-	header += "Accept-Encoding: gzip\r\n";
-	#endif
-
-	header += "User-Agent: " + getAgentString() + "\r\n";
-	header += "Content-Type: text/xml; charset=utf-8\r\n";
-	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
-	header += "SOAPAction: \"http://rsdn.ru/Janus/GetNewData\"\r\n";
+	defaultRequest(request, rsdn_proto, "GetNewData", data.toUtf8().size());
 }
 //----------------------------------------------------------------------------------------------
 
-QString AWebservice::getMessageList_WebserviceParse (const QString& data, ADataList& list, ARowVersion& row_version, IProgress* progress)
+QString AWebservice::getMessageList_WebserviceParse (const QString& data, ADataList& list, ARowVersion& row_version)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
-
 	list.Rating.clear();
 	list.Message.clear();
 	list.Moderate.clear();
@@ -514,15 +479,13 @@ QString AWebservice::getMessageList_WebserviceParse (const QString& data, ADataL
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::postChange_WebserviceQuery (QString& header, QString& data, const AMessage2SendList& list_messages, const ARating2SendList& list_rating, const AModerate2SendList& list_moderate, IProgress* progress)
+void AWebservice::postChange_WebserviceQuery (QNetworkRequest& request, QString& data, const AMessage2SendList& list_messages, const ARating2SendList& list_rating, const AModerate2SendList& list_moderate)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
-
 	QSettings settings;
 
 	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
 	QString rsdn_password = settings.value("rsdn/password", "").toString();
+	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
 
 	data = "";
 	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
@@ -614,27 +577,12 @@ void AWebservice::postChange_WebserviceQuery (QString& header, QString& data, co
 	data += "  </soap:Body>\r\n";
 	data += "</soap:Envelope>\r\n";
 
-	header = "";
-	header += "POST /ws/janusAT.asmx HTTP/1.1\r\n";
-	header += "Host: rsdn.ru\r\n";
-	header += "Connection: close\r\n";
-
-	#ifdef AVALON_USE_ZLIB
-	header += "Accept-Encoding: gzip\r\n";
-	#endif
-
-	header += "User-Agent: " + getAgentString() + "\r\n";
-	header += "Content-Type: text/xml; charset=utf-8\r\n";
-	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
-	header += "SOAPAction: \"http://rsdn.ru/Janus/PostChange\"\r\n";
+	defaultRequest(request, rsdn_proto, "PostChange", data.toUtf8().size());
 }
 //----------------------------------------------------------------------------------------------
 
-QString AWebservice::postChange_WebserviceParse (const QString& header, QString& cookie, IProgress* progress)
+QString AWebservice::postChange_WebserviceParse (const QString& header, QString& cookie)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
-
 	QStringList list = header.split("\r\n");
 
 	for (int i = 0; i < list.count(); i++)
@@ -668,15 +616,13 @@ QString AWebservice::postChange_WebserviceParse (const QString& header, QString&
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::postChangeCommit_WebserviceQuery (QString& header, QString& data, const QString& cookie, IProgress* progress)
+void AWebservice::postChangeCommit_WebserviceQuery (QNetworkRequest& request, QString& data, const QString& cookie)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
-
 	QSettings settings;
 
 	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
 	QString rsdn_password = settings.value("rsdn/password", "").toString();
+	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
 
 	data = "";
 	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
@@ -686,30 +632,15 @@ void AWebservice::postChangeCommit_WebserviceQuery (QString& header, QString& da
 	data += "  </soap:Body>\r\n";
 	data += "</soap:Envelope>\r\n";
 
-	header = "";
-	header += "POST /ws/janusAT.asmx HTTP/1.1\r\n";
-	header += "Host: rsdn.ru\r\n";
-	header += "Connection: close\r\n";
-
-	#ifdef AVALON_USE_ZLIB
-	header += "Accept-Encoding: gzip\r\n";
-	#endif
-
-	header += "User-Agent: " + getAgentString() + "\r\n";
-	header += "Content-Type: text/xml; charset=utf-8\r\n";
-	header += (QString)"Content-Length: " + QString::number(data.toUtf8().size()) + "\r\n";
-	header += "SOAPAction: \"http://rsdn.ru/Janus/PostChangeCommit\"\r\n";
+	defaultRequest(request, rsdn_proto, "PostChangeCommit", data.toUtf8().size());
 
 	if (cookie.length() > 0)
-		header += "Cookie: " + cookie + "\r\n";
+		request.setRawHeader("Cookie", cookie.toUtf8());
 }
 //----------------------------------------------------------------------------------------------
 
-QString AWebservice::postChangeCommit_WebserviceParse (const QString& data, ACommitInfo& commit_info, IProgress* progress)
+QString AWebservice::postChangeCommit_WebserviceParse (const QString& data, ACommitInfo& commit_info)
 {
-	if (progress != NULL)
-		progress->onProgress(0);
-
 	int seed = 0;
 
 	QString messages = getTextBetween(&data, "<commitedIds>", "</commitedIds>");
