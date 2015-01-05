@@ -163,7 +163,10 @@ void FormRequest::process_finished (QNetworkReply* reply)
 	for (int i = 0; i < pairs.count(); i++)
 	{
 		QNetworkReply::RawHeaderPair pair = pairs[i];
-		m_header += QString::fromUtf8(pair.first.constData()) + ": " + QString::fromUtf8(pair.second.constData()) + "\r\n";
+		QString     header = QString::fromUtf8(pair.first.constData());
+		QStringList values = QString::fromUtf8(pair.second.constData()).split("\n");
+		for (int j = 0; j < values.count(); j++)
+			m_header += header + ": " + values[j] + "\r\n";
 	}
 
 #ifndef AVALON_USE_ZLIB
