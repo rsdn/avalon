@@ -30,10 +30,6 @@ FormSubscribeUI::FormSubscribeUI (QWidget* parent) : QDialog (parent, Qt::Window
 
 	m_tree_forum = new QTreeWidget();
 
-	#ifndef Q_WS_WIN
-		m_tree_forum->setFrameShadow(QFrame::Plain);
-	#endif
-
 	m_tree_forum->setSelectionMode(QAbstractItemView::NoSelection);
 	m_tree_forum->setColumnCount(1);
 	m_tree_forum->header()->hide();

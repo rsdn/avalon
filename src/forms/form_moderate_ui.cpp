@@ -87,10 +87,6 @@ FormModerateUI::FormModerateUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 
 	m_text_description = new QTextEdit(this);
 
-	#ifndef Q_WS_WIN
-		m_text_description->setFrameShadow(QFrame::Plain);
-	#endif
-
 	m_layout_description->addWidget(m_text_description);
 
 	m_button_ok = new QPushButton(this);

@@ -306,10 +306,6 @@ FormMessageUI::FormMessageUI (QWidget* parent) : QDialog (parent, Qt::WindowTitl
 
 	m_text_source = new ASpellTextEdit(m_tab_source);
 
-#ifndef Q_WS_WIN
-	m_text_source->setFrameShadow(QFrame::Plain);
-#endif
-
 	m_text_source->setUndoRedoEnabled(true);
 	m_text_source->setAcceptRichText(false);
 	m_text_source->setTextInteractionFlags(Qt::TextEditorInteraction);

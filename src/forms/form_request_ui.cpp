@@ -34,10 +34,6 @@ FormRequestUI::FormRequestUI (QWidget* parent) : QDialog (parent, Qt::WindowTitl
 	m_list_progress = new QListWidget(this);
 	m_list_progress->setFocusPolicy(Qt::NoFocus);
 
-	#ifndef Q_WS_WIN
-		m_list_progress->setFrameShadow(QFrame::Plain);
-	#endif
-
 	m_layout_form->addWidget(m_list_progress);
 
 	m_layout_button = new QHBoxLayout();

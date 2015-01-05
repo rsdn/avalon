@@ -175,12 +175,7 @@ AWebViewWidget::AWebViewWidget (QWidget* parent) : QFrame (parent)
 	View->setHtml(QString());
 
 	setFrameShape(QFrame::StyledPanel);
-
-	#ifndef Q_WS_WIN
-		setFrameShadow(QFrame::Plain);
-	#else
-		setFrameShadow(QFrame::Sunken);
-	#endif
+	setFrameShadow(QFrame::Sunken);
 }
 //----------------------------------------------------------------------------------------------
 

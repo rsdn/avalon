@@ -24,10 +24,6 @@ FormSourceUI::FormSourceUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleH
 
 	m_text_source = new QTextEdit(this);
 
-	#ifndef Q_WS_WIN
-		m_text_source->setFrameShadow(QFrame::Plain);
-	#endif
-
 	m_text_source->setReadOnly(true);
 
 	m_layout->addWidget(m_text_source);
