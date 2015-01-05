@@ -13,13 +13,13 @@
  */
 typedef struct AForumInfo
 {
-	int     ID;        /*!< \brief ID форума                               */
-	int     IDGroup;   /*!< \brief ID группы                               */
-	QString ShortName; /*!< \brief Короткое имя                            */
-	QString Name;      /*!< \brief Полное имя                              */
-	bool    Rated;     /*!< \brief Оценивается ли форум                    */
-	bool    InTop;     /*!< \brief Участвует ли оценки этого форума в топе */
-	int     RateLimit; /*!< \brief Лимит оценки в форуме                   */
+	int     ID;          /*!< \brief ID форума                               */
+	int     IDGroup;     /*!< \brief ID группы                               */
+	QString ShortName;   /*!< \brief Короткое имя                            */
+	QString Name;        /*!< \brief Полное имя                              */
+	bool    Rated;       /*!< \brief Оценивается ли форум                    */
+	bool    InTop;       /*!< \brief Участвует ли оценки этого форума в топе */
+	int     RateLimit;   /*!< \brief Лимит оценки в форуме                   */
 } AForumInfo;
 
 /*!
@@ -32,8 +32,8 @@ typedef QList<AForumInfo> AForumInfoList;
  */
 typedef struct ASubscribedForumInfo
 {
-	int  IDForum; /*!< \brief ID форума                           */
-	bool IsFirst; /*!< \brief true - первая подписка, иначе false */
+	int  IDForum;   /*!< \brief ID форума                           */
+	bool IsFirst;   /*!< \brief true - первая подписка, иначе false */
 } ASubscribedForumInfo;
 
 /*!
@@ -46,10 +46,10 @@ typedef QList<ASubscribedForumInfo> ASubscribedForumInfoList;
  */
 typedef struct AUnreadForumCountInfo
 {
-	int IDForum; /*!< \brief ID форума                                */
-	int Topics;  /*!< \brief Количество непрочитанных (новых) топиков */
-	int Count;   /*!< \brief Количество непрочитанных сообщений       */
-	int CountMy; /*!< \brief Количество непрочитанных сообщений мне   */
+	int IDForum;   /*!< \brief ID форума                                */
+	int Topics;    /*!< \brief Количество непрочитанных (новых) топиков */
+	int Count;     /*!< \brief Количество непрочитанных сообщений       */
+	int CountMy;   /*!< \brief Количество непрочитанных сообщений мне   */
 } AUnreadForumCountInfo;
 
 /*!
@@ -87,4 +87,4 @@ const int SPECIAL_ID_FORUM_MY_MESSAGES = -5;
  */
 const int SPECIAL_ID_FORUM_ANSWERS_TO_ME = -6;
 
-#endif
+#endif   // _avalon_forum_info_h_

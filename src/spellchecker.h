@@ -88,15 +88,15 @@ class ASpellChecker : public QSyntaxHighlighter
 		 */
 		QString dictFile ();
 
-		AspellConfig*  m_aspell_config_en;  /*!< \brief Конфиг aspell для проверки английского  */
-		AspellConfig*  m_aspell_config_ru;  /*!< \brief Конфиг aspell для проверки русского     */
+		AspellConfig*  m_aspell_config_en;    /*!< \brief Конфиг aspell для проверки английского  */
+		AspellConfig*  m_aspell_config_ru;    /*!< \brief Конфиг aspell для проверки русского     */
 
-		AspellSpeller* m_aspell_speller_en; /*!< \brief Спеллер aspell для проверки английского */
-		AspellSpeller* m_aspell_speller_ru; /*!< \brief Спеллер aspell для проверки русского    */
+		AspellSpeller* m_aspell_speller_en;   /*!< \brief Спеллер aspell для проверки английского */
+		AspellSpeller* m_aspell_speller_ru;   /*!< \brief Спеллер aspell для проверки русского    */
 
-		QSet<QString>  m_stop_words;        /*!< \brief Стоп-слова (rsdn specific)              */
+		QSet<QString>  m_stop_words;          /*!< \brief Стоп-слова (rsdn specific)              */
 };
 
-#endif // AVALON_USE_ASPELL
+#endif   // AVALON_USE_ASPELL
 
-#endif
+#endif   // _avalon_spellchecker_h_

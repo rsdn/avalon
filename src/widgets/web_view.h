@@ -56,12 +56,12 @@ class AWebView : public QWebView
 	private slots:
 
 		// меню
-		void menu_yandex_triggered ();           /*!< \brief Поиск Яндекс         */
-		void menu_wikipedia_triggered ();        /*!< \brief Поиск Википедии      */
-		void menu_slovari_yandex_triggered ();   /*!< \brief Поиск Яндекс.Словари */
-		void menu_google_triggered ();           /*!< \brief Поиск Google         */
-		void menu_google_translate_triggered (); /*!< \brief Переводчик Google    */
-		void menu_rsdn_triggered ();             /*!< \brief Поиск RSDN           */
+		void menu_yandex_triggered ();             /*!< \brief Поиск Яндекс         */
+		void menu_wikipedia_triggered ();          /*!< \brief Поиск Википедии      */
+		void menu_slovari_yandex_triggered ();     /*!< \brief Поиск Яндекс.Словари */
+		void menu_google_triggered ();             /*!< \brief Поиск Google         */
+		void menu_google_translate_triggered ();   /*!< \brief Переводчик Google    */
+		void menu_rsdn_triggered ();               /*!< \brief Поиск RSDN           */
 };
 
 /*!
@@ -89,4 +89,4 @@ class AWebViewWidget : public QFrame
 		void resizeEvent (QResizeEvent* event);
 };
 
-#endif
+#endif   // _avalon_web_view_h_

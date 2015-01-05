@@ -201,6 +201,6 @@ class AProfiler
 		timeval m_stop;
 };
 
-#endif // #ifndef Q_WS_WIN
+#endif   // #ifndef Q_WS_WIN
 
-#endif
+#endif   // _avalon_sysheaders_h_

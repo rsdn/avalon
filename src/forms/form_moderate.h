@@ -70,4 +70,4 @@ class FormModerate : public FormModerateUI
 		void button_cancel_clicked ();
 };
 
-#endif
+#endif   // _avalon_form_moderate_h_

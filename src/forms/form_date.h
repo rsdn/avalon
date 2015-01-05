@@ -50,4 +50,4 @@ class FormDate : public FormDateUI
 
 };
 
-#endif
+#endif   // _avalon_form_date_h_

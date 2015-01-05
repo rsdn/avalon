@@ -13,13 +13,13 @@
  */
 typedef enum AvalonActions
 {
-	aaNewMessage,            /*!< \brief Действие создания сообщения  */
-	aaViewSource,            /*!< \brief Действие просмотра источника */
-	aaPrevNextUnreadArticle, /*!< \brief Действие показать предыдущее/следующее непрочитанное сообщение */
-	aaPrevNextUnreadThread,  /*!< \brief Действие показать предыдущую/следующую непрочитанную ветку     */
-	aaPrevNextUnreadForum,   /*!< \brief Действие показать предыдущий/следующий непрочитанный форум     */
-	aaBackward,              /*!< \brief Действие "Назад"  */
-	aaForward                /*!< \brief Действие "Вперед" */
+	aaNewMessage,              /*!< \brief Действие создания сообщения                                    */
+	aaViewSource,              /*!< \brief Действие просмотра источника                                   */
+	aaPrevNextUnreadArticle,   /*!< \brief Действие показать предыдущее/следующее непрочитанное сообщение */
+	aaPrevNextUnreadThread,    /*!< \brief Действие показать предыдущую/следующую непрочитанную ветку     */
+	aaPrevNextUnreadForum,     /*!< \brief Действие показать предыдущий/следующий непрочитанный форум     */
+	aaBackward,                /*!< \brief Действие "Назад"                                               */
+	aaForward                  /*!< \brief Действие "Вперед"                                              */
 } AvalonActions;
 
 /*!
@@ -43,4 +43,4 @@ class IFormMain
 		virtual void setEnabledAction (AvalonActions action, bool enabled) = 0;
 };
 
-#endif
+#endif   // _avalon_iform_main_h_

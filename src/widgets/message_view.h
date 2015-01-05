@@ -14,7 +14,7 @@
  */
 class AMessageView :
 	public AWebViewWidget,
-	public IMessageView // интерфес для взаимодействия со списком сообщений и форумов
+	public IMessageView    // интерфес для взаимодействия со списком сообщений и форумов
 {
 	Q_OBJECT
 
@@ -43,9 +43,9 @@ class AMessageView :
 
 	private:
 
-		IForumTree*   m_forum_tree;   /*!< \brief Интерфейс дерева форумов   */
-		IMessageTree* m_message_tree; /*!< \brief Интерфейс дерева сообщений */
-		IFormMain*    m_main_form;    /*!< \brief Интерфейс главной формы    */
+		IForumTree*   m_forum_tree;     /*!< \brief Интерфейс дерева форумов   */
+		IMessageTree* m_message_tree;   /*!< \brief Интерфейс дерева сообщений */
+		IFormMain*    m_main_form;      /*!< \brief Интерфейс главной формы    */
 
 	// IMessageView
 	private:
@@ -67,4 +67,4 @@ class AMessageView :
 		void link_hover (const QString& link, const QString& title, const QString& textContent);
 };
 
-#endif
+#endif   // _avalon_message_view_h_

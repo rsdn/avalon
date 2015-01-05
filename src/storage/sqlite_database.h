@@ -66,4 +66,4 @@ class ASQLiteDatabase : public ADatabase
 		bool openDatabase  ();
 };
 
-#endif
+#endif   // _avalon_sqlite_database_h_

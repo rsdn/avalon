@@ -23,4 +23,4 @@ class AStorageFactory
 		static IAStorage* getStorage ();
 };
 
-#endif
+#endif   // _avalon_storage_factory_h_

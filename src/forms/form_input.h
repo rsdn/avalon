@@ -30,4 +30,4 @@ class FormInput : public FormInputUI
 		QString text ();
 };
 
-#endif
+#endif   // _avalon_form_input_h_

@@ -169,4 +169,4 @@ template <class T> class ATreeWidgetItemT : public ATreeWidgetItem
 		T m_tag;
 };
 
-#endif
+#endif   // _avalon_tree_widget_item_h_

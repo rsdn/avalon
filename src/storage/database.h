@@ -13,8 +13,8 @@
  * \brief Класс-обертка для работы с БД
  */
 class ADatabase :
-	public ADatabaseError, // общий класс контроля ошибок
-	public QSqlDatabase    // Qt класс для работы с БД
+	public ADatabaseError,   // общий класс контроля ошибок
+	public QSqlDatabase      // Qt класс для работы с БД
 {
 	public:
 
@@ -58,4 +58,4 @@ class ADatabase :
 		void close () { QSqlDatabase::close(); }
 };
 
-#endif
+#endif   // _avalon_database_h_

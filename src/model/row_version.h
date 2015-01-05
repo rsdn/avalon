@@ -13,10 +13,10 @@
  */
 typedef struct ARowVersion
 {
-	QString User;     /*!< \brief Пользователи */
-	QString Message;  /*!< \brief Сообщения    */
-	QString Rating;   /*!< \brief Рейтинг      */
-	QString Moderate; /*!< \brief Модерилки    */
+	QString User;       /*!< \brief Пользователи */
+	QString Message;    /*!< \brief Сообщения    */
+	QString Rating;     /*!< \brief Рейтинг      */
+	QString Moderate;   /*!< \brief Модерилки    */
 } ARowVersion;
 
-#endif
+#endif   // _avalon_row_version_info_h_

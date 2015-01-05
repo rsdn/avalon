@@ -35,17 +35,17 @@ class AGlobal
 		// Общие переменные
 		//
 
-		AUserInfo Me;          /*!< \brief Текущий пользователь avalon */
+		AUserInfo Me;            /*!< \brief Текущий пользователь avalon */
 #ifdef AVALON_USE_ZLIB
-		bool      Compression; /*!< \brief Сжатие тел сообщений        */
+		bool      Compression;   /*!< \brief Сжатие тел сообщений        */
 #endif
 
 		//
 		// Константы форматирования
 		//
 
-		QString AnonymousName; /*!< \brief Отображаемое имя анонима */
-		QString DateFormat;    /*!< \brief Формат даты/времени      */
+		QString AnonymousName;   /*!< \brief Отображаемое имя анонима */
+		QString DateFormat;      /*!< \brief Формат даты/времени      */
 };
 
 #endif   // _avalon_global_h_

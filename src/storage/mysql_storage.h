@@ -13,8 +13,8 @@
  * \brief Хранилище на базе MySQL
  */
 class AMySQLStorage :
-	public AMySQLDatabase, // обертка для работы с базами MySQL
-	public IAStorage       // интерфейс, который возвращает фабрика хранилищ при работе
+	public AMySQLDatabase,   // обертка для работы с базами MySQL
+	public IAStorage         // интерфейс, который возвращает фабрика хранилищ при работе
 {
 	public:
 
@@ -83,4 +83,4 @@ class AMySQLStorage :
 		bool getAnswers2MeList      (int id_me, int count, QList<int>& list);
 };
 
-#endif
+#endif   // _avalon_mysql_storage_h_

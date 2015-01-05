@@ -33,4 +33,4 @@ class FormSource : public FormSourceUI
 		void closeEvent (QCloseEvent* event);
 };
 
-#endif
+#endif   // _avalon_form_source_h_

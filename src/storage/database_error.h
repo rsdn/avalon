@@ -46,4 +46,4 @@ class ADatabaseError
 		QString m_error_message;
 };
 
-#endif
+#endif   // _avalon_database_error_h_

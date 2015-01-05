@@ -35,10 +35,10 @@ class FormSubscribe : public FormSubscribeUI
 
 	private slots:
 
-		void button_ok_clicked          (); /*!< \brief OK           */
-		void button_refresh_clicked     (); /*!< \brief Отмена       */
-		void button_select_all_clicked  (); /*!< \brief Выбрать все  */
-		void button_select_none_clicked (); /*!< \brief Отменить все */
+		void button_ok_clicked          ();   /*!< \brief OK           */
+		void button_refresh_clicked     ();   /*!< \brief Отмена       */
+		void button_select_all_clicked  ();   /*!< \brief Выбрать все  */
+		void button_select_none_clicked ();   /*!< \brief Отменить все */
 };
 
-#endif
+#endif   // _avalon_form_subscribe_h_

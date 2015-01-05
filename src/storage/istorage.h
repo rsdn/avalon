@@ -15,11 +15,11 @@
  */
 typedef enum AIDSet
 {
-	idsMessage, /*!< \brief Сообщение      */
-	idsTopic,   /*!< \brief Топик          */
-	idsForum,   /*!< \brief Форум          */
-	idsGroup,   /*!< \brief Группа форумов */
-	idsAll      /*!< \brief Все            */
+	idsMessage,   /*!< \brief Сообщение      */
+	idsTopic,     /*!< \brief Топик          */
+	idsForum,     /*!< \brief Форум          */
+	idsGroup,     /*!< \brief Группа форумов */
+	idsAll        /*!< \brief Все            */
 } AIDSet;
 
 /*!
@@ -366,4 +366,4 @@ class IAStorage : public ADatabaseError
 		virtual bool getAnswers2MeList (int id_me, int count, QList<int>& list) = 0;
 };
 
-#endif
+#endif   // _avalon_istorage_h_

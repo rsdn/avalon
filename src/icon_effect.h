@@ -24,4 +24,4 @@ class AIconEffect
 		static QIcon unionIcons (const QString& file1, const QString& file2);
 };
 
-#endif
+#endif   // _avalon_icon_effect_h_

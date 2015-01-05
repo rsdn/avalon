@@ -12,4 +12,4 @@
 #include "forum_group.h"
 #include "row_version.h"
 
-#endif
+#endif   // _avalon_model_all_h_

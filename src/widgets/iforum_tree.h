@@ -58,4 +58,4 @@ class IForumTree
 		virtual bool selectForum (int id) = 0;
 };
 
-#endif
+#endif   // _avalon_iforum_tree_h_

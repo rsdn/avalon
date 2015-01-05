@@ -13,15 +13,15 @@
  */
 typedef struct AUserInfo
 {
-	int     ID;             /*!< \brief ID                 */
-	QString Name;           /*!< \brief Логин пользователя */
-	QString Nick;           /*!< \brief Ник                */
-	QString RealName;       /*!< \brief Настоящее имя      */
-	QString Email;          /*!< \brief Мыло               */
-	QString Homepage;       /*!< \brief Домашняя страница  */
-	QString Specialization; /*!< \brief Специализация      */
-	QString WhereFrom;      /*!< \brief Откуда             */
-	QString Origin;         /*!< \brief Подпись            */
+	int     ID;               /*!< \brief ID                 */
+	QString Name;             /*!< \brief Логин пользователя */
+	QString Nick;             /*!< \brief Ник                */
+	QString RealName;         /*!< \brief Настоящее имя      */
+	QString Email;            /*!< \brief Мыло               */
+	QString Homepage;         /*!< \brief Домашняя страница  */
+	QString Specialization;   /*!< \brief Специализация      */
+	QString WhereFrom;        /*!< \brief Откуда             */
+	QString Origin;           /*!< \brief Подпись            */
 } AUserInfo;
 
 /*!
@@ -29,4 +29,4 @@ typedef struct AUserInfo
  */
 typedef QList<AUserInfo> AUserInfoList;
 
-#endif
+#endif   // _avalon_user_info_h_

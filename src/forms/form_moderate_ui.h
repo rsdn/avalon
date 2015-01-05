@@ -13,9 +13,9 @@
  */
 typedef struct AModerateAction
 {
-	QString Action;      /*!< \brief Внутреннее описание               */
-	QString Description; /*!< \brief Человекочитаемое описание         */
-	bool    ForumValid;  /*!< \brief Валидность ID форума для действия */
+	QString Action;        /*!< \brief Внутреннее описание               */
+	QString Description;   /*!< \brief Человекочитаемое описание         */
+	bool    ForumValid;    /*!< \brief Валидность ID форума для действия */
 } AModerateAction;
 
 /*!
@@ -23,8 +23,8 @@ typedef struct AModerateAction
  */
 typedef struct AModerateForum
 {
-	int     ID;   /*!< \brief ID                        */
-	QString Name; /*!< \brief Человекочитаемое описание */
+	int     ID;     /*!< \brief ID                        */
+	QString Name;   /*!< \brief Человекочитаемое описание */
 } AModerateForum;
 
 /*!
@@ -65,28 +65,28 @@ class FormModerateUI : public QDialog
 		 */
 		QList<AModerateForum>  m_forums;
 
-		QLabel* m_label_action;      /*!< \brief Действие */
-		QLabel* m_label_forum;       /*!< \brief Форум    */
-		QLabel* m_label_description; /*!< \brief Описание */
+		QLabel* m_label_action;        /*!< \brief Действие */
+		QLabel* m_label_forum;         /*!< \brief Форум    */
+		QLabel* m_label_description;   /*!< \brief Описание */
 
-		QComboBox* m_combo_action; /*!< \brief Действие */
-		QComboBox* m_combo_forum;  /*!< \brief Форум    */
+		QComboBox* m_combo_action;   /*!< \brief Действие */
+		QComboBox* m_combo_forum;    /*!< \brief Форум    */
 
-		QTextEdit* m_text_description; /*!< \brief Описание */
+		QTextEdit* m_text_description;   /*!< \brief Описание */
 
-		QPushButton* m_button_ok;     /*!< \brief OK     */
-		QPushButton* m_button_cancel; /*!< \brief Отмена */
+		QPushButton* m_button_ok;       /*!< \brief OK     */
+		QPushButton* m_button_cancel;   /*!< \brief Отмена */
 
-		QHBoxLayout* m_layout;                               /*!< \brief Общий layout                  */
-			QVBoxLayout* m_layout_left;                  /*!< \brief Layout левой части от кнопок  */
-				QHBoxLayout* m_layout_combo_label;   /*!< \brief Layout для подписей и списков */
-					QVBoxLayout* m_layout_label; /*!< \brief Layout для подписей           */
-					QVBoxLayout* m_layout_combo; /*!< \brief Layout для списков            */
-				QVBoxLayout* m_layout_description;   /*!< \brief Layout для описания           */
-			QVBoxLayout* m_layout_button;                /*!< \brief Layout для кнопок             */
+		QHBoxLayout* m_layout;                                 /*!< \brief Общий layout                  */
+			QVBoxLayout* m_layout_left;                    /*!< \brief Layout левой части от кнопок  */
+				QHBoxLayout* m_layout_combo_label;     /*!< \brief Layout для подписей и списков */
+					QVBoxLayout* m_layout_label;   /*!< \brief Layout для подписей           */
+					QVBoxLayout* m_layout_combo;   /*!< \brief Layout для списков            */
+				QVBoxLayout* m_layout_description;     /*!< \brief Layout для описания           */
+			QVBoxLayout* m_layout_button;                  /*!< \brief Layout для кнопок             */
 
-		QSpacerItem* m_spacer_button; /*!< \brief Удерживает кнопки вверху     */
-		QSpacerItem* m_spacer_combo;  /*!< \brief Устанавливает ширину списков */
+		QSpacerItem* m_spacer_button;   /*!< \brief Удерживает кнопки вверху     */
+		QSpacerItem* m_spacer_combo;    /*!< \brief Устанавливает ширину списков */
 
 	private	slots:
 
@@ -97,4 +97,4 @@ class FormModerateUI : public QDialog
 		void combo_action_current_index_changed (const QString& text);
 };
 
-#endif
+#endif   // _avalon_form_moderate_ui_h_

@@ -13,9 +13,9 @@
  */
 typedef struct AGroupInfo
 {
-	int     ID;        /*!< \brief ID группы           */
-	QString Name;      /*!< \brief Наименование группы */
-	int     SortOrder; /*!< \brief Порядок сортировки  */
+	int     ID;          /*!< \brief ID группы           */
+	QString Name;        /*!< \brief Наименование группы */
+	int     SortOrder;   /*!< \brief Порядок сортировки  */
 } AGroupInfo;
 
 /*!
@@ -28,4 +28,4 @@ typedef QList<AGroupInfo> AGroupInfoList;
  */
 const int SPECIAL_ID_GROUP = -1;
 
-#endif
+#endif   // _avalon_group_info_h_

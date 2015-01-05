@@ -13,8 +13,8 @@
  * \brief Хранилище на базе SQLite
  */
 class ASQLiteStorage :
-	public ASQLiteDatabase, // обертка для работы с базами SQLite
-	public IAStorage        // интерфейс, который возвращает фабрика хранилищ при работе
+	public ASQLiteDatabase,   // обертка для работы с базами SQLite
+	public IAStorage          // интерфейс, который возвращает фабрика хранилищ при работе
 {
 	public:
 
@@ -83,4 +83,4 @@ class ASQLiteStorage :
 		bool getAnswers2MeList      (int id_me, int count, QList<int>& list);
 };
 
-#endif
+#endif   // _avalon_sqlite_storage_h_

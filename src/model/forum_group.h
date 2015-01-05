@@ -30,4 +30,4 @@ typedef struct AForumGroupInfo
  */
 typedef QList<AForumGroupInfo> AForumGroupInfoList;
 
-#endif
+#endif   // _avalon_forum_group_info_h_

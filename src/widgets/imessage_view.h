@@ -28,4 +28,4 @@ class IMessageView
 		virtual void setMessage (const AMessageInfo& message, const AForumInfo* forum = NULL) = 0;
 };
 
-#endif
+#endif   // _avalon_imessage_view_h_

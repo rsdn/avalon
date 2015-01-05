@@ -23,9 +23,9 @@
  */
 typedef struct ACommitExceptionInfo
 {
-	QString Exception; /*!< \brief Текст исключения                  */
-	int     ID;        /*!< \brief Локальный id элемента в хранилище */
-	QString Info;      /*!< \brief Дополнительная информация         */
+	QString Exception;   /*!< \brief Текст исключения                  */
+	int     ID;          /*!< \brief Локальный id элемента в хранилище */
+	QString Info;        /*!< \brief Дополнительная информация         */
 } ACommitExceptionInfo;
 
 /*!
@@ -39,12 +39,12 @@ typedef QList<ACommitExceptionInfo> ACommitExceptionInfoList;
  */
 typedef struct ACommitInfo
 {
-	QList<int>               Messages;           /*!< \brief Список ID успешно закоммиченых сообщений                */
-	ACommitExceptionInfoList MessagesExceptions; /*!< \brief Список исключений для неуспешно закомиченных сообщений  */
-	QList<int>               Rating;             /*!< \brief Список ID успешно закоммиченых рейтингов                */
-	ACommitExceptionInfoList RatingExceptions;   /*!< \brief Список исключений для неуспешно закомиченных рейтингов  */
-	QList<int>               Moderate;           /*!< \brief Список ID успешно закоммиченых модерилок                */
-	ACommitExceptionInfoList ModerateExceptions; /*!< \brief Список исключений для неуспешно закомиченных модерилок  */
+	QList<int>               Messages;             /*!< \brief Список ID успешно закоммиченых сообщений                */
+	ACommitExceptionInfoList MessagesExceptions;   /*!< \brief Список исключений для неуспешно закомиченных сообщений  */
+	QList<int>               Rating;               /*!< \brief Список ID успешно закоммиченых рейтингов                */
+	ACommitExceptionInfoList RatingExceptions;     /*!< \brief Список исключений для неуспешно закомиченных рейтингов  */
+	QList<int>               Moderate;             /*!< \brief Список ID успешно закоммиченых модерилок                */
+	ACommitExceptionInfoList ModerateExceptions;   /*!< \brief Список исключений для неуспешно закомиченных модерилок  */
 } ACommitInfo;
 
-#endif
+#endif   // _avalon_commit_info_h_

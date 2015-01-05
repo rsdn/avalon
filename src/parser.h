@@ -27,9 +27,9 @@
  */
 typedef struct AQuotedString
 {
-	int     QuoteLevel; /*!< \brief Уровень квотирования (0 - нет) */
-	QString QuoteText;  /*!< \brief Текст квотирования             */
-	QString Data;       /*!< \brief Текст строки                   */
+	int     QuoteLevel;   /*!< \brief Уровень квотирования (0 - нет) */
+	QString QuoteText;    /*!< \brief Текст квотирования             */
+	QString Data;         /*!< \brief Текст строки                   */
 } AQuotedString;
 
 /*!
@@ -42,34 +42,34 @@ typedef QList<AQuotedString> AQuotedStringList;
  */
 typedef enum
 {
-	pbtText,      /*!< \brief Блок с простым текстом    */
-	pbtCode,      /*!< \brief Блок с исходным кодом     */
-	pbtAssembler, /*!< \brief Блок ассемблера           */
-	pbtC,         /*!< \brief Блок си                   */
-	pbtCPP,       /*!< \brief Блок c++                  */
-	pbtCSharp,    /*!< \brief Блок c#                   */
-	pbtMSIL,      /*!< \brief Блок MSIL                 */
-	pbtIDL,       /*!< \brief Блок IDL/MIDL             */
-	pbtPascal,    /*!< \brief Блок Pascal/Delphi        */
-	pbtBasic,     /*!< \brief Блок Basic/Visual Basic   */
-	pbtSQL,       /*!< \brief Блок SQL/TSQL/PSQL        */
-	pbtPerl,      /*!< \brief Блок Perl                 */
-	pbtPHP,       /*!< \brief Блок PHP                  */
-	pbtJava,      /*!< \brief Блок Java                 */
-	pbtXML,       /*!< \brief Блок XML/XSL              */
-	pbtLisp,      /*!< \brief Блок Lisp                 */
-	pbtHaskell,   /*!< \brief Блок Haskell              */
-	pbtErlang,    /*!< \brief Блок Erlang               */
-	pbtOCaml,     /*!< \brief Блок OCaml                */
-	pbtProlog,    /*!< \brief Блок Prolog               */
-	pbtPython,    /*!< \brief Блок Python               */
-	pbtRuby,      /*!< \brief Блок Ruby                 */
-	pbtNemerle,   /*!< \brief Блок Nemerle              */
-	pbtTagline,   /*!< \brief Блок подписи              */
-	pbtModerator, /*!< \brief Блок сообщения модератора */
-	pbtQuote,     /*!< \brief Блок цитаты               */
-	pbtTable,     /*!< \brief Блок таблицы              */
-	pbtCut        /*!< \brief Блок cut                  */
+	pbtText,        /*!< \brief Блок с простым текстом    */
+	pbtCode,        /*!< \brief Блок с исходным кодом     */
+	pbtAssembler,   /*!< \brief Блок ассемблера           */
+	pbtC,           /*!< \brief Блок си                   */
+	pbtCPP,         /*!< \brief Блок c++                  */
+	pbtCSharp,      /*!< \brief Блок c#                   */
+	pbtMSIL,        /*!< \brief Блок MSIL                 */
+	pbtIDL,         /*!< \brief Блок IDL/MIDL             */
+	pbtPascal,      /*!< \brief Блок Pascal/Delphi        */
+	pbtBasic,       /*!< \brief Блок Basic/Visual Basic   */
+	pbtSQL,         /*!< \brief Блок SQL/TSQL/PSQL        */
+	pbtPerl,        /*!< \brief Блок Perl                 */
+	pbtPHP,         /*!< \brief Блок PHP                  */
+	pbtJava,        /*!< \brief Блок Java                 */
+	pbtXML,         /*!< \brief Блок XML/XSL              */
+	pbtLisp,        /*!< \brief Блок Lisp                 */
+	pbtHaskell,     /*!< \brief Блок Haskell              */
+	pbtErlang,      /*!< \brief Блок Erlang               */
+	pbtOCaml,       /*!< \brief Блок OCaml                */
+	pbtProlog,      /*!< \brief Блок Prolog               */
+	pbtPython,      /*!< \brief Блок Python               */
+	pbtRuby,        /*!< \brief Блок Ruby                 */
+	pbtNemerle,     /*!< \brief Блок Nemerle              */
+	pbtTagline,     /*!< \brief Блок подписи              */
+	pbtModerator,   /*!< \brief Блок сообщения модератора */
+	pbtQuote,       /*!< \brief Блок цитаты               */
+	pbtTable,       /*!< \brief Блок таблицы              */
+	pbtCut          /*!< \brief Блок cut                  */
 } AParsedBlockType;
 
 /*
@@ -100,11 +100,11 @@ typedef QList<AParsedBlock> AParsedBlockList;
  */
 typedef struct AParsedBlock
 {
-	AParsedBlockType    Type;      /*!< \brief Тип монолитного блока          */
-	AParsedBlockSubType SubType;   /*!< \brief Подтип монолитного блока       */
-	QString             Title;     /*!< \brief Заголовок блока (для тэга cut) */
-	AQuotedStringList   Strings;   /*!< \brief Список квотированных строк     */
-	AParsedBlockList    SubBlocks; /*!< \brief Список подблоков               */
+	AParsedBlockType    Type;        /*!< \brief Тип монолитного блока          */
+	AParsedBlockSubType SubType;     /*!< \brief Подтип монолитного блока       */
+	QString             Title;       /*!< \brief Заголовок блока (для тэга cut) */
+	AQuotedStringList   Strings;     /*!< \brief Список квотированных строк     */
+	AParsedBlockList    SubBlocks;   /*!< \brief Список подблоков               */
 } AParsedBlock;
 
 /*!

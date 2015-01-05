@@ -230,4 +230,4 @@ class AWebservice : public QObject
 		void process_ssl_errors        (const QList<QSslError> &errors);   /*!< \brief Ошибка SSL               */
 };
 
-#endif
+#endif   // _avalon_webservice_h_

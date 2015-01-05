@@ -23,12 +23,12 @@
  */
 typedef struct ARatingInfo
 {
-	int       IDMessage;  /*!< \brief ID сообщения         */
-	int       IDTopic;    /*!< \brief ID топика            */
-	int       IDUser;     /*!< \brief ID пользователя      */
-	int       UserRating; /*!< \brief Рейтинг пользователя */
-	int       Rate;       /*!< \brief "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2 */
-	QDateTime RateDate;   /*!< \brief Дата                 */
+	int       IDMessage;    /*!< \brief ID сообщения         */
+	int       IDTopic;      /*!< \brief ID топика            */
+	int       IDUser;       /*!< \brief ID пользователя      */
+	int       UserRating;   /*!< \brief Рейтинг пользователя */
+	int       Rate;         /*!< \brief "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2 */
+	QDateTime RateDate;     /*!< \brief Дата                 */
 } ARatingInfo;
 
 /*!
@@ -41,10 +41,10 @@ typedef QList<ARatingInfo> ARatingInfoList;
  */
 typedef struct ARating2Send
 {
-	int       ID;        /*!< \brief ID локальный */
-	int       IDMessage; /*!< \brief ID сообщения */
-	int       Rate;      /*!< \brief Оценка       */
-	QDateTime Date;      /*!< \brief Дата         */
+	int       ID;          /*!< \brief ID локальный */
+	int       IDMessage;   /*!< \brief ID сообщения */
+	int       Rate;        /*!< \brief Оценка       */
+	QDateTime Date;        /*!< \brief Дата         */
 } ARating2Send;
 
 /*!
@@ -57,11 +57,11 @@ typedef QList<ARating2Send> ARating2SendList;
  */
 typedef struct AMessageRating
 {
-	int     IDUser;     /*!< \brief ID пользователя      */
-	QString Name;       /*!< \brief Логин пользователя   */
-	QString Nick;       /*!< \brief Ник                  */
-	int     UserRating; /*!< \brief Рейтинг пользователя */
-	int     Rate;       /*!< \brief "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2 (дополнительно см. примечания к ARatingInfo) */
+	int     IDUser;       /*!< \brief ID пользователя      */
+	QString Name;         /*!< \brief Логин пользователя   */
+	QString Nick;         /*!< \brief Ник                  */
+	int     UserRating;   /*!< \brief Рейтинг пользователя */
+	int     Rate;         /*!< \brief "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2 (дополнительно см. примечания к ARatingInfo) */
 } AMessageRating;
 
 /*!
@@ -84,4 +84,4 @@ const int SPECIAL_RATE_TYPE_PLUS_MINUS = 1;
  */
 const int SPECIAL_RATE_TYPE_NUMBER = 2;
 
-#endif
+#endif   // _avalon_rating_info_h_

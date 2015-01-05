@@ -46,4 +46,4 @@ class IProgress
 		virtual void onProgress (int minimum, int maximum, int value, const QString& status) = 0;
 };
 
-#endif
+#endif   // _avalon_iprogress_h_

@@ -11,4 +11,4 @@
  */
 #define AVALON_BUILD 442
 
-#endif
+#endif   // _avalon_version_h_

@@ -115,4 +115,4 @@ class FormMessage : public FormMessageUI
 		void text_changed ();
 };
 
-#endif
+#endif   // _avalon_form_message_h_

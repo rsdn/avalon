@@ -15,23 +15,23 @@
  */
 typedef struct AMessageInfo
 {
-	int       ID;             /*!< \brief ID сообщения                                                    */
-	int       IDTopic;        /*!< \brief ID темы сообщения или 0, если сообщение начинает тему           */
-	int       IDParent;       /*!< \brief ID родителя или 0, если сообщение начинает тему                 */
-	int       IDUser;         /*!< \brief ID пользователя                                                 */
-	int       IDForum;        /*!< \brief ID форума                                                       */
-	QString   Subject;        /*!< \brief Тема                                                            */
-	QString   MessageName;    /*!< \brief Название статьи                                                 */
-	QString   UserNick;       /*!< \brief Ник пользователя                                                */
-	QString   Message;        /*!< \brief Содержимое сообщения                                            */
-	int       IDArticle;      /*!< \brief ID статьи или 0                                                 */
-	QDateTime MessageDate;    /*!< \brief Дата сообщения                                                  */
-	QDateTime UpdateDate;     /*!< \brief Дата обновления сообщения или "1970-01-01 00:00:00"             */
-	QString   UserRole;       /*!< \brief Роль пользователя - Anonym, Expert, Moderator, TeamMember, User */
-	QString   UserTitle;      /*!< \brief Повязка пользователя (число для анонима, или наименование)      */
-	int       UserTitleColor; /*!< \brief Цвет повязки                                                    */
-	QDateTime LastModerated;  /*!< \brief Дата последней модерилки или "1970-01-01 00:00:00"              */
-	bool      Closed;         /*!< \brief Флаг закрытия темы                                              */
+	int       ID;               /*!< \brief ID сообщения                                                    */
+	int       IDTopic;          /*!< \brief ID темы сообщения или 0, если сообщение начинает тему           */
+	int       IDParent;         /*!< \brief ID родителя или 0, если сообщение начинает тему                 */
+	int       IDUser;           /*!< \brief ID пользователя                                                 */
+	int       IDForum;          /*!< \brief ID форума                                                       */
+	QString   Subject;          /*!< \brief Тема                                                            */
+	QString   MessageName;      /*!< \brief Название статьи                                                 */
+	QString   UserNick;         /*!< \brief Ник пользователя                                                */
+	QString   Message;          /*!< \brief Содержимое сообщения                                            */
+	int       IDArticle;        /*!< \brief ID статьи или 0                                                 */
+	QDateTime MessageDate;      /*!< \brief Дата сообщения                                                  */
+	QDateTime UpdateDate;       /*!< \brief Дата обновления сообщения или "1970-01-01 00:00:00"             */
+	QString   UserRole;         /*!< \brief Роль пользователя - Anonym, Expert, Moderator, TeamMember, User */
+	QString   UserTitle;        /*!< \brief Повязка пользователя (число для анонима, или наименование)      */
+	int       UserTitleColor;   /*!< \brief Цвет повязки                                                    */
+	QDateTime LastModerated;    /*!< \brief Дата последней модерилки или "1970-01-01 00:00:00"              */
+	bool      Closed;           /*!< \brief Флаг закрытия темы                                              */
 } AMessageInfo;
 
 /*!
@@ -44,9 +44,9 @@ typedef QList<AMessageInfo> AMessageInfoList;
  */
 typedef struct ADataQuery
 {
-	ASubscribedForumInfoList Forum;         /*!< \brief Список форумов для синхронизации */
-	QList<int>               BrokenMessage; /*!< \brief Список ID сообщений для загрузки */
-	QList<int>               BrokenTopic;   /*!< \brief Список ID оборванных топиков     */
+	ASubscribedForumInfoList Forum;           /*!< \brief Список форумов для синхронизации */
+	QList<int>               BrokenMessage;   /*!< \brief Список ID сообщений для загрузки */
+	QList<int>               BrokenTopic;     /*!< \brief Список ID оборванных топиков     */
 } ADataQuery;
 
 /*!
@@ -54,9 +54,9 @@ typedef struct ADataQuery
  */
 typedef struct ADataList
 {
-	AMessageInfoList  Message;  /*!< \brief Сообщения */
-	ARatingInfoList   Rating;   /*!< \brief Рейтинги  */
-	AModerateInfoList Moderate; /*!< \brief Модерилки */
+	AMessageInfoList  Message;    /*!< \brief Сообщения */
+	ARatingInfoList   Rating;     /*!< \brief Рейтинги  */
+	AModerateInfoList Moderate;   /*!< \brief Модерилки */
 } ADataList;
 
 /*!
@@ -64,18 +64,18 @@ typedef struct ADataList
  */
 typedef struct AMessageInfoGUI : AMessageInfo
 {
-	bool IsInfoLoaded;       /*!< \brief Загружена ли какая-нибудь информация кроме ID */
-	bool IsRead;             /*!< \brief Прочитано ли сообщение                        */
-	bool HasChild;           /*!< \brief Имеются ли дочерние сообщения                 */
-	bool IsBodyLoaded;       /*!< \brief Загружено ли тело сообщения                   */
-	bool IsChildLoaded;      /*!< \brief Загружены ли дочерние сообщения               */
-	bool HasUnreadChild;     /*!< \brief Наличие непрочитанных дочерних                */
-	bool HasUnreadChildMy;   /*!< \brief Наличие непрочитанных дочерних мне            */
-	int  UnreadChildCount;   /*!< \brief Количество непрочитанных дочерних             */
-	int  UnreadChildCountMy; /*!< \brief Количество непрочитанных дочерних мне         */
-	int  Special;            /*!< \brief Спец-данные                                   */
+	bool IsInfoLoaded;         /*!< \brief Загружена ли какая-нибудь информация кроме ID */
+	bool IsRead;               /*!< \brief Прочитано ли сообщение                        */
+	bool HasChild;             /*!< \brief Имеются ли дочерние сообщения                 */
+	bool IsBodyLoaded;         /*!< \brief Загружено ли тело сообщения                   */
+	bool IsChildLoaded;        /*!< \brief Загружены ли дочерние сообщения               */
+	bool HasUnreadChild;       /*!< \brief Наличие непрочитанных дочерних                */
+	bool HasUnreadChildMy;     /*!< \brief Наличие непрочитанных дочерних мне            */
+	int  UnreadChildCount;     /*!< \brief Количество непрочитанных дочерних             */
+	int  UnreadChildCountMy;   /*!< \brief Количество непрочитанных дочерних мне         */
+	int  Special;              /*!< \brief Спец-данные                                   */
 
-	QTreeWidgetItem* Item;   /*!< \brief Слинкованный элемент дерева                   */
+	QTreeWidgetItem* Item;     /*!< \brief Слинкованный элемент дерева                   */
 
 	AMessageInfoGUI ()
 	{
@@ -135,13 +135,13 @@ class IMessageInfoGUIFactory
  */
 typedef struct AMessage2Send
 {
-	int       ID;       /*!< \brief Локальный id сообщения */
-	int       IDParent; /*!< \brief ID родителя            */
-	int       IDForum;  /*!< \brief ID форума              */
-	QString   Subject;  /*!< \brief Тема                   */
-	QString   Message;  /*!< \brief Сообщение              */
-	QDateTime Date;     /*!< \brief Дата                   */
-	bool      Draft;    /*!< \brief Флаг черновика         */
+	int       ID;         /*!< \brief Локальный id сообщения */
+	int       IDParent;   /*!< \brief ID родителя            */
+	int       IDForum;    /*!< \brief ID форума              */
+	QString   Subject;    /*!< \brief Тема                   */
+	QString   Message;    /*!< \brief Сообщение              */
+	QDateTime Date;       /*!< \brief Дата                   */
+	bool      Draft;      /*!< \brief Флаг черновика         */
 } AMessage2Send;
 
 /*!
@@ -149,4 +149,4 @@ typedef struct AMessage2Send
  */
 typedef QList<AMessage2Send> AMessage2SendList;
 
-#endif
+#endif   // _avalon_message_info_h_

@@ -32,8 +32,8 @@ class FormSourceUI : public QDialog
 		 */
 		void restore ();
 
-		QVBoxLayout*  m_layout;      /*!< \brief Общий layout        */
-		QTextEdit*    m_text_source; /*!< \brief Raw текст сообщения */
+		QVBoxLayout* m_layout;        /*!< \brief Общий layout        */
+		QTextEdit*   m_text_source;   /*!< \brief Raw текст сообщения */
 };
 
-#endif
+#endif   // _avalon_form_source_ui_h_

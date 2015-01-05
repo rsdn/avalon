@@ -66,4 +66,4 @@ class AMySQLDatabase : public ADatabase
 		bool openDatabase  ();
 };
 
-#endif
+#endif   // _avalon_mysql_database_h_

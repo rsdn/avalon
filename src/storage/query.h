@@ -48,4 +48,4 @@ class AQuery : public QSqlQuery
 		QString m_sql;
 };
 
-#endif
+#endif   // _avalon_query_h_

@@ -22,19 +22,19 @@ class FormSubscribeUI : public QDialog
 
 	protected:
 
-		QTreeWidget* m_tree_forum; /*!< \brief Дерево форумов */
+		QTreeWidget* m_tree_forum;   /*!< \brief Дерево форумов */
 
-		QPushButton* m_button_ok;          /*!< \brief OK           */
-		QPushButton* m_button_refresh;     /*!< \brief Обновить     */
-		QPushButton* m_button_select_all;  /*!< \brief Выбрать все  */
-		QPushButton* m_button_select_none; /*!< \brief Отменить все */
-		QPushButton* m_button_cancel;      /*!< \brief Отмена       */
+		QPushButton* m_button_ok;            /*!< \brief OK           */
+		QPushButton* m_button_refresh;       /*!< \brief Обновить     */
+		QPushButton* m_button_select_all;    /*!< \brief Выбрать все  */
+		QPushButton* m_button_select_none;   /*!< \brief Отменить все */
+		QPushButton* m_button_cancel;        /*!< \brief Отмена       */
 
-		QHBoxLayout* m_layout_form;   /*!< \brief Layout формы  */
-		QVBoxLayout* m_layout_tree;   /*!< \brief Layout дерева */
-		QVBoxLayout* m_layout_button; /*!< \brief Layout кнопок */
+		QHBoxLayout* m_layout_form;     /*!< \brief Layout формы  */
+		QVBoxLayout* m_layout_tree;     /*!< \brief Layout дерева */
+		QVBoxLayout* m_layout_button;   /*!< \brief Layout кнопок */
 
-		QSpacerItem* m_spacer_button; /*!< \brief Выравнивание кнопок вверх */
+		QSpacerItem* m_spacer_button;   /*!< \brief Выравнивание кнопок вверх */
 };
 
-#endif
+#endif   // _avalon_form_subscribe_ui_h_
