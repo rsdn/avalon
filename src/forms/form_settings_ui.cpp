@@ -15,7 +15,7 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	icon.addFile(":/icons/settings128.png", QSize(128, 128));
 	setWindowIcon(icon);
 
-	resize(549, 366);
+	resize(555, 366);
 	setFixedSize(width(), height());
 
 	//
@@ -55,13 +55,9 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_layout_label_network  = new QVBoxLayout();
 	m_layout_network->addLayout(m_layout_label_network);
 
-	m_label_rsdn_host = new QLabel(this);
-	m_label_rsdn_host->setText(QString::fromUtf8("хост"));
-	m_layout_label_network->addWidget(m_label_rsdn_host);
-
-	m_label_rsdn_port = new QLabel(this);
-	m_label_rsdn_port->setText(QString::fromUtf8("порт"));
-	m_layout_label_network->addWidget(m_label_rsdn_port);
+	m_label_rsdn_proto = new QLabel(this);
+	m_label_rsdn_proto->setText(QString::fromUtf8("протокол"));
+	m_layout_label_network->addWidget(m_label_rsdn_proto);
 
 	m_label_rsdn_login = new QLabel(this);
 	m_label_rsdn_login->setText(QString::fromUtf8("логин"));
@@ -106,11 +102,10 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_layout_text_network = new QVBoxLayout();
 	m_layout_network->addLayout(m_layout_text_network);
 
-	m_text_rsdn_host = new QLineEdit(this);
-	m_layout_text_network->addWidget(m_text_rsdn_host);
-
-	m_text_rsdn_port = new QLineEdit(this);
-	m_layout_text_network->addWidget(m_text_rsdn_port);
+	m_combo_rsdn_proto = new QComboBox(this);
+	m_combo_rsdn_proto->insertItem(0, "HTTPS");
+	m_combo_rsdn_proto->insertItem(0, "HTTP");
+	m_layout_text_network->addWidget(m_combo_rsdn_proto);
 
 	m_text_rsdn_login = new QLineEdit(this);
 	m_layout_text_network->addWidget(m_text_rsdn_login);

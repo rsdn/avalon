@@ -28,8 +28,7 @@ class FormSettingsUI : public QDialog
 		         QVBoxLayout* m_layout_network_spacer;                /*!< \brief Layout для выравнивания по вертикали    */
 		            QHBoxLayout* m_layout_network;                    /*!< \brief Общий layout для настроек сети          */
 		               QVBoxLayout* m_layout_label_network;           /*!< \brief Layout для надписей                     */
-		                  QLabel* m_label_rsdn_host;                  /*!< \brief Хост RSDN                               */
-		                  QLabel* m_label_rsdn_port;                  /*!< \brief Порт RSDN                               */
+		                  QLabel* m_label_rsdn_proto;                 /*!< \brief Протокол доступа к веб-сервису RSDN     */
 		                  QLabel* m_label_rsdn_login;                 /*!< \brief Логин на RSDN                           */
 		                  QLabel* m_label_rsdn_password;              /*!< \brief Пароль на RSDN                          */
 		                  QLabel* m_label_use_proxy;                  /*!< \brief Флаг использования прокси               */
@@ -40,8 +39,7 @@ class FormSettingsUI : public QDialog
 		                  QLabel* m_label_proxy_password;             /*!< \brief Пароль прокси-сервера                   */
 		                  QLabel* m_label_use_proxy_webkit;           /*!< \brief Флаг использования прокси для webkit    */
 		               QVBoxLayout* m_layout_text_network;            /*!< \brief Layout для текстовых полей              */
-		                  QLineEdit* m_text_rsdn_host;                /*!< \brief Хост RSDN                               */
-		                  QLineEdit* m_text_rsdn_port;                /*!< \brief Порт RSDN                               */
+		                  QComboBox* m_combo_rsdn_proto;              /*!< \brief Протокол доступа к веб-сервису RSDN     */
 		                  QLineEdit* m_text_rsdn_login;               /*!< \brief Логин на RSDN                           */
 		                  QLineEdit* m_text_rsdn_password;            /*!< \brief Пароль на RSDN                          */
 		                  QCheckBox* m_check_use_proxy;               /*!< \brief Флаг использования прокси               */

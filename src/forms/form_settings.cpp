@@ -215,8 +215,7 @@ void FormSettings::save ()
 	// сеть
 	//
 
-	settings.setValue("rsdn/host",     m_text_rsdn_host->text());
-	settings.setValue("rsdn/port",     m_text_rsdn_port->text());
+	settings.setValue("rsdn/proto",    m_combo_rsdn_proto->currentText());
 	settings.setValue("rsdn/login",    m_text_rsdn_login->text());
 	settings.setValue("rsdn/password", m_text_rsdn_password->text());
 
@@ -268,11 +267,17 @@ void FormSettings::restore ()
 	//
 	// сеть
 	//
+	QString rsdn_proto = settings.value("rsdn/proto", "HTTPS").toString();
 
-	m_text_rsdn_host->setText     (settings.value("rsdn/host",     "rsdn.ru").toString());
-	m_text_rsdn_port->setText     (settings.value("rsdn/port",     "443"    ).toString());
-	m_text_rsdn_login->setText    (settings.value("rsdn/login",    ""       ).toString());
-	m_text_rsdn_password->setText (settings.value("rsdn/password", ""       ).toString());
+	int idx = m_combo_rsdn_proto->findText(rsdn_proto);
+
+	if (idx != -1)
+		m_combo_rsdn_proto->setCurrentIndex(idx);
+	else
+		m_combo_rsdn_proto->setCurrentIndex(0);
+
+	m_text_rsdn_login->setText    (settings.value("rsdn/login",    "").toString());
+	m_text_rsdn_password->setText (settings.value("rsdn/password", "").toString());
 
 	bool use_proxy = settings.value("proxy/enabled", false).toInt();
 
@@ -283,7 +288,7 @@ void FormSettings::restore ()
 
 	QString proxy_type = settings.value("proxy/type", "HTTP").toString();
 
-	int idx = m_combo_proxy_type->findText(proxy_type);
+	idx = m_combo_proxy_type->findText(proxy_type);
 
 	if (idx != -1)
 		m_combo_proxy_type->setCurrentIndex(idx);
