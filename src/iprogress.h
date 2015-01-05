@@ -27,6 +27,23 @@ class IProgress
 		 * \param status Состояние операции
 		 */
 		virtual void onProgress (int percent, const QString& status) = 0;
+
+		/*!
+		 * \brief Прогресс
+		 * \param minimum Минимальное значение
+		 * \param maximum Максимальное значение
+		 * \param value Текущее значение
+		 */
+		virtual void onProgress (int minimum, int maximum, int value) = 0;
+
+		/*!
+		 * \brief Прогресс
+		 * \param minimum Минимальное значение
+		 * \param maximum Максимальное значение
+		 * \param value Текущее значение
+		 * \param status Состояние операции
+		 */
+		virtual void onProgress (int minimum, int maximum, int value, const QString& status) = 0;
 };
 
 #endif

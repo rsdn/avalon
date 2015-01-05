@@ -95,7 +95,7 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 	m_forum_tree->reload();
 
 	// установка прокси для отображения сообщений
-	m_message_view->View->page()->networkAccessManager()->setProxy(FormRequest::defaultProxy(true));
+	m_message_view->View->page()->networkAccessManager()->setProxy(AWebservice::defaultProxy(true));
 
 	// таймер периодической синхронизации
 	connect(&m_timer, SIGNAL(timeout()), this, SLOT(timer_on_timer()));
@@ -149,9 +149,7 @@ void AFormMain::menu_service_synchronize_triggered ()
 	// отправка сообщений/модерилок/рейтингов
 	//
 
-	QString         data;
-	QNetworkRequest request;
-
+	AWebservice        webservice(this, this);
 	AMessageInfoList   messages_temp;
 	AMessage2SendList  messages;
 	ARating2SendList   ratings;
@@ -192,61 +190,11 @@ void AFormMain::menu_service_synchronize_triggered ()
 	messages_temp.clear();
 
 	// отправка данных
-	QString cookie = "";
-
 	if (messages.count() != 0 || ratings.count() != 0 || moderates.count() != 0)
 	{
-		AWebservice::postChange_WebserviceQuery(request, data, messages, ratings, moderates);
-
-		std::auto_ptr<FormRequest> form(new FormRequest(this, request, data));
-
-		if (form->exec() == QDialog::Accepted)
+		ACommitInfo commit_info;
+		if (webservice.postChange(messages, ratings, moderates, commit_info) == true)
 		{
-			QString answer = form->getResponseHeader();
-
-			QString result = AWebservice::postChange_WebserviceParse(answer, cookie);
-
-			if (result.length() > 0)
-			{
-				QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), result);
-				return;
-			}
-		}
-		else
-			return;
-
-	}
-
-	// коммит данных
-	if (messages.count() != 0 || ratings.count() != 0 || moderates.count() != 0)
-	{
-		AWebservice::postChangeCommit_WebserviceQuery(request, data, cookie);
-
-		std::auto_ptr<FormRequest> form(new FormRequest(this, request, data));
-
-		if (form->exec() == QDialog::Accepted)
-		{
-			// получение ответа
-			bool error;
-			QString answer = form->getResponse(error);
-
-			if (error == true)
-			{
-				QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), answer);
-				return;
-			}
-
-			// парсинг ответа
-			ACommitInfo commit_info;
-
-			QString result = AWebservice::postChangeCommit_WebserviceParse(answer, commit_info);
-
-			if (result.length() > 0)
-			{
-				QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), result);
-				return;
-			}
-
 			// сохранение ответа
 			if (storage->setCommitResult(commit_info) == false)
 			{
@@ -310,7 +258,10 @@ void AFormMain::menu_service_synchronize_triggered ()
 			}
 		}
 		else
+		{
+			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), webservice.error());
 			return;
+		}
 	}
 
 	//
@@ -339,35 +290,9 @@ void AFormMain::menu_service_synchronize_triggered ()
 	{
 		user_row_version = row_version.User;
 
-		// получение текста запроса
-		AWebservice::getUserList_WebserviceQuery(request, data, row_version.User);
-
-		// запрос к вебсервису
-		std::auto_ptr<FormRequest> form(new FormRequest(this, request, data));
-
-		if (form->exec() == QDialog::Accepted)
+		AUserInfoList list;
+		if (webservice.getUserList(user_row_version, list, row_version.User) == true)
 		{
-			// получение ответа
-			bool error;
-			QString answer = form->getResponse(error);
-
-			if (error == true)
-			{
-				QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), answer);
-				return;
-			}
-
-			// парсинг ответа
-			AUserInfoList list;
-
-			QString result = AWebservice::getUserList_WebserviceParse(answer, list, row_version.User);
-
-			if (result.length() > 0)
-			{
-				QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), result);
-				return;
-			}
-
 			// сохранение ответа
 			if (storage->setUserList(list, row_version.User) == false)
 			{
@@ -376,7 +301,10 @@ void AFormMain::menu_service_synchronize_triggered ()
 			}
 		}
 		else
+		{
+			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), webservice.error());
 			return;
+		}
 	}
 
 	// после первой синхронизации списка пользователей может быть полезно перегрузить текущего пользователя,
@@ -416,34 +344,9 @@ void AFormMain::menu_service_synchronize_triggered ()
 			return;
 		}
 
-		// получение текста запроса
-		AWebservice::getMessageList_WebserviceQuery(request, data, row_version, query);
-
-		// запрос к вебсервису
-		std::auto_ptr<FormRequest> form(new FormRequest(this, request, data));
-
-		if (form->exec() == QDialog::Accepted)
+		ADataList list;
+		if (webservice.getMessageList(row_version, query, list, row_version) == true)
 		{
-			bool error;
-			QString answer = form->getResponse(error);
-
-			if (error == true)
-			{
-				QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), answer);
-				return;
-			}
-
-			// парсинг ответа
-			ADataList list;
-
-			QString result = AWebservice::getMessageList_WebserviceParse(answer, list, row_version);
-
-			if (result.length() > 0)
-			{
-				QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), result);
-				return;
-			}
-
 			// сохранение ответа
 			if (storage->setMessageList(list, row_version, true) == false)
 			{
@@ -459,7 +362,10 @@ void AFormMain::menu_service_synchronize_triggered ()
 			}
 		}
 		else
+		{
+			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), webservice.error());
 			return;
+		}
 
 		// перезагрузка количества непрочитаных сообщений
 		m_forum_tree->reloadUnread(true);
@@ -467,6 +373,8 @@ void AFormMain::menu_service_synchronize_triggered ()
 
 	// восстановление положения выделения в дереве сообщений
 	m_message_tree->selectByPath(&restore_path);
+
+	setDefaultStatus();
 }
 //----------------------------------------------------------------------------------------------
 
@@ -616,7 +524,7 @@ void AFormMain::menu_service_settings_triggered ()
 		m_forum_tree->reload();
 
 		// переустановка прокси для отображения сообщений
-		m_message_view->View->page()->networkAccessManager()->setProxy(FormRequest::defaultProxy(true));
+		m_message_view->View->page()->networkAccessManager()->setProxy(AWebservice::defaultProxy(true));
 
 		// таймер синхронизации
 		QSettings settings;
@@ -980,5 +888,43 @@ void AFormMain::setDefaultStatus ()
 int AFormMain::synchronizeInterval ()
 {
 	return QSettings().value("ui/synchronize_interval", "0").toUInt() * 1000 * 60;
+}
+//----------------------------------------------------------------------------------------------
+
+void AFormMain::onProgress (int /*percent*/)
+{
+	/*m_progress_bar->setMinimum(0);
+	m_progress_bar->setMaximum(100);
+	m_progress_bar->setValue(percent);*/
+
+	QCoreApplication::processEvents();
+}
+//----------------------------------------------------------------------------------------------
+
+void AFormMain::onProgress (int percent, const QString& status)
+{
+	if (status.length() > 0)
+		m_status_bar->showMessage(status);
+
+	onProgress(percent);
+}
+//----------------------------------------------------------------------------------------------
+
+void AFormMain::onProgress (int /*minimum*/, int /*maximum*/, int /*value*/)
+{
+	/*m_progress_bar->setMinimum(minimum);
+	m_progress_bar->setMaximum(maximum);
+	m_progress_bar->setValue(value);*/
+
+	QCoreApplication::processEvents();
+}
+//----------------------------------------------------------------------------------------------
+
+void AFormMain::onProgress (int minimum, int maximum, int value, const QString& status)
+{
+	if (status.length() > 0)
+		m_status_bar->showMessage(status);
+
+	onProgress(minimum, maximum, value);
 }
 //----------------------------------------------------------------------------------------------

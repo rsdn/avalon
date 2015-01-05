@@ -183,33 +183,11 @@ void FormSubscribe::button_ok_clicked ()
 
 void FormSubscribe::button_refresh_clicked ()
 {
-	// получение текста запроса
-	QString         data;
-	QNetworkRequest request;
+	AWebservice webservice(this);
 
-	AWebservice::getForumList_WebserviceQuery(request, data);
-
-	// запрос к вебсервису
-	FormRequest* form = new FormRequest(this, request, data);
-
-	if (form->exec() == QDialog::Accepted)
+	AForumGroupInfoList list;
+	if (webservice.getForumList(list) == true)
 	{
-		bool error;
-		QString answer = form->getResponse(error);
-
-		delete form;
-
-		if (error == true)
-		{
-			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), answer);
-			return;
-		}
-
-		// парсинг ответа
-		AForumGroupInfoList list;
-
-		AWebservice::getForumList_WebserviceParse(answer, list);
-
 		// получение хранилища
 		std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
 
@@ -230,7 +208,7 @@ void FormSubscribe::button_refresh_clicked ()
 		reload();
 	}
 	else
-		delete form;
+		QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), webservice.error());
 }
 //----------------------------------------------------------------------------------------------
 

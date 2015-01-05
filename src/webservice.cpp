@@ -1,108 +1,340 @@
 #include "webservice.h"
 //----------------------------------------------------------------------------------------------
 
-QString AWebservice::getTextBetween (const QString* source, const QString& from, const QString& to)
+AWebservice::AWebservice (QWidget* parent, IProgress* progress) : QObject (parent)
 {
-	int idx1 = source->indexOf(from);
+	m_progress = progress;
 
-	if (idx1 == -1)
-		return "";
-
-	int idx2 = source->indexOf(to, idx1 + 1);
-
-	if (idx2 == -1)
-		return "";
-
-	return source->mid(idx1 + from.length(), idx2 - idx1 - from.length());
-}
-//----------------------------------------------------------------------------------------------
-
-QString AWebservice::getNextBlock (const QString* source, const QString& from, const QString& to, int& seed)
-{
-	int idx1 = source->indexOf(from, seed);
-
-	if (idx1 == -1)
-		return "";
-
-	int idx2 = source->indexOf(to, idx1 + 1);
-
-	if (idx2 == -1)
-		return "";
-
-	QString result = source->mid(idx1 + from.length(), idx2 - idx1 - from.length());
-
-	seed = idx2 + to.length();
-
-	return result;
-}
-//----------------------------------------------------------------------------------------------
-
-QDateTime AWebservice::getDateTimeFromString (const QString& value)
-{
-	if (value == "0001-01-01T00:00:00")
-		return QDateTime::fromString("1970-01-01T00:00:00", Qt::ISODate);
-
-	return QDateTime::fromString(value, Qt::ISODate);
-}
-//----------------------------------------------------------------------------------------------
-
-bool AWebservice::getBooleanFromString (const QString& value)
-{
-	QString tmp = value.toLower();
-
-	if (tmp == "0" || tmp == "false" || tmp == "no" || tmp == "f" || tmp == "n")
-		return false;
-
-	return true;
-}
-//----------------------------------------------------------------------------------------------
-
-void AWebservice::defaultRequest(QNetworkRequest& request, const QString& proto, const QString& action, qint64 length)
-{
-	request.setUrl(proto.toLower() + "://rsdn.ru/ws/janusAT.asmx");
-
-	request.setHeader(QNetworkRequest::CookieHeader, QVariant());
-
-	request.setRawHeader("Host",           "rsdn.ru");
-	request.setRawHeader("Connection",     "close");
-	request.setRawHeader("User-Agent",     getAgentString().toUtf8());
-	request.setRawHeader("Content-Type",   "text/xml; charset=utf-8");
-	request.setRawHeader("Content-Length", QString::number(length).toUtf8());
-	request.setRawHeader("SOAPAction",     (QString("\"http://rsdn.ru/Janus/") + action + "\"").toUtf8());
-
-#ifdef AVALON_USE_ZLIB
-	request.setRawHeader("Accept-Encoding", "gzip");
-#endif
-}
-//----------------------------------------------------------------------------------------------
-
-void AWebservice::getForumList_WebserviceQuery (QNetworkRequest& request, QString& data)
-{
 	QSettings settings;
 
-	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
-	QString rsdn_password = settings.value("rsdn/password", "").toString();
-	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
+	m_rsdn_login    = settings.value("rsdn/login",    "").toString();
+	m_rsdn_password = settings.value("rsdn/password", "").toString();
+	m_rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
+}
+//----------------------------------------------------------------------------------------------
 
-	data = "";
+AWebservice::~AWebservice ()
+{
+}
+//----------------------------------------------------------------------------------------------
+
+bool AWebservice::getForumList (AForumGroupInfoList& list)
+{
+	QString data;
 	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
 	data += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n";
 	data += "  <soap:Body>\r\n";
 	data += "    <GetForumList xmlns=\"http://rsdn.ru/Janus/\">\r\n";
 	data += "      <forumRequest>\r\n";
-	data += (QString)"        <userName>" + rsdn_login    + "</userName>\r\n";
-	data += (QString)"        <password>" + rsdn_password + "</password>\r\n";
+	data += (QString)"        <userName>" + m_rsdn_login    + "</userName>\r\n";
+	data += (QString)"        <password>" + m_rsdn_password + "</password>\r\n";
 	data += "        <forumsRowVersion>AAAAAAAAAAA=</forumsRowVersion>\r\n";
 	data += "      </forumRequest>\r\n";
 	data += "    </GetForumList>\r\n";
 	data += "  </soap:Body>\r\n";
 	data += "</soap:Envelope>\r\n";
 
-	defaultRequest(request, rsdn_proto, "GetForumList", data.toUtf8().size());
+	QNetworkRequest request;
+	prepareRequest(request, m_rsdn_proto, "GetForumList", data.toUtf8().size());
+
+	if (makeRequest(request, data) == false)
+		return false;
+
+	parseForumList(m_body, list);
+
+	return true;
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::getForumList_WebserviceParse (const QString& data, AForumGroupInfoList& list)
+bool AWebservice::getUserList (const QString& last_row_version, AUserInfoList& list, QString& row_version)
+{
+	QString data;
+	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
+	data += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n";
+	data += "  <soap:Body>\r\n";
+	data += "    <GetNewUsers xmlns=\"http://rsdn.ru/Janus/\">\r\n";
+	data += "      <userRequest>\r\n";
+	data += (QString)"        <userName>"       + m_rsdn_login     + "</userName>\r\n";
+	data += (QString)"        <password>"       + m_rsdn_password  + "</password>\r\n";
+	data += (QString)"        <lastRowVersion>" + last_row_version + "</lastRowVersion>\r\n";
+	data += "        <maxOutput>0</maxOutput>\r\n";
+	data += "      </userRequest>\r\n";
+	data += "    </GetNewUsers>\r\n";
+	data += "  </soap:Body>\r\n";
+	data += "</soap:Envelope>\r\n";
+
+	QNetworkRequest request;
+	prepareRequest(request, m_rsdn_proto, "GetNewUsers", data.toUtf8().size());
+
+	if (makeRequest(request, data) == false)
+		return false;
+
+	QString result = parseUserList(m_body, list, row_version);
+	if (result.length() > 0)
+	{
+		m_error = result;
+		return false;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------------------------
+
+bool AWebservice::getMessageList (const ARowVersion& last_row_version, const ADataQuery& query, ADataList& list, ARowVersion& row_version)
+{
+	QString data;
+	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
+	data += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n";
+	data += "  <soap:Body>\r\n";
+	data += "    <GetNewData xmlns=\"http://rsdn.ru/Janus/\">\r\n";
+	data += "      <changeRequest>\r\n";
+	data += (QString)"        <userName>" + m_rsdn_login    + "</userName>\r\n";
+	data += (QString)"        <password>" + m_rsdn_password + "</password>\r\n";
+
+	// подписанные форумы
+	if (query.Forum.count() > 0)
+	{
+		data += "        <subscribedForums>\r\n";
+
+		for (int i = 0; i < query.Forum.count(); i++)
+		{
+			data += "          <RequestForumInfo>\r\n";
+			data += (QString)"            <forumId>"        + QString::number(query.Forum[i].IDForum)     + "</forumId>\r\n";
+			data += (QString)"            <isFirstRequest>" + (query.Forum[i].IsFirst ? "true" : "false") + "</isFirstRequest>\r\n";
+			data += "          </RequestForumInfo>\r\n";
+		}
+
+		data += "        </subscribedForums>\r\n";
+	}
+	else
+		data += "        <subscribedForums />\r\n";
+
+	// версии
+	data += (QString)"        <ratingRowVersion>"   + last_row_version.Rating   + "</ratingRowVersion>\r\n";
+	data += (QString)"        <messageRowVersion>"  + last_row_version.Message  + "</messageRowVersion>\r\n";
+	data += (QString)"        <moderateRowVersion>" + last_row_version.Moderate + "</moderateRowVersion>\r\n";
+
+	// ID оборванных сообщений, то есть сообщений без родителя.
+	if (query.BrokenMessage.count() > 0)
+	{
+		data += "        <breakMsgIds>\r\n";
+
+		for (int i = 0; i < query.BrokenMessage.count(); i++)
+			data += (QString)"          <int>" + QString::number(query.BrokenMessage[i]) + "</int>\r\n";
+
+		data += "        </breakMsgIds>\r\n";
+	}
+	else
+		data += "        <breakMsgIds />\r\n";
+
+	// ID топика не имеющего корневого сообщения или просто ID топика, который хочется выкачать целиком
+	// topicId == messageId первого сообщения топика
+	if (query.BrokenTopic.count() > 0)
+	{
+		data += "        <breakTopicIds>\r\n";
+
+		for (int i = 0; i < query.BrokenTopic.count(); i++)
+			data += (QString)"          <int>" + QString::number(query.BrokenTopic[i]) + "</int>\r\n";
+
+		data += "        </breakTopicIds>\r\n";
+	}
+	else
+		data += "        <breakTopicIds />\r\n";
+
+	data += "        <maxOutput>0</maxOutput>\r\n";
+	data += "      </changeRequest>\r\n";
+	data += "    </GetNewData>\r\n";
+	data += "  </soap:Body>\r\n";
+	data += "</soap:Envelope>\r\n";
+
+	QNetworkRequest request;
+	prepareRequest(request, m_rsdn_proto, "GetNewData", data.toUtf8().size());
+
+	if (makeRequest(request, data) == false)
+		return false;
+
+	QString result = parseMessageList(m_body, list, row_version);
+	if (result.length() > 0)
+	{
+		m_error = result;
+		return false;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------------------------
+
+bool AWebservice::postChange (const AMessage2SendList& list_messages, const ARating2SendList& list_rating, const AModerate2SendList& list_moderate, ACommitInfo& commit_info)
+{
+	QString data;
+	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
+	data += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n";
+	data += "  <soap:Body>\r\n";
+	data += "    <PostChange xmlns=\"http://rsdn.ru/Janus/\">\r\n";
+	data += "      <postRequest>\r\n";
+	data += (QString)"        <userName>" + m_rsdn_login    + "</userName>\r\n";
+	data += (QString)"        <password>" + m_rsdn_password + "</password>\r\n";
+
+	// сообщения
+	if (list_messages.count() > 0)
+	{
+		data += "        <writedMessages>\r\n";
+
+		for (int i = 0; i < list_messages.count(); i++)
+		{
+			QString message = list_messages[i].Message;
+
+			QString subject = list_messages[i].Subject;
+
+			subject.replace("&", "&amp;");
+			subject.replace("<", "&lt;");
+			subject.replace(">", "&gt;");
+
+			data += "          <PostMessageInfo>\r\n";
+			data += (QString)"            <localMessageId>" + QString::number(list_messages[i].ID)       + "</localMessageId>\r\n";
+			data += (QString)"            <parentId>"       + QString::number(list_messages[i].IDParent) + "</parentId>\r\n";
+			data += (QString)"            <forumId>"        + QString::number(list_messages[i].IDForum)  + "</forumId>\r\n";
+			data += (QString)"            <subject>"        + subject                                    + "</subject>\r\n";
+			data += (QString)"            <message>"        + message                                    + "</message>\r\n";
+			data += "          </PostMessageInfo>\r\n";
+		}
+
+		data += "        </writedMessages>\r\n";
+	}
+	else
+		data += "        <writedMessages />\r\n";
+
+	// рейтинги
+	if (list_rating.count() > 0)
+	{
+		data += "        <rates>\r\n";
+
+		for (int i = 0; i < list_rating.count(); i++)
+		{
+			data += "          <PostRatingInfo>\r\n";
+			data += (QString)"            <localRatingId>" + QString::number(list_rating[i].ID)        + "</localRatingId>\r\n";
+			data += (QString)"            <messageId>"     + QString::number(list_rating[i].IDMessage) + "</messageId>\r\n";
+			data += (QString)"            <rate>"          + QString::number(list_rating[i].Rate)      + "</rate>\r\n";
+			data += "          </PostRatingInfo>\r\n";
+		}
+
+		data += "        </rates>\r\n";
+	}
+	else
+		data += "        <rates />\r\n";
+
+	// модерилки
+	if (list_moderate.count() > 0)
+	{
+		data += "        <moderates>\r\n";
+
+		for (int i = 0; i < list_moderate.count(); i++)
+		{
+			QString description = list_moderate[i].Description;
+
+			description.replace("&", "&amp;");
+			description.replace("<", "&lt;");
+			description.replace(">", "&gt;");
+
+			data += "          <PostModerateInfo>\r\n";
+			data += (QString)"            <LocalModerateId>"   + QString::number(list_moderate[i].ID)          + "</LocalModerateId>\r\n";
+			data += (QString)"            <MessageId>"         + QString::number(list_moderate[i].IDMessage)   + "</MessageId>\r\n";
+			data += (QString)"            <ModerateAction>"    + list_moderate[i].Action                       + "</ModerateAction>\r\n";
+			data += (QString)"            <ModerateToForumId>" + QString::number(list_moderate[i].IDForum)     + "</ModerateToForumId>\r\n";
+			data += (QString)"            <Description>"       + description                                   + "</Description>\r\n";
+			data += (QString)"            <AsModerator>"       + QString::number(list_moderate[i].AsModerator) + "</AsModerator>\r\n";
+			data += "          </PostModerateInfo>\r\n";
+		}
+
+		data += "        </moderates>\r\n";
+	}
+	else
+		data += "        <moderates />\r\n";
+
+	data += "      </postRequest>\r\n";
+	data += "    </PostChange>\r\n";
+	data += "  </soap:Body>\r\n";
+	data += "</soap:Envelope>\r\n";
+
+	QNetworkRequest request;
+	prepareRequest(request, m_rsdn_proto, "PostChange", data.toUtf8().size());
+
+	if (makeRequest(request, data) == false)
+		return false;
+
+	QString cookie;
+	QString result = parsePostChange(m_headers, cookie);
+
+	if (result.length() > 0)
+	{
+		m_error = result;
+		return false;
+	}
+
+	data  = "";
+	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
+	data += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n";
+	data += "  <soap:Body>\r\n";
+	data += "    <PostChangeCommit xmlns=\"http://rsdn.ru/Janus/\" />\r\n";
+	data += "  </soap:Body>\r\n";
+	data += "</soap:Envelope>\r\n";
+
+	prepareRequest(request, m_rsdn_proto, "PostChangeCommit", data.toUtf8().size());
+
+	if (cookie.length() > 0)
+		request.setRawHeader("Cookie", cookie.toUtf8());
+
+	if (makeRequest(request, data) == false)
+		return false;
+
+	result = parsePostChangeCommit(m_body, commit_info);
+
+	if (result.length() > 0)
+	{
+		m_error = result;
+		return false;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------------------------
+
+QNetworkProxy AWebservice::defaultProxy (bool webkit)
+{
+	QSettings settings;
+
+	QNetworkProxy proxy;
+
+	if (settings.value("proxy/enabled", false).toInt() != false)
+	{
+		if (webkit == true && settings.value("proxy/enabled_webkit", true).toInt() == false)
+			return proxy;
+
+		QString proxy_type = settings.value("proxy/type", "HTTP").toString();
+
+		if (proxy_type == "HTTP")
+			proxy.setType(QNetworkProxy::HttpCachingProxy);
+		else if (proxy_type == "SOCKS 5")
+			proxy.setType(QNetworkProxy::Socks5Proxy);
+		else if (proxy_type == "CONNECT")
+			proxy.setType(QNetworkProxy::HttpProxy);
+		else
+			proxy.setType(QNetworkProxy::DefaultProxy);
+
+		if (proxy.type() != QNetworkProxy::DefaultProxy)
+		{
+			proxy.setHostName (settings.value("proxy/host",     "").toString());
+			proxy.setPort     (settings.value("proxy/port",     0 ).toInt());
+			proxy.setUser     (settings.value("proxy/login",    "").toString());
+			proxy.setPassword (settings.value("proxy/password", "").toString());
+		}
+	}
+
+	return proxy;
+}
+//----------------------------------------------------------------------------------------------
+
+void AWebservice::parseForumList (const QString& data, AForumGroupInfoList& list)
 {
 	list.clear();
 
@@ -172,63 +404,10 @@ void AWebservice::getForumList_WebserviceParse (const QString& data, AForumGroup
 
 		list.append(group_info);
 	}
-
-	//
-	// добавление "мусорки"
-	//
-
-	/*
-	AForumGroupInfo trash_group;
-
-	trash_group.Group.ID        = 0;
-	trash_group.Group.Name      = QString::fromUtf8("Корзина");
-	trash_group.Group.SortOrder = 10000;
-
-	AForumInfo trash_forum;
-
-	trash_forum.ID        = 0;
-	trash_forum.IDGroup   = 0;
-	trash_forum.ShortName = "trash";
-	trash_forum.Name      = QString::fromUtf8("Удаленные");
-	trash_forum.Rated     = true;
-	trash_forum.InTop     = true;
-	trash_forum.RateLimit = 0;
-
-	trash_group.Forums.append(trash_forum);
-
-	list.append(trash_group);
-	*/
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::getUserList_WebserviceQuery (QNetworkRequest& request, QString& data, const QString& row_version)
-{
-	QSettings settings;
-
-	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
-	QString rsdn_password = settings.value("rsdn/password", "").toString();
-	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
-
-	data = "";
-	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
-	data += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n";
-	data += "  <soap:Body>\r\n";
-	data += "    <GetNewUsers xmlns=\"http://rsdn.ru/Janus/\">\r\n";
-	data += "      <userRequest>\r\n";
-	data += (QString)"        <userName>"       + rsdn_login    + "</userName>\r\n";
-	data += (QString)"        <password>"       + rsdn_password + "</password>\r\n";
-	data += (QString)"        <lastRowVersion>" + row_version   + "</lastRowVersion>\r\n";
-	data += "        <maxOutput>0</maxOutput>\r\n";
-	data += "      </userRequest>\r\n";
-	data += "    </GetNewUsers>\r\n";
-	data += "  </soap:Body>\r\n";
-	data += "</soap:Envelope>\r\n";
-
-	defaultRequest(request, rsdn_proto, "GetNewUsers", data.toUtf8().size());
-}
-//----------------------------------------------------------------------------------------------
-
-QString AWebservice::getUserList_WebserviceParse (const QString& data, AUserInfoList& list, QString& row_version)
+QString AWebservice::parseUserList (const QString& data, AUserInfoList& list, QString& row_version)
 {
 	list.clear();
 
@@ -270,84 +449,7 @@ QString AWebservice::getUserList_WebserviceParse (const QString& data, AUserInfo
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::getMessageList_WebserviceQuery (QNetworkRequest& request, QString& data, const ARowVersion& row_version, const ADataQuery& query)
-{
-	QSettings settings;
-
-	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
-	QString rsdn_password = settings.value("rsdn/password", "").toString();
-	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
-
-	data = "";
-	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
-	data += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n";
-	data += "  <soap:Body>\r\n";
-	data += "    <GetNewData xmlns=\"http://rsdn.ru/Janus/\">\r\n";
-	data += "      <changeRequest>\r\n";
-	data += (QString)"        <userName>" + rsdn_login    + "</userName>\r\n";
-	data += (QString)"        <password>" + rsdn_password + "</password>\r\n";
-
-	// подписанные форумы
-	if (query.Forum.count() > 0)
-	{
-		data += "        <subscribedForums>\r\n";
-
-		for (int i = 0; i < query.Forum.count(); i++)
-		{
-			data += "          <RequestForumInfo>\r\n";
-			data += (QString)"            <forumId>"        + QString::number(query.Forum[i].IDForum)     + "</forumId>\r\n";
-			data += (QString)"            <isFirstRequest>" + (query.Forum[i].IsFirst ? "true" : "false") + "</isFirstRequest>\r\n";
-			data += "          </RequestForumInfo>\r\n";
-		}
-
-		data += "        </subscribedForums>\r\n";
-	}
-	else
-		data += "        <subscribedForums />\r\n";
-
-	// версии
-	data += (QString)"        <ratingRowVersion>"   + row_version.Rating   + "</ratingRowVersion>\r\n";
-	data += (QString)"        <messageRowVersion>"  + row_version.Message  + "</messageRowVersion>\r\n";
-	data += (QString)"        <moderateRowVersion>" + row_version.Moderate + "</moderateRowVersion>\r\n";
-
-	// ID оборванных сообщений, то есть сообщений без родителя.
-	if (query.BrokenMessage.count() > 0)
-	{
-		data += "        <breakMsgIds>\r\n";
-
-		for (int i = 0; i < query.BrokenMessage.count(); i++)
-			data += (QString)"          <int>" + QString::number(query.BrokenMessage[i]) + "</int>\r\n";
-
-		data += "        </breakMsgIds>\r\n";
-	}
-	else
-		data += "        <breakMsgIds />\r\n";
-
-	// ID топика не имеющего корневого сообщения или просто ID топика, который хочется выкачать целиком
-	// topicId == messageId первого сообщения топика
-	if (query.BrokenTopic.count() > 0)
-	{
-		data += "        <breakTopicIds>\r\n";
-
-		for (int i = 0; i < query.BrokenTopic.count(); i++)
-			data += (QString)"          <int>" + QString::number(query.BrokenTopic[i]) + "</int>\r\n";
-
-		data += "        </breakTopicIds>\r\n";
-	}
-	else
-		data += "        <breakTopicIds />\r\n";
-
-	data += "        <maxOutput>0</maxOutput>\r\n";
-	data += "      </changeRequest>\r\n";
-	data += "    </GetNewData>\r\n";
-	data += "  </soap:Body>\r\n";
-	data += "</soap:Envelope>\r\n";
-
-	defaultRequest(request, rsdn_proto, "GetNewData", data.toUtf8().size());
-}
-//----------------------------------------------------------------------------------------------
-
-QString AWebservice::getMessageList_WebserviceParse (const QString& data, ADataList& list, ARowVersion& row_version)
+QString AWebservice::parseMessageList (const QString& data, ADataList& list, ARowVersion& row_version)
 {
 	list.Rating.clear();
 	list.Message.clear();
@@ -460,109 +562,7 @@ QString AWebservice::getMessageList_WebserviceParse (const QString& data, ADataL
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::postChange_WebserviceQuery (QNetworkRequest& request, QString& data, const AMessage2SendList& list_messages, const ARating2SendList& list_rating, const AModerate2SendList& list_moderate)
-{
-	QSettings settings;
-
-	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
-	QString rsdn_password = settings.value("rsdn/password", "").toString();
-	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
-
-	data = "";
-	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
-	data += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n";
-	data += "  <soap:Body>\r\n";
-	data += "    <PostChange xmlns=\"http://rsdn.ru/Janus/\">\r\n";
-	data += "      <postRequest>\r\n";
-	data += (QString)"        <userName>" + rsdn_login    + "</userName>\r\n";
-	data += (QString)"        <password>" + rsdn_password + "</password>\r\n";
-
-	// сообщения
-	if (list_messages.count() > 0)
-	{
-		data += "        <writedMessages>\r\n";
-
-		for (int i = 0; i < list_messages.count(); i++)
-		{
-			QString message = list_messages[i].Message;
-
-			QString subject = list_messages[i].Subject;
-
-			subject.replace("&", "&amp;");
-			subject.replace("<", "&lt;");
-			subject.replace(">", "&gt;");
-
-			data += "          <PostMessageInfo>\r\n";
-			data += (QString)"            <localMessageId>" + QString::number(list_messages[i].ID)       + "</localMessageId>\r\n";
-			data += (QString)"            <parentId>"       + QString::number(list_messages[i].IDParent) + "</parentId>\r\n";
-			data += (QString)"            <forumId>"        + QString::number(list_messages[i].IDForum)  + "</forumId>\r\n";
-			data += (QString)"            <subject>"        + subject                                    + "</subject>\r\n";
-			data += (QString)"            <message>"        + message                                    + "</message>\r\n";
-			data += "          </PostMessageInfo>\r\n";
-		}
-
-		data += "        </writedMessages>\r\n";
-	}
-	else
-		data += "        <writedMessages />\r\n";
-
-	// рейтинги
-	if (list_rating.count() > 0)
-	{
-		data += "        <rates>\r\n";
-
-		for (int i = 0; i < list_rating.count(); i++)
-		{
-			data += "          <PostRatingInfo>\r\n";
-			data += (QString)"            <localRatingId>" + QString::number(list_rating[i].ID)        + "</localRatingId>\r\n";
-			data += (QString)"            <messageId>"     + QString::number(list_rating[i].IDMessage) + "</messageId>\r\n";
-			data += (QString)"            <rate>"          + QString::number(list_rating[i].Rate)      + "</rate>\r\n";
-			data += "          </PostRatingInfo>\r\n";
-		}
-
-		data += "        </rates>\r\n";
-	}
-	else
-		data += "        <rates />\r\n";
-
-	// модерилки
-	if (list_moderate.count() > 0)
-	{
-		data += "        <moderates>\r\n";
-
-		for (int i = 0; i < list_moderate.count(); i++)
-		{
-			QString description = list_moderate[i].Description;
-
-			description.replace("&", "&amp;");
-			description.replace("<", "&lt;");
-			description.replace(">", "&gt;");
-
-			data += "          <PostModerateInfo>\r\n";
-			data += (QString)"            <LocalModerateId>"   + QString::number(list_moderate[i].ID)          + "</LocalModerateId>\r\n";
-			data += (QString)"            <MessageId>"         + QString::number(list_moderate[i].IDMessage)   + "</MessageId>\r\n";
-			data += (QString)"            <ModerateAction>"    + list_moderate[i].Action                       + "</ModerateAction>\r\n";
-			data += (QString)"            <ModerateToForumId>" + QString::number(list_moderate[i].IDForum)     + "</ModerateToForumId>\r\n";
-			data += (QString)"            <Description>"       + description                                   + "</Description>\r\n";
-			data += (QString)"            <AsModerator>"       + QString::number(list_moderate[i].AsModerator) + "</AsModerator>\r\n";
-			data += "          </PostModerateInfo>\r\n";
-		}
-
-		data += "        </moderates>\r\n";
-	}
-	else
-		data += "        <moderates />\r\n";
-
-	data += "      </postRequest>\r\n";
-	data += "    </PostChange>\r\n";
-	data += "  </soap:Body>\r\n";
-	data += "</soap:Envelope>\r\n";
-
-	defaultRequest(request, rsdn_proto, "PostChange", data.toUtf8().size());
-}
-//----------------------------------------------------------------------------------------------
-
-QString AWebservice::postChange_WebserviceParse (const QString& header, QString& cookie)
+QString AWebservice::parsePostChange (const QString& header, QString& cookie)
 {
 	QStringList list = header.split("\r\n");
 
@@ -597,30 +597,7 @@ QString AWebservice::postChange_WebserviceParse (const QString& header, QString&
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::postChangeCommit_WebserviceQuery (QNetworkRequest& request, QString& data, const QString& cookie)
-{
-	QSettings settings;
-
-	QString rsdn_login    = settings.value("rsdn/login",    "").toString();
-	QString rsdn_password = settings.value("rsdn/password", "").toString();
-	QString rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
-
-	data = "";
-	data += "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
-	data += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n";
-	data += "  <soap:Body>\r\n";
-	data += "    <PostChangeCommit xmlns=\"http://rsdn.ru/Janus/\" />\r\n";
-	data += "  </soap:Body>\r\n";
-	data += "</soap:Envelope>\r\n";
-
-	defaultRequest(request, rsdn_proto, "PostChangeCommit", data.toUtf8().size());
-
-	if (cookie.length() > 0)
-		request.setRawHeader("Cookie", cookie.toUtf8());
-}
-//----------------------------------------------------------------------------------------------
-
-QString AWebservice::postChangeCommit_WebserviceParse (const QString& data, ACommitInfo& commit_info)
+QString AWebservice::parsePostChangeCommit (const QString& data, ACommitInfo& commit_info)
 {
 	int seed = 0;
 
@@ -719,5 +696,250 @@ QString AWebservice::postChangeCommit_WebserviceParse (const QString& data, ACom
 	}
 
 	return "";
+}
+//----------------------------------------------------------------------------------------------
+
+QString AWebservice::getTextBetween (const QString* source, const QString& from, const QString& to)
+{
+	int idx1 = source->indexOf(from);
+
+	if (idx1 == -1)
+		return "";
+
+	int idx2 = source->indexOf(to, idx1 + 1);
+
+	if (idx2 == -1)
+		return "";
+
+	return source->mid(idx1 + from.length(), idx2 - idx1 - from.length());
+}
+//----------------------------------------------------------------------------------------------
+
+QString AWebservice::getNextBlock (const QString* source, const QString& from, const QString& to, int& seed)
+{
+	int idx1 = source->indexOf(from, seed);
+
+	if (idx1 == -1)
+		return "";
+
+	int idx2 = source->indexOf(to, idx1 + 1);
+
+	if (idx2 == -1)
+		return "";
+
+	QString result = source->mid(idx1 + from.length(), idx2 - idx1 - from.length());
+
+	seed = idx2 + to.length();
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QDateTime AWebservice::getDateTimeFromString (const QString& value)
+{
+	if (value == "0001-01-01T00:00:00")
+		return QDateTime::fromString("1970-01-01T00:00:00", Qt::ISODate);
+
+	return QDateTime::fromString(value, Qt::ISODate);
+}
+//----------------------------------------------------------------------------------------------
+
+bool AWebservice::getBooleanFromString (const QString& value)
+{
+	QString tmp = value.toLower();
+
+	if (tmp == "0" || tmp == "false" || tmp == "no" || tmp == "f" || tmp == "n")
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AWebservice::formatPrettyBytes (qint64 size)
+{
+	char buf[64];
+
+	if (size < (qint64)1024)
+	{
+		sprintf(buf, "%0dB", (int)size);
+		return QString::fromUtf8(buf);
+	}
+	else if (size < (qint64)1024 * 1024)
+	{
+		sprintf(buf, "%0.2fKB", (double)size / 1024);
+		return QString::fromUtf8(buf);
+	}
+	else if (size < (qint64)1024 * 1024 * 1024)
+	{
+		sprintf(buf, "%0.2fMB", (double)size / 1024 / 1024);
+		return QString::fromUtf8(buf);
+	}
+	else
+	{
+		sprintf(buf, "%0.2fGB", (double)size / 1024 / 1024 / 1024);
+		return QString::fromUtf8(buf);
+	}
+}
+//----------------------------------------------------------------------------------------------
+
+void AWebservice::prepareRequest (QNetworkRequest& request, const QString& proto, const QString& action, qint64 length)
+{
+	request.setUrl(proto.toLower() + "://rsdn.ru/ws/janusAT.asmx");
+
+	request.setHeader(QNetworkRequest::CookieHeader, QVariant());
+
+	request.setRawHeader("Host",           "rsdn.ru");
+	request.setRawHeader("Connection",     "close");
+	request.setRawHeader("User-Agent",     getAgentString().toUtf8());
+	request.setRawHeader("Content-Type",   "text/xml; charset=utf-8");
+	request.setRawHeader("Content-Length", QString::number(length).toUtf8());
+	request.setRawHeader("SOAPAction",     (QString("\"http://rsdn.ru/Janus/") + action + "\"").toUtf8());
+
+#ifdef AVALON_USE_ZLIB
+	request.setRawHeader("Accept-Encoding", "gzip");
+#endif
+}
+//----------------------------------------------------------------------------------------------
+
+bool AWebservice::makeRequest(const QNetworkRequest& request, const QString& data)
+{
+	QNetworkAccessManager http;
+
+	http.setProxy(defaultProxy());
+
+	QNetworkReply* reply = NULL;
+	if (data.length() == 0)
+		reply = http.get(request);
+	else
+		reply = http.post(request, data.toUtf8());
+
+	QObject::connect(reply, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(process_ssl_errors(const QList<QSslError>&)));
+	QObject::connect(reply, SIGNAL(downloadProgress(qint64, qint64)),   this, SLOT(process_download_progress(qint64, qint64)));
+	QObject::connect(reply, SIGNAL(uploadProgress(qint64, qint64)),     this, SLOT(process_upload_progress(qint64, qint64)));
+
+	QEventLoop loop;
+	QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+	bool result = parseReply(reply);
+
+	delete reply;
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+bool AWebservice::parseReply (QNetworkReply* reply)
+{
+	m_error = "";
+	if (reply->error() != QNetworkReply::NoError)
+	{
+		m_error = reply->errorString();
+		return false;
+	}
+
+	m_headers = "";
+	const QList<QNetworkReply::RawHeaderPair> pairs = reply->rawHeaderPairs();
+	for (int i = 0; i < pairs.count(); i++)
+	{
+		QNetworkReply::RawHeaderPair pair = pairs[i];
+		QString     header = QString::fromUtf8(pair.first.constData());
+		QStringList values = QString::fromUtf8(pair.second.constData()).split("\n");
+		for (int j = 0; j < values.count(); j++)
+			m_headers += header + ": " + values[j] + "\r\n";
+	}
+
+#ifndef AVALON_USE_ZLIB
+	m_body = QString::fromUtf8(reply->readAll());
+#else
+	if (reply->hasRawHeader("Content-Encoding") == true)
+	{
+		QString content_encoding = QString::fromUtf8(reply->rawHeader("Content-Encoding")).toLower();
+		if (content_encoding != "gzip")
+		{
+			m_body = QString::fromUtf8(reply->readAll());
+			return true;
+		}
+
+		// ответ пришел закодированным в gzip
+		QByteArray array = reply->readAll();
+
+		QTemporaryFile tmp_file;
+		if (tmp_file.open() == false)
+		{
+			m_error = tmp_file.errorString();
+			return false;
+		}
+		if (tmp_file.write(array) == -1)
+		{
+			m_error = tmp_file.errorString();
+			return false;
+		}
+
+		QString tmp_file_name = tmp_file.fileName();
+		tmp_file.close();
+		array.clear();
+
+		gzFile zip_file = gzopen(tmp_file_name.toUtf8().constData(), "rb");
+		if (zip_file == NULL)
+		{
+			// TODO: if errno is zero, the zlib error is Z_MEM_ERROR
+			m_error = QString::fromUtf8("Ошибка открытия файла: ") + tmp_file_name;
+			return false;
+		}
+
+		char buffer[1024];
+		while (true)
+		{
+			int read = gzread(zip_file, buffer, 1024);
+			if (read == -1)
+			{
+				// TODO: gzerror(gzFile file, int *errnum);
+				gzclose(zip_file);
+				m_error = QString::fromUtf8("Ошибка чтения файла: ") + tmp_file_name;
+				return false;
+			}
+			else if (read == 0)
+				break;
+
+			array.append(QByteArray(buffer, read));
+		}
+
+		gzclose(zip_file);
+
+		m_body = QString::fromUtf8(array.constData());
+	}
+	else
+		m_body = QString::fromUtf8(reply->readAll());
+#endif   // AVALON_USE_ZLIB
+
+	return true;
+}
+//----------------------------------------------------------------------------------------------
+
+void AWebservice::process_ssl_errors (const QList<QSslError> &errors)
+{
+	for (int i = 0; i < errors.count(); i++)
+		m_error += errors[i].errorString() + "\n";
+}
+//----------------------------------------------------------------------------------------------
+
+void AWebservice::process_download_progress (qint64 done, qint64 total)
+{
+	if (m_progress != NULL)
+	{
+		// при включенном сжатии, размер данных неопределен
+		if (total > 0)
+			m_progress->onProgress(0, total, done, QString::fromUtf8("чтение ") + formatPrettyBytes(done) + "/" + formatPrettyBytes(total));
+		else
+			m_progress->onProgress(0, 0, done, QString::fromUtf8("чтение ") + formatPrettyBytes(done));
+	}
+}
+//----------------------------------------------------------------------------------------------
+
+void AWebservice::process_upload_progress (qint64 done, qint64 total)
+{
+	if (m_progress != NULL)
+		m_progress->onProgress(0, total, done, QString::fromUtf8("отправка ") + formatPrettyBytes(done) + "/" + formatPrettyBytes(total));
 }
 //----------------------------------------------------------------------------------------------

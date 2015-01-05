@@ -6,6 +6,7 @@
 #ifndef _avalon_form_main_h_
 #define _avalon_form_main_h_
 
+#include "iprogress.h"
 #include "form_main_ui.h"
 
 /*!
@@ -13,7 +14,8 @@
  */
 class AFormMain :
 	public AFormMainUI,
-	public IFormMain
+	public IFormMain,
+	public IProgress
 {
 	Q_OBJECT;
 
@@ -115,6 +117,14 @@ class AFormMain :
 		void showStatus (const QString& value);
 
 		void setEnabledAction (AvalonActions actions, bool enabled);
+
+	// IProgress
+	private:
+
+		void onProgress (int percent);
+		void onProgress (int percent, const QString& status);
+		void onProgress (int minimum, int maximum, int value);
+		void onProgress (int minimum, int maximum, int value, const QString& status);
 };
 
 #endif   // _avalon_form_main_h_
