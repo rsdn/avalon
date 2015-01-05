@@ -4,7 +4,7 @@
 #include "form_date.h"
 #include "webservice.h"
 #include "form_input.h"
-#include "form_request.h"
+#include "form_progress.h"
 #include "form_settings.h"
 #include "form_subscribe.h"
 #include "storage/storage_factory.h"
@@ -748,7 +748,7 @@ void AFormMain::menu_service_storage_compress_triggered ()
 		return;
 	}
 
-	std::auto_ptr<FormRequest> form(new FormRequest(this));
+	std::auto_ptr<FormProgress> form(new FormProgress(this));
 
 	form->setWindowTitle(QString::fromUtf8("Сжатие хранилища"));
 
@@ -787,7 +787,7 @@ void AFormMain::menu_service_storage_uncompress_triggered ()
 		return;
 	}
 
-	std::auto_ptr<FormRequest> form(new FormRequest(this));
+	std::auto_ptr<FormProgress> form(new FormProgress(this));
 
 	form->setWindowTitle(QString::fromUtf8("Распаковка хранилища"));
 

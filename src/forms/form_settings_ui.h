@@ -114,9 +114,9 @@ class FormSettingsUI : public QDialog
 
 	private:
 
-		QIntValidator* m_timer_validator;           /*!< \brief Валидатор значения в поле "время пометки как прочитанное" */
-		QIntValidator* m_max_topic_show_validator;  /*!< \brief Валидатор значения в поле "Максимальное кол-во топиков"   */
-		QIntValidator* m_update_interval_validator; /*!< \brief Валидатор значения в поле "Интервал автообновления"       */
+		QIntValidator* m_timer_validator;             /*!< \brief Валидатор значения в поле "время пометки как прочитанное" */
+		QIntValidator* m_max_topic_show_validator;    /*!< \brief Валидатор значения в поле "Максимальное кол-во топиков"   */
+		QIntValidator* m_update_interval_validator;   /*!< \brief Валидатор значения в поле "Интервал автообновления"       */
 };
 
 #endif   // _avalon_form_settings_ui_h_

@@ -3,17 +3,17 @@
  * \brief Форма для отображения прогресса работы
  */
 
-#ifndef _avalon_form_request_h_
-#define _avalon_form_request_h_
+#ifndef _avalon_form_progress_h_
+#define _avalon_form_progress_h_
 
 #include "iprogress.h"
-#include "form_request_ui.h"
+#include "form_progress_ui.h"
 
 /*!
  * \brief Форма для отображения прогресса работы
  */
-class FormRequest :
-	public FormRequestUI,
+class FormProgress :
+	public FormProgressUI,
 	public IProgress
 {
 	Q_OBJECT
@@ -24,8 +24,8 @@ class FormRequest :
 		 * \brief Конструктор для простого прогресса
 		 * \param parent Родительский виджет (форма)
 		 */
-		FormRequest  (QWidget* parent);
-		~FormRequest ();
+		FormProgress  (QWidget* parent);
+		~FormProgress ();
 
 	// IProgress
 	private:
@@ -36,4 +36,4 @@ class FormRequest :
 		void onProgress (int minimum, int maximum, int value, const QString& status);
 };
 
-#endif   // _avalon_form_request_h_
+#endif   // _avalon_form_progress_h_
