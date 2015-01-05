@@ -973,11 +973,7 @@ void AFormMain::menu_service_download_triggered()
 
 void AFormMain::setDefaultStatus ()
 {
-	QSettings settings;
-
-	QString type = settings.value("storage/type", "MySQL").toString();
-
-	m_status_bar->showMessage(QString::fromUtf8("хранилище: ") + type);
+	m_status_bar->showMessage("");
 }
 //----------------------------------------------------------------------------------------------
 
