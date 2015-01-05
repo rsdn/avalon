@@ -82,6 +82,8 @@ void AWebservice::defaultRequest(QNetworkRequest& request, const QString& proto,
 {
 	request.setUrl(proto.toLower() + "://rsdn.ru/ws/janusAT.asmx");
 
+	request.setHeader(QNetworkRequest::CookieHeader, QVariant());
+
 	request.setRawHeader("Host",           "rsdn.ru");
 	request.setRawHeader("Connection",     "close");
 	request.setRawHeader("User-Agent",     getAgentString().toUtf8());
