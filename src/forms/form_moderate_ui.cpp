@@ -3,11 +3,7 @@
 #include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
-FormModerateUI::FormModerateUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-#if QT_VERSION >= 0x040500
- | Qt::WindowCloseButtonHint
-#endif
-)
+FormModerateUI::FormModerateUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint)
 {
 	AModerateAction action;
 

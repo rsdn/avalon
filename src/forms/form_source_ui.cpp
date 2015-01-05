@@ -1,11 +1,7 @@
 #include "form_source_ui.h"
 //----------------------------------------------------------------------------------------------
 
-FormSourceUI::FormSourceUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-#if QT_VERSION >= 0x040500
- | Qt::WindowCloseButtonHint
-#endif
-)
+FormSourceUI::FormSourceUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint)
 {
 	setWindowTitle(QString::fromUtf8("просмотр источника"));
 

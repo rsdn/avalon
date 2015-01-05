@@ -1,11 +1,7 @@
 #include "form_settings_ui.h"
 //----------------------------------------------------------------------------------------------
 
-FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-#if QT_VERSION >= 0x040500
- | Qt::WindowCloseButtonHint
-#endif
-)
+FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint)
 {
 	setWindowTitle(QString::fromUtf8("настройки"));
 

@@ -1,11 +1,7 @@
 #include "form_date_ui.h"
 //----------------------------------------------------------------------------------------------
 
-FormDateUI::FormDateUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-#if QT_VERSION >= 0x040500
-| Qt::WindowCloseButtonHint
-#endif
-)
+FormDateUI::FormDateUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint)
 {
 	setWindowTitle(QString::fromUtf8("дата / время"));
 

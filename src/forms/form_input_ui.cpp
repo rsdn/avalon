@@ -1,11 +1,7 @@
 #include "form_input_ui.h"
 //----------------------------------------------------------------------------------------------
 
-FormInputUI::FormInputUI (QWidget* parent, const QString& header, const QString& message, const QString& text) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-#if QT_VERSION >= 0x040500
- | Qt::WindowCloseButtonHint
-#endif
-)
+FormInputUI::FormInputUI (QWidget* parent, const QString& header, const QString& message, const QString& text) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint)
 {
 	resize(450, 78);
 	setFixedSize(width(), height());
