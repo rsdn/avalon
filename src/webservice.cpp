@@ -1,13 +1,7 @@
 #include "webservice.h"
 //----------------------------------------------------------------------------------------------
-/*!
- * \brief Возвращает текст между from-to не включая их из строки source
- * \param source Указатель на исходную строку
- * \param from Начальный разделитель
- * \param to Конечный разделитель
- * \return Строка между разделителями
- */
-QString getTextBetween (const QString* source, const QString& from, const QString& to)
+
+QString AWebservice::getTextBetween (const QString* source, const QString& from, const QString& to)
 {
 	int idx1 = source->indexOf(from);
 
@@ -22,15 +16,8 @@ QString getTextBetween (const QString* source, const QString& from, const QStrin
 	return source->mid(idx1 + from.length(), idx2 - idx1 - from.length());
 }
 //----------------------------------------------------------------------------------------------
-/*!
- * \brief Итерация по блокам from-to со сдвигом смещения
- * \param source Указатель на исходную строку
- * \param from Начальный разделитель
- * \param to Конечный разделитель
- * \param seed Смещение
- * \return Строка между разделителями
- */
-QString getNextBlock (const QString* source, const QString& from, const QString& to, int& seed)
+
+QString AWebservice::getNextBlock (const QString* source, const QString& from, const QString& to, int& seed)
 {
 	int idx1 = source->indexOf(from, seed);
 
@@ -49,12 +36,8 @@ QString getNextBlock (const QString* source, const QString& from, const QString&
 	return result;
 }
 //----------------------------------------------------------------------------------------------
-/*!
- * \brief Преобразование строки в дату/время (требуется в связи с отсчетом времени с начала эпохи UNIX)
- * \param value Строковое значение даты
- * \return Объект преобразования
- */
-QDateTime getDateTimeFromString (const QString& value)
+
+QDateTime AWebservice::getDateTimeFromString (const QString& value)
 {
 	if (value == "0001-01-01T00:00:00")
 		return QDateTime::fromString("1970-01-01T00:00:00", Qt::ISODate);
@@ -62,12 +45,8 @@ QDateTime getDateTimeFromString (const QString& value)
 	return QDateTime::fromString(value, Qt::ISODate);
 }
 //----------------------------------------------------------------------------------------------
-/*!
- * \brief Преобразование строки в булево значение
- * \param value Строковое значение флага
- * \return Объект преобразования
- */
-bool getBooleanFromString (const QString& value)
+
+bool AWebservice::getBooleanFromString (const QString& value)
 {
 	QString tmp = value.toLower();
 

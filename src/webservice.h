@@ -116,6 +116,41 @@ class AWebservice
 		 * \return Пустая строка, или сообщение об ошибке
 		 */
 		static QString postChangeCommit_WebserviceParse (const QString& data, ACommitInfo& commit_info);
+
+	private:
+
+		/*!
+		 * \brief Возвращает текст между from-to не включая их из строки source
+		 * \param source Указатель на исходную строку
+		 * \param from Начальный разделитель
+		 * \param to Конечный разделитель
+		 * \return Строка между разделителями
+		 */
+		static QString getTextBetween (const QString* source, const QString& from, const QString& to);
+
+		/*!
+		 * \brief Итерация по блокам from-to со сдвигом смещения
+		 * \param source Указатель на исходную строку
+		 * \param from Начальный разделитель
+		 * \param to Конечный разделитель
+		 * \param seed Смещение
+		 * \return Строка между разделителями
+		 */
+		static QString getNextBlock (const QString* source, const QString& from, const QString& to, int& seed);
+
+		/*!
+		 * \brief Преобразование строки в дату/время (требуется в связи с отсчетом времени с начала эпохи UNIX)
+		 * \param value Строковое значение даты
+		 * \return Объект преобразования
+		 */
+		static QDateTime getDateTimeFromString (const QString& value);
+
+		/*!
+		 * \brief Преобразование строки в булево значение
+		 * \param value Строковое значение флага
+		 * \return Объект преобразования
+		 */
+		static bool getBooleanFromString (const QString& value);
 };
 
 #endif
