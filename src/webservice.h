@@ -16,15 +16,6 @@ class AWebservice
 	public:
 
 		/*!
-		 * \brief Заполнение полей запроса значениями по умолчанию
-		 * \param request Запрос для заполнения
-		 * \param proto Протокол (http | https)
-		 * \param action Значение SOAPAction (без части http://rsdn.ru/Janus/)
-		 * \param length Значение Content-Length
-		 */
-		static void defaultRequest(QNetworkRequest& request, const QString& proto, const QString& action, qint64 length);
-
-		/*!
 		 * \brief Возвращает заголовок и данные для POST запроса получения списка форумов
 		 * \param request Запрос для заполнения
 		 * \param data Данные для POST запроса
@@ -118,6 +109,15 @@ class AWebservice
 		static QString postChangeCommit_WebserviceParse (const QString& data, ACommitInfo& commit_info);
 
 	private:
+
+		/*!
+		 * \brief Заполнение полей запроса значениями по умолчанию
+		 * \param request Запрос для заполнения
+		 * \param proto Протокол (http | https)
+		 * \param action Значение SOAPAction (без части http://rsdn.ru/Janus/)
+		 * \param length Значение Content-Length
+		 */
+		static void defaultRequest(QNetworkRequest& request, const QString& proto, const QString& action, qint64 length);
 
 		/*!
 		 * \brief Возвращает текст между from-to не включая их из строки source
