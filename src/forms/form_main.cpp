@@ -195,6 +195,8 @@ void AFormMain::menu_service_synchronize_triggered ()
 		ACommitInfo commit_info;
 		if (webservice.postChange(messages, ratings, moderates, commit_info) == true)
 		{
+			setDefaultStatus();
+
 			// сохранение ответа
 			if (storage->setCommitResult(commit_info) == false)
 			{
@@ -259,6 +261,7 @@ void AFormMain::menu_service_synchronize_triggered ()
 		}
 		else
 		{
+			setDefaultStatus();
 			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), webservice.error());
 			return;
 		}
@@ -293,6 +296,8 @@ void AFormMain::menu_service_synchronize_triggered ()
 		AUserInfoList list;
 		if (webservice.getUserList(user_row_version, list, row_version.User) == true)
 		{
+			setDefaultStatus();
+
 			// сохранение ответа
 			if (storage->setUserList(list, row_version.User) == false)
 			{
@@ -302,6 +307,7 @@ void AFormMain::menu_service_synchronize_triggered ()
 		}
 		else
 		{
+			setDefaultStatus();
 			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), webservice.error());
 			return;
 		}
@@ -347,6 +353,8 @@ void AFormMain::menu_service_synchronize_triggered ()
 		ADataList list;
 		if (webservice.getMessageList(row_version, query, list, row_version) == true)
 		{
+			setDefaultStatus();
+
 			// сохранение ответа
 			if (storage->setMessageList(list, row_version, true) == false)
 			{
@@ -363,6 +371,7 @@ void AFormMain::menu_service_synchronize_triggered ()
 		}
 		else
 		{
+			setDefaultStatus();
 			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), webservice.error());
 			return;
 		}

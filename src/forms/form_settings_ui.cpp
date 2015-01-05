@@ -15,7 +15,7 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	icon.addFile(":/icons/settings128.png", QSize(128, 128));
 	setWindowIcon(icon);
 
-	resize(555, 366);
+	resize(560, 366);
 	setFixedSize(width(), height());
 
 	//
