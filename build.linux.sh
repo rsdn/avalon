@@ -3,7 +3,7 @@
 set -e
 
 # версия qt
-export QT_SELECT=4
+export QT_SELECT=5
 
 # имя проекта
 PROJECT_NAME="avalon"
@@ -13,10 +13,18 @@ if [ -f "Makefile" ]; then
 	make clean
 fi
 
+# опции (модули) qt
+QT_OPTS="network sql"
+if [ "${QT_SELECT}" -eq "4" ]; then
+	QT_OPTS="${QT_OPTS} webkit"
+else
+	QT_OPTS="${QT_OPTS} widgets webkitwidgets"
+fi
+
 # создание pro-файла
 qmake -project -recursive -Wall -nopwd -o ${PROJECT_NAME}.pro \
     "CONFIG += debug_and_release" \
-    "QT += network sql webkit" \
+    "QT += ${QT_OPTS}" \
     "LIBS += -laspell -lz" \
     "macx { QMAKE_CXX = clang }" \
     "macx { ICON = icons/avalon.icns }" \

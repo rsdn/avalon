@@ -28,10 +28,10 @@ ASpellChecker::ASpellChecker (QTextDocument* parent) : QSyntaxHighlighter (paren
 
 		bool fail = false;
 
-		if (aspell_config_replace(m_aspell_config_en, "lang", "en_US") == FALSE)
+		if (aspell_config_replace(m_aspell_config_en, "lang", "en_US") == false)
 			fail = true;
 
-		if (fail == false && aspell_config_replace(m_aspell_config_en, "encoding", "utf-8") == FALSE)
+		if (fail == false && aspell_config_replace(m_aspell_config_en, "encoding", "utf-8") == false)
 			fail = true;
 
 		if (fail == false)
@@ -52,10 +52,10 @@ ASpellChecker::ASpellChecker (QTextDocument* parent) : QSyntaxHighlighter (paren
 
 		if (m_aspell_config_ru != NULL)
 		{
-			if (aspell_config_replace(m_aspell_config_ru, "lang", "ru_RU") == FALSE)
+			if (aspell_config_replace(m_aspell_config_ru, "lang", "ru_RU") == false)
 				fail = true;
 
-			if (fail == false && aspell_config_replace(m_aspell_config_ru, "encoding", "utf-8") == FALSE)
+			if (fail == false && aspell_config_replace(m_aspell_config_ru, "encoding", "utf-8") == false)
 				fail = true;
 
 			if (fail == false)
